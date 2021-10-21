@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from 'react-router';
 
 //import react pro sidebar components
 import {
@@ -11,10 +12,11 @@ import {
 } from "react-pro-sidebar";
 
 //import icons from react icons
-import { FaList, FaRegHeart } from "react-icons/fa";
+import { FaList, FaRegHeart,FaUserPlus,FaSign } from "react-icons/fa";
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import { RiPencilLine } from "react-icons/ri";
 import { BiCog } from "react-icons/bi";
+
 
 
 //import sidebar css from react-pro-sidebar module and our custom css 
@@ -25,7 +27,9 @@ import "./index.css";
 const Header = () => {
   
     //create initial menuCollapse state using useState hook
-    const [menuCollapse, setMenuCollapse] = useState(false)
+    const [menuCollapse, setMenuCollapse] = useState(true);
+
+    const routeLink= useHistory()
 
     //create a custom function that will change menucollapse state from false to true and true to false
   const menuIconClick = () => {
@@ -43,23 +47,16 @@ const Header = () => {
               {/* small and big change using menucollapse state */}
               <p>{menuCollapse ? "Logo" : "Big Logo"}</p>
             </div>
-            <div className="closemenu" onClick={menuIconClick}>
-                {/* changing menu collapse icon on click */}
-              {menuCollapse ? (
-                <FiArrowRightCircle/>
-              ) : (
-                <FiArrowLeftCircle/>
-              )}
-            </div>
+           
           </SidebarHeader>
           <SidebarContent>
             <Menu iconShape="square">
-              <MenuItem active={true} icon={<FiHome />}>
+              <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')}>
                 Home
               </MenuItem>
-              <MenuItem icon={<FaList />}>Category</MenuItem>
-              <MenuItem icon={<FaRegHeart />}>Favourite</MenuItem>
-              <MenuItem icon={<RiPencilLine />}>Author</MenuItem>
+              <MenuItem icon={<FaList />} >Category</MenuItem>
+              <MenuItem icon={<FaUserPlus />}>Favourite</MenuItem>
+              <MenuItem icon={<FaSign />} onClick={()=>routeLink.push('signin')}>Author</MenuItem>
               <MenuItem icon={<BiCog />}>Settings</MenuItem>
             </Menu>
           </SidebarContent>

@@ -1,0 +1,13 @@
+.mainRight{
+   width: 60%; 
+   margin: 0 auto;
+   margin-left: 40%;
+}
+.calend{
+    border-color: none;
+    background-color: blueviolet;
+}
+.card img{
+    height: 90%;
+}
+
