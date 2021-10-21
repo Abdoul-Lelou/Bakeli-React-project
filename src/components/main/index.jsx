@@ -1,23 +1,42 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import SearchField from "react-search-field";
+import {auth, db} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import './index.css';
 
 const Main = () => {
-  
-  const items=['papa','mamn','koto','diadia','leyga','papa','mamn','koto','papa','mamn','koto','diadia','leyga','papa','mamn','koto','diadia','leyga','papa','mamn','koto','diadia','leyga']
 
- 
+  const [dataCours, setDataCours] = useState([])
+  
+  // let items=['papa','mamn','koto','diadia','leyga','papa','mamn','koto','papa','mamn','koto','diadia','leyga','papa','mamn','koto','diadia','leyga','papa','mamn','koto','diadia','leyga']
+  
+
+    useEffect(() => {
+    const datas=[];
+    const key=''
+    db.ref('/cours').on('value', function(snapshot) {
+              snapshot.forEach(function(childSnapshot) {
+                var childData = childSnapshot.val();
+                // console.log(childData)
+                datas.push(childData);
+              });
+              setDataCours(datas)
+    });
+                // .once('value')
+                // .then(snapshot => {
+                //   const data= snapshot.val();
+                //   datas.push(data);
+                //   datas.forEach((item)=>{
+                //     console.log(item.key)
+                //   })
+                // setDataCours(datas)
+                // });
+    }, [])        
+console.log(dataCours)
+
     return (
         <div className='mains'>
-          {/* <SearchField
-              placeholder="Search..."
-              // onChange={onChange}
-              searchText="This is initial search text"
-              classNames="test-class  w-50 mt-2 searchBar"
-            /> */
-            }
+         
             <div className="search-box mb-2">
                 <input type="text" className="search-input" placeholder="Search.." />
 
@@ -45,16 +64,17 @@ const Main = () => {
                 loader={<h4>Loading...</h4>}
                 scrollableTarget="scrollableDiv"
               >
-                {items.map((_, index) => (
+                {dataCours.map((cour, index) => (
+                  
                   <div  key={index} className="pb-2">
 
-                    <div className="card" style={{maxWidth: '540px'}}>
+                    <div className="card" style={{maxWidth: '500px'}}>
                         <div className="row no-gutters">
                           <div className="col ">
                             <img src={img1} className="card-img" alt="..."/>
                             <div className="card-body">
                               <p className="card-text text-center">
-                               <span class="card-text">Card title</span>
+                               <span class="card-text">{cour}</span>
                                 <small className="text-muted"></small>
                               </p>
                             </div>

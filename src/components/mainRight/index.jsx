@@ -15,6 +15,7 @@ const MainRight = () => {
         // Add class to tiles in month view only
         console.log('object')
         if (view === 'month') {
+            setCalendar()
           // Check if a date React-Calendar wants to check is on the list of dates to add class to
         //   if (datesToAddClassTo.find(dDate => isSameDay(dDate, date))) {
         //     return 'myClassName';

@@ -1,10 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
 import Sidebar from './components/header';
-import {BrowserRouter as Router, Route,Link,Switch,} from 'react-router-dom'
+import {BrowserRouter as Router, Route,Switch,} from 'react-router-dom'
 import Welcome from './components/welcome';
 import Login from './components/login';
 import SignIn from './components/signIn';
+import Cours from './components/cours';
 
 function App() {
   return (
@@ -20,14 +21,20 @@ function App() {
 						<Switch>
 						<Route path='/welcome' exact>
 							<Sidebar />
-						
-						<Welcome />
+							<Welcome />
 						</Route>
+
 						<Route path='/signin' exact>
 							<Sidebar />
 							<SignIn />		
 						</Route>
-						</Switch>
+
+						<Route path='/cours' exact>
+							<Sidebar />
+							<Cours />		
+						</Route>
+
+					</Switch>
 						
 					
 			</Router>		

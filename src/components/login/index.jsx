@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { useHistory } from 'react-router';
-import { auth, googleAuthProvider,dbFirestore } from "../../firebase";
+import { auth,dbFirestore } from "../../firebase";
 import './index.css';
 
 
@@ -17,9 +17,7 @@ const Login = () => {
        const login =auth.signInWithEmailAndPassword(email,password);
 
        return login.then(res=>{
-          dbFirestore.doc(res.user.uid).set({email}).then(resp=>{
-             route.push("/welcome");
-          })
+        route.push("/welcome");
         //  console.log(logFirestore)
        })
 

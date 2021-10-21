@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router';
+import { auth } from "../../firebase";
 
 //import react pro sidebar components
 import {
@@ -12,9 +13,9 @@ import {
 } from "react-pro-sidebar";
 
 //import icons from react icons
-import { FaList, FaRegHeart,FaUserPlus,FaSign } from "react-icons/fa";
-import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
-import { RiPencilLine } from "react-icons/ri";
+import { FaList,FaSign } from "react-icons/fa";
+import { FiHome, FiLogOut} from "react-icons/fi";
+import { BsFileEarmarkPlusFill } from "react-icons/bs";
 import { BiCog } from "react-icons/bi";
 
 
@@ -28,6 +29,7 @@ const Header = () => {
   
     //create initial menuCollapse state using useState hook
     const [menuCollapse, setMenuCollapse] = useState(true);
+    // const [active, setActive] = useState(true)
 
     const routeLink= useHistory()
 
@@ -36,6 +38,11 @@ const Header = () => {
     //condition checking to change state from true to false and vice versa
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
   };
+
+  const logout= ()=>{
+      auth.signOut();
+      routeLink.push('')
+  }
 
   return (
     <>
@@ -55,14 +62,14 @@ const Header = () => {
                 Home
               </MenuItem>
               <MenuItem icon={<FaList />} >Category</MenuItem>
-              <MenuItem icon={<FaUserPlus />}>Favourite</MenuItem>
+              <MenuItem icon={<BsFileEarmarkPlusFill />}  onClick={()=>routeLink.push('cours')}>Cours</MenuItem>
               <MenuItem icon={<FaSign />} onClick={()=>routeLink.push('signin')}>Author</MenuItem>
               <MenuItem icon={<BiCog />}>Settings</MenuItem>
             </Menu>
           </SidebarContent>
           <SidebarFooter>
             <Menu iconShape="square">
-              <MenuItem icon={<FiLogOut />}>Logout</MenuItem>
+              <MenuItem icon={<FiLogOut />} onClick={()=>logout()}>Logout</MenuItem>
             </Menu>
           </SidebarFooter>
         </ProSidebar>

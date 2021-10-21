@@ -14,5 +14,6 @@ var firebaseConfig = {
 
 //firebase methods  
 export const auth = firebase.auth();
+export const db= firebase.database();
 export const dbFirestore = firebase.firestore().collection("users");
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
