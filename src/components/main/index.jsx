@@ -55,7 +55,7 @@ const Main = () => {
                             <div className="card-body">
                               <p className="card-text text-center">
                                <span class="card-text">Card title</span>
-                                <small className="text-muted">Last updated 3 mins ago</small>
+                                <small className="text-muted"></small>
                               </p>
                             </div>
                           </div>
