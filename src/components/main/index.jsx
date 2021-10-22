@@ -1,13 +1,18 @@
 import React,{useEffect,useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {dbCours} from "../../firebase";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {dbCours,dbArchive, db,dbFirestores} from "../../firebase";
 import Swal from 'sweetalert2';
 import img1 from '../../images/img1.jpg'
 import './index.css';
 
 const Main = () => {
 
-  const [dataCours, setDataCours] = useState([])
+  const [dataCours, setDataCours] = useState([]);
+  const [search, setSearch] = useState('');
+
+  const notify = (msg) => toast(msg);
 
 
     useEffect(() => {
@@ -16,21 +21,44 @@ const Main = () => {
             id: doc.id,
             ...doc.data(),
           }));
+          console.log(data)
           setDataCours(data);
         });
     }, [])        
 
+    const archive=(id,cours,detail)=>{
+      dbArchive.doc(id).set({cours,detail}).then(resp=>{
+        notify('Archivé avec succés');
+       dbFirestores.collection("cours")
+       .doc(id)
+       .delete()
+       .then(() => notify('Deplacé avec succes')) // Document deleted
+       .catch((error) => notify(error));
+     })
+    }
 
+    const filterSearch=()=>{
+      console.log(search);
+        let dataSearch= [];
+        dataCours.map((data,index)=>{
+          data.cours= search?(
+            dataSearch.push(data),
+            console.log(dataSearch),
+            setDataCours(dataSearch),
+            console.log(dataCours)
+          ):(null);
+        })
+    }
 
 
     return (
         <div className='mains'>
          
             <div className="search-box mb-2">
-                <input type="text" className="search-input" placeholder="Search.." />
+                <input type="text" className="search-input" placeholder="Search.." value={search} onChange={(e)=>setSearch(e.target.value)}/>
 
-                <button className="search-button">
-                <i class="fa fa-search" aria-hidden="true"></i>
+                <button className="search-button" onClick={()=>filterSearch()} >
+                <i className="fa fa-search" aria-hidden="true"></i>
                 </button>
             </div>
             <h4  className='text-start'>Popular courses</h4>
@@ -63,7 +91,7 @@ const Main = () => {
                             <img src={img1} className="card-img" alt="..."/>
                             <div className="card-body">
                               <p className="card-text text-center">
-                               <span class="card-text">{cour.cours}</span>
+                               <span className="card-text">{cour.cours}</span>
                                 <small className="text-muted"></small>
                               </p>
                             </div>
@@ -72,9 +100,9 @@ const Main = () => {
                             <div className="card-body">
                               <p className="card-text">
                                 <small className="text-muted">
-                                  <button className='btn btn-outline-warning' title='edit' onClick=''> <i class="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                  <button className='btn btn-outline-primary' title='archive'> <i class="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                  <button className='btn btn-outline-success' title='detail'> <i class="fa fa-info-circle" aria-hidden="true"></i></button>
+                                  <button className='btn btn-outline-warning' title='edit' onClick=''> <i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                  <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                  <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                 </small>
                               </p>
                             </div>
@@ -86,6 +114,53 @@ const Main = () => {
                 ))}
               </InfiniteScroll>
             </div>
+
+            <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            />
+            {/* Same as */}
+            <ToastContainer />
+
+
+              <section class="modal" id="myModal1">
+                <div class="modal__content">
+                  <a href="#" class="modal__close" title="Close modal">&times;</a>
+                  <h1>Modal content</h1>
+                  <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam rhoncus eu purus et rutrum. Donec rhoncus nisi sed tortor tempor, a pharetra purus suscipit. Integer venenatis luctus egestas. Aliquam ligula augue, convallis vitae semper vel, lobortis sed lacus. Nullam non ex eget diam rutrum scelerisque eu at quam. Curabitur lacinia, magna non ultrices blandit, lectus sem varius sem, tincidunt maximus augue lacus vel mauris. Nulla venenatis vulputate tortor, nec feugiat libero scelerisque eget. Fusce facilisis a massa ultrices sollicitudin. Donec vel consectetur mi. Aliquam facilisis dignissim libero, id euismod mauris ultrices id. Etiam feugiat, odio vitae fringilla commodo, augue ex volutpat sapien, vel iaculis lacus dolor eu ligula. Praesent vitae ex mattis, congue diam eget, semper odio. Nam urna erat, varius nec augue id, rhoncus fringilla ex. Maecenas sit amet tristique dui, dignissim egestas massa.
+                  </p>
+                </div>
+              </section>
+              <section class="modal" id="myModal2">
+                <div class="modal__content">
+                  <a href="#" class="modal__close" title="Close modal">&times;</a>
+                  <h1>Modal content 2</h1>
+                  <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam rhoncus eu purus et rutrum. Donec rhoncus nisi sed tortor tempor, a pharetra purus suscipit. Integer venenatis luctus egestas. Aliquam ligula augue, convallis vitae semper vel, lobortis sed lacus. Nullam non ex eget diam rutrum scelerisque eu at quam. Curabitur lacinia, magna non ultrices blandit, lectus sem varius sem, tincidunt maximus augue lacus vel mauris. Nulla venenatis vulputate tortor, nec feugiat libero scelerisque eget. Fusce facilisis a massa ultrices sollicitudin. Donec vel consectetur mi. Aliquam facilisis dignissim libero, id euismod mauris ultrices id. Etiam feugiat, odio vitae fringilla commodo, augue ex volutpat sapien, vel iaculis lacus dolor eu ligula. Praesent vitae ex mattis, congue diam eget, semper odio. Nam urna erat, varius nec augue id, rhoncus fringilla ex. Maecenas sit amet tristique dui, dignissim egestas massa.
+                  </p>
+                </div>
+              </section>
+              <section class="main">
+                <div class="container">
+                  <a href="#myModal1" class="open-modal">
+                    Open modal 1
+                  </a>
+                  <a href="#myModal2" class="open-modal">
+                    Open modal 2
+                  </a>
+                </div>
+                <footer>
+                  <h1>Footer section</h1>
+                </footer>
+              </section>
         </div>
     )
 }
