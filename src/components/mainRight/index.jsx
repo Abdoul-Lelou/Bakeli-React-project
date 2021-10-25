@@ -31,7 +31,7 @@ const MainRight = () => {
                 onChange={calendarChange}
                 value={calendar}
                 className='calend w-75 m-4'
-                showNavigation='false'
+                // showNavigation='false'
                 tileClassName={tileClassName}
             />
             {/* </div> */}
@@ -41,7 +41,7 @@ const MainRight = () => {
                             <img src={img1} className="card-img" alt="..."/>
                             <div className="card-body">
                               <p className="card-text text-center">
-                               <span class="card-text">Card title</span>
+                               <span className="card-text">Card title</span>
                                 <small className="text-muted">  </small>
                               </p>
                             </div>

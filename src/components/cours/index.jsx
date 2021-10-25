@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import { useHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { db,dbCours } from "../../firebase";
@@ -9,6 +10,7 @@ const Cours = () => {
     const [cours, setCours] = useState('');
     const [detail, setDetail] = useState('')
     const [btn, setBtn] = useState(false);
+    const route= useHistory();
 
     useEffect(() => {
         if (cours.lenght >2) {
@@ -23,12 +25,10 @@ const Cours = () => {
 
         dbCours.doc().set({cours,detail}).then(resp=>{
             notify();
+            setTimeout(()=>{
+              route.push('/welcome');
+            }, 3000)
          })
-        // db.ref(`cours/`).push(cours).then(res=>{
-        //     notify();
-        // }).catch(err=>{
-        //     notifyFalse()
-        // });
         setCours('');
         setDetail('');
     }

@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {dbCours,dbArchive, db,dbFirestores} from "../../firebase";
-import Swal from 'sweetalert2';
+import {dbCours,dbArchive,dbFirestores} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import './index.css';
 
@@ -11,6 +11,12 @@ const Main = () => {
 
   const [dataCours, setDataCours] = useState([]);
   const [search, setSearch] = useState('');
+  const [courEdit, setCourEdit] = useState('');
+  const [detailEdit, setdEtailEdit] = useState('');
+  const [editId, setEditId] = useState('');
+  const [dataSearch, setdataSearch] = useState([]);
+  const route= useHistory();
+   let dataChange= '';
 
   const notify = (msg) => toast(msg);
 
@@ -21,10 +27,12 @@ const Main = () => {
             id: doc.id,
             ...doc.data(),
           }));
-          console.log(data)
           setDataCours(data);
+          dataChange =data
         });
-    }, [])        
+        
+    }, [dataChange])        
+
 
     const archive=(id,cours,detail)=>{
       dbArchive.doc(id).set({cours,detail}).then(resp=>{
@@ -32,24 +40,43 @@ const Main = () => {
        dbFirestores.collection("cours")
        .doc(id)
        .delete()
-       .then(() => notify('Deplacé avec succes')) // Document deleted
+       .then(() => {
+        notify('Deplacé avec succes');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+       }) // Document deleted
        .catch((error) => notify(error));
      })
     }
 
     const filterSearch=()=>{
-      console.log(search);
-        let dataSearch= [];
+        let dataFind= []
+
         dataCours.map((data,index)=>{
-          data.cours= search?(
-            dataSearch.push(data),
-            console.log(dataSearch),
-            setDataCours(dataSearch),
-            console.log(dataCours)
-          ):(null);
+          if (search.toUpperCase() === data.cours.toUpperCase() && search !=='' ) {
+            dataFind.push(data)
+            setdataSearch(dataFind)
+          }
         })
     }
 
+    const handleEdit=(id,cour,detail)=>{
+      setEditId('');
+        setCourEdit(cour);
+        setdEtailEdit(detail);
+        setEditId(id);
+       setTimeout(() => {
+        console.log(editId)
+       }, 2000);
+    }
+
+    const handleEditClick=(id,cour,detail)=>{
+          console.log(editId)
+    //   dbCours.doc(id).set({cour,detail}).then(resp=>{
+    //     notify();
+    //  })
+  }
 
     return (
         <div className='mains'>
@@ -81,37 +108,75 @@ const Main = () => {
                 loader={<h4>Loading...</h4>}
                 scrollableTarget="scrollableDiv"
               >
-                {dataCours.map((cour, index) => (
+                {search !==''?(
+                  dataSearch.map((cour, index) => (
                   
-                  <div  key={index} className="pb-2">
-
-                    <div className="card" style={{maxWidth: '500px'}}>
-                        <div className="row no-gutters">
-                          <div className="col ">
-                            <img src={img1} className="card-img" alt="..."/>
-                            <div className="card-body">
-                              <p className="card-text text-center">
-                               <span className="card-text">{cour.cours}</span>
-                                <small className="text-muted"></small>
-                              </p>
+                    <div  key={index} className="pb-2">
+  
+                      <div className="card" style={{maxWidth: '480px'}}>
+                          <div className="row no-gutters">
+                            <div className="col ">
+                              <img src={img1} className="card-img" alt="..."/>
+                              <div className="card-body">
+                                <p className="card-text text-center">
+                                 <span className="card-text">{cour.cours}</span>
+                                  <small className="text-muted"></small>
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="card-body">
-                              <p className="card-text">
-                                <small className="text-muted">
-                                  <button className='btn btn-outline-warning' title='edit' onClick=''> <i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                  <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                  <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                </small>
-                              </p>
+                            <div className="col-6">
+                              <div className="card-body">
+                                <p className="card-text">
+                                  <small className="text-muted">
+                                    <button className='btn btn-outline-warning' title='edit' onClick={()=>handleEdit(cour.id,cour.cours,cour.detail)}> <a href="#popup1"><i className="fa fa-edit" aria-hidden="true"></i></a></button> &nbsp;
+                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                    <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                  </small>
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-
-                  </div>
-                ))}
+  
+                    </div>
+  
+                    
+                  ))
+                ):(
+                  dataCours.map((cour, index) => (
+                    
+                    <div  key={index} className="pb-2">
+                      {console.log(cour)}
+                      <div className="card" style={{maxWidth: '480px'}}>
+                          <div className="row no-gutters">
+                            <div className="col ">
+                              <img src={img1} className="card-img" alt="..."/>
+                              <div className="card-body">
+                                <p className="card-text text-center">
+                                 <span className="card-text">{cour.cours}</span>
+                                  <small className="text-muted"></small>
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-6">
+                              <div className="card-body">
+                                <p className="card-text">
+                                  <small className="text-muted">
+                                    <button className='btn btn-outline-warning' title='edit' onClick={()=>handleEdit(cour.id,cour.cours,cour.detail)}> <a href="#popup1"><i className="fa fa-edit" aria-hidden="true"></i></a></button> &nbsp;
+                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                    <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                  </small>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+  
+                    </div>
+  
+                    
+                  ))
+                )}
               </InfiniteScroll>
             </div>
 
@@ -128,39 +193,32 @@ const Main = () => {
             />
             {/* Same as */}
             <ToastContainer />
+{/*             
+            <div class="box">
+              <a class="button" href="#popup1">Let me Pop up</a>
+            </div> */}
 
-
-              <section class="modal" id="myModal1">
-                <div class="modal__content">
-                  <a href="#" class="modal__close" title="Close modal">&times;</a>
-                  <h1>Modal content</h1>
-                  <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam rhoncus eu purus et rutrum. Donec rhoncus nisi sed tortor tempor, a pharetra purus suscipit. Integer venenatis luctus egestas. Aliquam ligula augue, convallis vitae semper vel, lobortis sed lacus. Nullam non ex eget diam rutrum scelerisque eu at quam. Curabitur lacinia, magna non ultrices blandit, lectus sem varius sem, tincidunt maximus augue lacus vel mauris. Nulla venenatis vulputate tortor, nec feugiat libero scelerisque eget. Fusce facilisis a massa ultrices sollicitudin. Donec vel consectetur mi. Aliquam facilisis dignissim libero, id euismod mauris ultrices id. Etiam feugiat, odio vitae fringilla commodo, augue ex volutpat sapien, vel iaculis lacus dolor eu ligula. Praesent vitae ex mattis, congue diam eget, semper odio. Nam urna erat, varius nec augue id, rhoncus fringilla ex. Maecenas sit amet tristique dui, dignissim egestas massa.
-                  </p>
-                </div>
-              </section>
-              <section class="modal" id="myModal2">
-                <div class="modal__content">
-                  <a href="#" class="modal__close" title="Close modal">&times;</a>
-                  <h1>Modal content 2</h1>
-                  <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam rhoncus eu purus et rutrum. Donec rhoncus nisi sed tortor tempor, a pharetra purus suscipit. Integer venenatis luctus egestas. Aliquam ligula augue, convallis vitae semper vel, lobortis sed lacus. Nullam non ex eget diam rutrum scelerisque eu at quam. Curabitur lacinia, magna non ultrices blandit, lectus sem varius sem, tincidunt maximus augue lacus vel mauris. Nulla venenatis vulputate tortor, nec feugiat libero scelerisque eget. Fusce facilisis a massa ultrices sollicitudin. Donec vel consectetur mi. Aliquam facilisis dignissim libero, id euismod mauris ultrices id. Etiam feugiat, odio vitae fringilla commodo, augue ex volutpat sapien, vel iaculis lacus dolor eu ligula. Praesent vitae ex mattis, congue diam eget, semper odio. Nam urna erat, varius nec augue id, rhoncus fringilla ex. Maecenas sit amet tristique dui, dignissim egestas massa.
-                  </p>
-                </div>
-              </section>
-              <section class="main">
-                <div class="container">
-                  <a href="#myModal1" class="open-modal">
-                    Open modal 1
-                  </a>
-                  <a href="#myModal2" class="open-modal">
-                    Open modal 2
-                  </a>
-                </div>
-                <footer>
-                  <h1>Footer section</h1>
-                </footer>
-              </section>
+                      <div id="popup1" className="overlay">
+                        <div className="popup">
+                          <a className="close" href="#">&times;</a>
+                          <div className="content">
+                          <form id="contact" onSubmit={()=>handleEditClick(editId,courEdit,detailEdit)}>
+                              <h6>AJOUTER UN COURS</h6>
+                              <fieldset>
+                                <input placeholder=" Cours" type="text" tabIndex="2" value={courEdit} required onChange={(e)=>setCourEdit(e.target.value)}/>
+                              </fieldset>
+                              <fieldset>
+                                <input placeholder=" detail" type="text" tabIndex="2" value={detailEdit} required onChange={(e)=>setdEtailEdit(e.target.value)}/>
+                              </fieldset>
+                              <fieldset>
+                                  <button type="submit"> Editer</button>
+                              </fieldset>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+           
+                  
         </div>
     )
 }

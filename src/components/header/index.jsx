@@ -17,6 +17,8 @@ import { FaList,FaSign } from "react-icons/fa";
 import { FiHome, FiLogOut} from "react-icons/fi";
 import { BsFileEarmarkPlusFill } from "react-icons/bs";
 import { BiCog } from "react-icons/bi";
+import {IoIosPersonAdd} from "react-icons/io";
+import {CgUserList} from "react-icons/cg";
 
 
 
@@ -61,8 +63,10 @@ const Header = () => {
               <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')}>
                 Home
               </MenuItem>
-              <MenuItem icon={<FaList />} >Category</MenuItem>
+              <MenuItem icon={<FaList />} onClick={()=>routeLink.push('archives')}>Archives</MenuItem>
+              <MenuItem icon={<CgUserList />} onClick={()=>routeLink.push('listprof')}>Archives</MenuItem>
               <MenuItem icon={<BsFileEarmarkPlusFill />}  onClick={()=>routeLink.push('cours')}>Cours</MenuItem>
+              <MenuItem icon={<IoIosPersonAdd />}  onClick={()=>routeLink.push('prof')}>Profs</MenuItem>
               <MenuItem icon={<FaSign />} onClick={()=>routeLink.push('signin')}>Author</MenuItem>
               <MenuItem icon={<BiCog />}>Settings</MenuItem>
             </Menu>
