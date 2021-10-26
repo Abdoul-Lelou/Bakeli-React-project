@@ -3,6 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import {dbCours,dbArchive,dbFirestores} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import './index.css';
@@ -15,8 +16,12 @@ const Main = () => {
   const [detailEdit, setdEtailEdit] = useState('');
   const [editId, setEditId] = useState('');
   const [dataSearch, setdataSearch] = useState([]);
+  const [disableButton, setdisableButton] = useState(false);
+  const [show, setshow] = useState(false);
+
   const route= useHistory();
-   let dataChange= '';
+
+  let dataChange= '';
 
   const notify = (msg) => toast(msg);
 
@@ -77,6 +82,52 @@ const Main = () => {
     //     notify();
     //  })
   }
+    
+  const SweetAlertFunction = ({ show, disableButton, submit, hideAlert }) => {
+      return (
+        <SweetAlert
+          info
+          show={show}
+          showCancel
+          confirmBtnText="editer"
+          cancelBtnText="annuler"
+          confirmBtnBsStyle="success"
+          cancelBtnBsStyle="default"
+          disabled={disableButton}
+          title="Editer"
+          onConfirm={submit}
+          onCancel={hideAlert}
+        >
+          <form>
+            <label htmlFor="cour">Cours</label>
+            <br /> 
+            <input value={courEdit} className="input-control" onChange={(e) => setCourEdit(e.target.value)} /> <br /> 
+            <label htmlFor="cour">Details</label>
+            <br /> 
+            <input value={detailEdit} onChange={(e) => setdEtailEdit(e.target.value)} />
+          </form>
+
+        </SweetAlert>
+      );
+  };
+
+  const hideAlert=()=> {
+    setshow(false);
+  }
+
+  const submit=(e)=> {
+    e.preventDefault();
+    dbCours.doc(editId).update({'cours':courEdit,'detail':detailEdit}).then(res=> console.log(res));
+
+    setdisableButton(true );
+   
+    setTimeout(() => {
+      setdisableButton(false );
+      setshow(false);
+      window.location.reload();
+    }, 2000);
+  }
+  
 
     return (
         <div className='mains'>
@@ -128,7 +179,9 @@ const Main = () => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={()=>handleEdit(cour.id,cour.cours,cour.detail)}> <a href="#popup1"><i className="fa fa-edit" aria-hidden="true"></i></a></button> &nbsp;
+                                    <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); setshow( true)}}>
+                                      <i className="fa fa-edit" aria-hidden="true"></i>
+                                    </button> &nbsp;
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
                                     <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
@@ -146,7 +199,7 @@ const Main = () => {
                   dataCours.map((cour, index) => (
                     
                     <div  key={index} className="pb-2">
-                      {console.log(cour)}
+                    
                       <div className="card" style={{maxWidth: '480px'}}>
                           <div className="row no-gutters">
                             <div className="col ">
@@ -162,7 +215,7 @@ const Main = () => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={()=>handleEdit(cour.id,cour.cours,cour.detail)}> <a href="#popup1"><i className="fa fa-edit" aria-hidden="true"></i></a></button> &nbsp;
+                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id); setshow( true)}}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
                                     <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
@@ -179,7 +232,7 @@ const Main = () => {
                 )}
               </InfiniteScroll>
             </div>
-
+  
             <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -193,32 +246,28 @@ const Main = () => {
             />
             {/* Same as */}
             <ToastContainer />
-{/*             
-            <div class="box">
-              <a class="button" href="#popup1">Let me Pop up</a>
-            </div> */}
 
-                      <div id="popup1" className="overlay">
-                        <div className="popup">
-                          <a className="close" href="#">&times;</a>
-                          <div className="content">
-                          <form id="contact" onSubmit={()=>handleEditClick(editId,courEdit,detailEdit)}>
-                              <h6>AJOUTER UN COURS</h6>
-                              <fieldset>
-                                <input placeholder=" Cours" type="text" tabIndex="2" value={courEdit} required onChange={(e)=>setCourEdit(e.target.value)}/>
-                              </fieldset>
-                              <fieldset>
-                                <input placeholder=" detail" type="text" tabIndex="2" value={detailEdit} required onChange={(e)=>setdEtailEdit(e.target.value)}/>
-                              </fieldset>
-                              <fieldset>
-                                  <button type="submit"> Editer</button>
-                              </fieldset>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-           
+
+            {/* <SweetAlert
+                title={"Uses render props"}
+                // onConfirm={this.onConfirm}
+                // onCancel={this.onCancel}
+                dependencies={[firstName, lastName]}>
+              <div>
+                <h4>Hello {firstName} {lastName}</h4>
+                <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
+              </div>
+            </SweetAlert> */}
                   
+
+        <SweetAlertFunction
+          show={show}
+          disableButton={disableButton}
+          submit={() => submit()}
+          hideAlert={() => hideAlert()}
+        />
+       
         </div>
     )
 }

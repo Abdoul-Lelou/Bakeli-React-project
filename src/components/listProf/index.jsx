@@ -35,7 +35,7 @@ const ListProf = () => {
     const archive=(id,name,matiere)=>{
         dbArchiveProfs.doc(id).set({name,matiere}).then(resp=>{
             notify('Archivé avec succés');
-           dbFirestores.collection("Prof")
+           dbFirestores.collection("prof")
            .doc(id)
            .delete()
            .then(() => {
@@ -49,7 +49,7 @@ const ListProf = () => {
     }
 
     return (
-        <div className='prof'>
+        <div className='prof border border-danger w-50'>
             <h4  className='text-start'>Professeurs</h4>
             <div
               id="scrollableDiv"
@@ -67,7 +67,12 @@ const ListProf = () => {
                 style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
                 inverse={true} //
                 hasMore={true}
-                loader={<h4>Loading...</h4>}
+                loader={
+                    <>
+                    <h4>Loading...</h4>
+                        <p>Donnees introuvable</p>
+                    </>
+            }
                 scrollableTarget="scrollableDiv"
               >
                 {
@@ -75,7 +80,7 @@ const ListProf = () => {
                     
                     <div  key={index} className="pb-2">
                       {console.log(prof.id)}
-                      <div className="card" style={{maxWidth: '480px'}}>
+                      <div className="card" style={{maxWidth: '600px'}}>
                           <div className="row no-gutters">
                             <div className="col ">
                               <img src={img1} className="card-img" alt="..."/>

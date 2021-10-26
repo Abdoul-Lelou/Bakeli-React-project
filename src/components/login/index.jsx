@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { useHistory } from 'react-router';
-import { auth,dbFirestore } from "../../firebase";
+import { auth,dbFirestore, dbFirestores } from "../../firebase";
 import './index.css';
 
 
@@ -17,7 +17,18 @@ const Login = () => {
        const login =auth.signInWithEmailAndPassword(email,password);
 
        return login.then(res=>{
-        route.push("/welcome");
+           let roleUser;
+            dbFirestore.get().then((snapshot) => {
+             snapshot.docs.map((doc) => {
+                //   id: doc.id,
+                //   ...doc.data(),
+                roleUser = doc.data().role;
+                });
+                console.log(roleUser)
+              });
+
+
+        // route.push("/welcome");
         //  console.log(logFirestore)
        })
 
