@@ -1,7 +1,10 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { auth,dbFirestore } from "../../firebase";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './index.css';
+import { useHistory } from 'react-router';
 
 const SignIn = () => {
 
@@ -9,7 +12,19 @@ const SignIn = () => {
     const [nom, setNom] = useState('');
     const [prenom, setPrenom] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('')
+    const [role, setRole] = useState('');
+    const [btn, setbtn] = useState(false);
+
+    const route= useHistory();
+
+
+    useEffect(() => {
+        if (email.length>=12 && nom.length> 5 && prenom.length> 5 && password.length>= 6 ) {
+          setbtn(true);
+        }
+    }, [email,nom,prenom,password])
+
+    const notify = (msg) => toast(msg);
 
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -18,10 +33,16 @@ const SignIn = () => {
 
         return signInFirebase.then(res=>{
             dbFirestore.doc(res.user.uid).set({email,nom,prenom,role}).then(resp=>{
-                alert('ok ca marche')
-             })
-        })
+             });
+             notify('Reussie');
+             setTimeout(() => {
+              route.push('listapprenant')
+             }, 2000);
+        }).catch(err=> notify(err))
     }
+
+    const btnActive = btn?( <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>)
+                          :( <button name="submit" disabled type="submit" id="contact-submit" data-submit="...Sending">Submit</button>);
 
     return (
         
@@ -44,13 +65,27 @@ const SignIn = () => {
               <select name="pets" id="pet-select" required onChange={e=> setRole(e.target.value)}>
                   <option value="">--Please choose an option--</option>
                   <option value="apprenant">apprenant</option>
-                  <option value="admin">admin</option>
               </select>
           </fieldset>
           <fieldset>
-            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+           {btnActive}
           </fieldset>
         </form>
+
+        <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            />
+            {/*  Affichage des notifications*/}
+            <ToastContainer />
+
       </div>
 
     )

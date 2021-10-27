@@ -1,13 +1,49 @@
-.mainRight{
+/* .mainRight{
    width: 60%; 
    margin: 0 auto;
    margin-left: 40%;
 }
-.calend{
+
+.calend {
     border-color: none;
-    background-color: blueviolet;
+    background-color: aliceblue;
+    justify-content: center;
+    box-shadow: inset;
 }
+
 .card img{
     height: 90%;
 }
+ */
 
+ .mainRight {
+    position: absolute;
+    width: 54%;
+    margin: 0 auto;
+    margin-left: 44%;
+    border-radius: 10% 0px 0px 10%;
+    background-color: aliceblue;
+  }
+  .calend {
+    border-color: none;
+    background-color: aliceblue;
+    justify-content: center;
+    box-shadow: inset;
+  }
+  .card {
+    margin-left: 10px !important;
+    margin-top: 2px !important;
+  }
+  .card img {
+    height: 80%;
+  }
+  
+  .timeline {
+    /* font-weight: 400; */
+    font-size: large;
+  }
+  .teach-name {
+    margin-bottom: -2px;
+    margin-left: -150px !important;
+  }
+  

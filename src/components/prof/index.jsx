@@ -19,7 +19,7 @@ const Prof = () => {
         dbProf.doc().set({name,matiere}).then(resp=>{
             notify();
             setTimeout(()=>{
-              route.push('/welcome');
+              route.push('/listprof');
             }, 3000)
          })
          setName('');

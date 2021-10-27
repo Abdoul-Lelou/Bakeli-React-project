@@ -9,6 +9,7 @@ import Modal from './components/modal';
 import Archives from './components/archives';
 import Prof from './components/prof';
 import ListProf from './components/listProf';
+import ListApprenant from './components/listApprenant';
 
 function App() {
   return (
@@ -50,6 +51,11 @@ function App() {
 						<Route path='/listprof' exact>
 							<Sidebar />
 							<ListProf />		
+						</Route>
+
+						<Route path='/listapprenant' exact>
+							<Sidebar />
+							<ListApprenant />		
 						</Route>
 
 						<Route path='/mod' exact>

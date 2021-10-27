@@ -1,11 +1,12 @@
 import React,{useState} from 'react';
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import img1 from '../../images/img1.jpg'
 import './index.css';
 
 const MainRight = () => {
 
-    const [calendar, setCalendar] = useState(new Date());
+    const [value, setCalendar] = useState(new Date());
      
     const calendarChange=(e)=>{
         console.log(e)
@@ -28,11 +29,13 @@ const MainRight = () => {
             mainRight
             {/* <div className='bg-light'> */}
             <Calendar
-                onChange={calendarChange}
-                value={calendar}
-                className='calend w-75 m-4'
-                // showNavigation='false'
+                onChange={setCalendar}
+                value={value}
+                className='calend w-75 m-4 mx-5'
+                showNavigation='false'
                 tileClassName={tileClassName}
+                defaultActiveStartDate={new Date()}
+                style={{border: 'none'}}
             />
             {/* </div> */}
             <div className="card" style={{maxWidth: '350px'}}>
@@ -49,7 +52,11 @@ const MainRight = () => {
                           <div className="col-6">
                             <div className="card-body">
                               <p className="card-text">
-                              
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
                               </p>
                             </div>
                           </div>

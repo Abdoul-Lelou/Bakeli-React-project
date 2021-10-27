@@ -3,18 +3,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHistory } from 'react-router';
-import { dbArchive, dbArchiveProfs, dbFirestores, dbProf } from '../../firebase';
+import { dbArchive, dbArchiveProfs, dbFirestore, dbFirestores, dbProf } from '../../firebase';
 import img1 from'../../images/img1.jpg';
 import './index.css';
 
-const ListProf = () => {
+const ListApprenant = () => {
 
     const [dataProf, setDataProf] = useState([]);
 
     let dataChange= '';
 
     useEffect(() => {
-        dbProf.get().then((snapshot) => {
+        dbFirestore.get().then((snapshot) => {
           const data = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
@@ -49,8 +49,8 @@ const ListProf = () => {
     }
 
     return (
-        <div className='prof bg-light shadow w-50 mt-2'>
-            <h4  className='text-start'>Professeurs</h4>
+        <div className='prof w-50 bg-light shadow pt-2'>
+            <h4  className='text-start'>Apprenants</h4>
             <div
               id="scrollableDiv"
               style={{
@@ -77,39 +77,38 @@ const ListProf = () => {
               >
                 {
                     dataProf.map((prof, index) => (
-                    
-                    <div  key={index} className="pb-2">
-                      {console.log(prof.id)}
-                      <div className="card" style={{maxWidth: '600px'}}>
-                          <div className="row no-gutters">
-                            <div className="col ">
-                              <img src={img1} className="card-img" alt="..."/>
-                              <div className="card-body">
-                                <p className="card-text text-center">
-                                 <span className="card-text">{prof.name}</span>
-                                  <small className="text-muted"></small>
-                                </p>
+                        prof.role ==='apprenant'?(
+                            <div  key={index} className="pb-2">
+                            {console.log(prof)}
+                            <div className="card" style={{maxWidth: '600px'}}>
+                                <div className="row no-gutters">
+                                  <div className="col ">
+                                    <img src={img1} className="card-img" alt="..."/>
+                                    <div className="card-body">
+                                      <p className="card-text text-center">
+                                       <span className="card-text">{prof.prenom} {prof.nom}</span>
+                                        <small className="text-muted"></small>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="col-6">
+                                    <div className="card-body">
+                                      <p className="card-text">
+                                          {prof.matiere}
+                                          &nbsp;
+                                        <small className="text-muted">
+                                          <button className='btn btn-outline-warning' title='edit' onClick={()=>handleEdit(prof.id,prof.name,prof.matiere)}> <a href="#popup1"><i className="fa fa-edit" aria-hidden="true"></i></a></button> &nbsp;
+                                          <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(prof.id,prof.name,prof.matiere)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                          <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                        </small>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                            <div className="col-6">
-                              <div className="card-body">
-                                <p className="card-text">
-                                    {prof.matiere}
-                                    &nbsp;
-                                  <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={()=>handleEdit(prof.id,prof.name,prof.matiere)}> <a href="#popup1"><i className="fa fa-edit" aria-hidden="true"></i></a></button> &nbsp;
-                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(prof.id,prof.name,prof.matiere)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                  </small>
-                                </p>
-                              </div>
-                            </div>
+        
                           </div>
-                        </div>
-  
-                    </div>
-  
-                    
+                        ):(null)
                   )
                 )}
               </InfiniteScroll>
@@ -132,4 +131,4 @@ const ListProf = () => {
     )
 }
 
-export default ListProf
+export default ListApprenant

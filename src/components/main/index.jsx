@@ -23,6 +23,7 @@ const Main = () => {
 
   let dataChange= '';
 
+   // function pour afficher les notifications
   const notify = (msg) => toast(msg);
 
 
@@ -38,6 +39,7 @@ const Main = () => {
         
     }, [dataChange])        
 
+     // function pour effectuer l'archivage d'un cour
 
     const archive=(id,cours,detail)=>{
       dbArchive.doc(id).set({cours,detail}).then(resp=>{
@@ -55,6 +57,7 @@ const Main = () => {
      })
     }
 
+    // function pour effectuer la recherche d'un cour
     const filterSearch=()=>{
         let dataFind= []
 
@@ -66,23 +69,9 @@ const Main = () => {
         })
     }
 
-    const handleEdit=(id,cour,detail)=>{
-      setEditId('');
-        setCourEdit(cour);
-        setdEtailEdit(detail);
-        setEditId(id);
-       setTimeout(() => {
-        console.log(editId)
-       }, 2000);
-    }
 
-    const handleEditClick=(id,cour,detail)=>{
-          console.log(editId)
-    //   dbCours.doc(id).set({cour,detail}).then(resp=>{
-    //     notify();
-    //  })
-  }
-    
+   // function pour determiner le contenu du modal de modification
+   //  installer le module react-bootstrap-sweetalert pour cela
   const SweetAlertFunction = ({ show, disableButton, submit, hideAlert }) => {
       return (
         <SweetAlert
@@ -111,19 +100,22 @@ const Main = () => {
       );
   };
 
+  // function pour masquer le modal de modification
   const hideAlert=()=> {
     setshow(false);
   }
 
+  // function pour modifier un cour
   const submit=(e)=> {
-    e.preventDefault();
+
     dbCours.doc(editId).update({'cours':courEdit,'detail':detailEdit}).then(res=> console.log(res));
 
     setdisableButton(true );
-   
+    notify('Modifié avec succes');
+    setshow(false);
     setTimeout(() => {
       setdisableButton(false );
-      setshow(false);
+
       window.location.reload();
     }, 2000);
   }
@@ -244,23 +236,12 @@ const Main = () => {
             draggable
             pauseOnHover
             />
-            {/* Same as */}
+            {/*  Affichage des notifications*/}
             <ToastContainer />
 
-
-            {/* <SweetAlert
-                title={"Uses render props"}
-                // onConfirm={this.onConfirm}
-                // onCancel={this.onCancel}
-                dependencies={[firstName, lastName]}>
-              <div>
-                <h4>Hello {firstName} {lastName}</h4>
-                <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
-              </div>
-            </SweetAlert> */}
                   
 
+       {/* Affichage du modal sweet Alert pour la modification      */}
         <SweetAlertFunction
           show={show}
           disableButton={disableButton}

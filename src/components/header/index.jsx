@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useHistory } from 'react-router';
 import { auth } from "../../firebase";
 
@@ -19,6 +19,8 @@ import { BsFileEarmarkPlusFill } from "react-icons/bs";
 import { BiCog } from "react-icons/bi";
 import {IoIosPersonAdd} from "react-icons/io";
 import {CgUserList} from "react-icons/cg";
+import {MdSupervisedUserCircle} from "react-icons/md";
+
 
 
 
@@ -31,7 +33,7 @@ const Header = () => {
   
     //create initial menuCollapse state using useState hook
     const [menuCollapse, setMenuCollapse] = useState(true);
-    // const [active, setActive] = useState(true)
+     const [active, setActive] = useState(true)
 
     const routeLink= useHistory()
 
@@ -45,6 +47,10 @@ const Header = () => {
       auth.signOut();
       routeLink.push('')
   }
+
+  useEffect(() => {
+    
+  }, [])
 
   return (
     <>
@@ -60,14 +66,13 @@ const Header = () => {
           </SidebarHeader>
           <SidebarContent>
             <Menu iconShape="square">
-              <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')}>
-                Home
-              </MenuItem>
-              <MenuItem icon={<FaList />} onClick={()=>routeLink.push('archives')}>Archives</MenuItem>
-              <MenuItem icon={<CgUserList />} onClick={()=>routeLink.push('listprof')}>Archives</MenuItem>
-              <MenuItem icon={<BsFileEarmarkPlusFill />}  onClick={()=>routeLink.push('cours')}>Cours</MenuItem>
-              <MenuItem icon={<IoIosPersonAdd />}  onClick={()=>routeLink.push('prof')}>Profs</MenuItem>
-              <MenuItem icon={<FaSign />} onClick={()=>routeLink.push('signin')}>Author</MenuItem>
+              <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+              <MenuItem icon={<FaList />} onClick={()=>routeLink.push('archives')} title='Archives'/>
+              <MenuItem icon={<CgUserList />} onClick={()=>routeLink.push('listprof')} title='Professeurs'/>
+              <MenuItem icon={<MdSupervisedUserCircle />} onClick={()=>routeLink.push('listapprenant')} title='Apprenants'/>
+              <MenuItem icon={<BsFileEarmarkPlusFill />}  onClick={()=>routeLink.push('cours')} title='Ajouter Cours'/>
+              <MenuItem icon={<IoIosPersonAdd />}  onClick={()=>routeLink.push('prof')} title='Ajouter Professeur'/>
+              <MenuItem icon={<FaSign />} onClick={()=>routeLink.push('signin')} title='Inscription'/>
               <MenuItem icon={<BiCog />}>Settings</MenuItem>
             </Menu>
           </SidebarContent>

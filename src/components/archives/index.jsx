@@ -43,13 +43,12 @@ const Archives = () => {
     }
     return (
        <div className='archive'>
-           <div className='row row-cols-2'>
+           <div className='row row-cols-2 bg-light shadow pt-4'>
                 <div
                     id="scrollableDiv"
                     style={{
                     height: 500,
                     overflow: 'auto',
-                    // display: 'flex',
                     flexDirection: 'column-reverse',
                     }}
                     >
@@ -66,7 +65,7 @@ const Archives = () => {
                         {
                                 archiveProfs.map((prof, index) => (
                                 
-                                    <div  key={index} className="pb-2">
+                                    <div  key={index} className="pb-2 border border-success">
                 
                                     <div className="card" style={{maxWidth: '400px'}}>
                                         <div className="row no-gutters">
@@ -122,7 +121,7 @@ const Archives = () => {
                         {
                                 archiveCours.map((cour, index) => (
                                 
-                                    <div  key={index} className="pb-2">
+                                    <div  key={index} className="pb-2 border border-success">
                 
                                     <div className="card" style={{maxWidth: '400px'}}>
                                         <div className="row no-gutters">
