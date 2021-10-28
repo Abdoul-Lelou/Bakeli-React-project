@@ -10,6 +10,7 @@ const Cours = () => {
     const [cours, setCours] = useState('');
     const [detail, setDetail] = useState('')
     const [btn, setBtn] = useState(false);
+    const [dater, setDater] = useState('')
     const route= useHistory();
 
     useEffect(() => {
@@ -23,7 +24,7 @@ const Cours = () => {
     const handleClick=(e)=>{
         e.preventDefault();
 
-        dbCours.doc().set({cours,detail}).then(resp=>{
+        dbCours.doc().set({cours,detail,dater}).then(resp=>{
             notify();
             setTimeout(()=>{
               route.push('/welcome');
@@ -44,6 +45,9 @@ const Cours = () => {
           </fieldset>
           <fieldset>
             <input placeholder=" detail" type="text" tabIndex="2" value={detail} required onChange={(e)=>setDetail(e.target.value)}/>
+          </fieldset>
+          <fieldset>
+            <input placeholder=" detail" type="date" tabIndex="2" value={dater} required onChange={(e)=>setDater(e.target.value)}/>
           </fieldset>
           <fieldset>
             {btnAdd}
