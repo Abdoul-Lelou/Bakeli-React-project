@@ -1,3 +1,5 @@
+
+import {useState} from 'react';
 import './App.css';
 import Sidebar from './components/header';
 import {BrowserRouter as Router, Route,Switch,} from 'react-router-dom'
@@ -10,22 +12,27 @@ import Archives from './components/archives';
 import Prof from './components/prof';
 import ListProf from './components/listProf';
 import ListApprenant from './components/listApprenant';
+import ApprenantHeader from './components/apprenantHead';
 
 function App() {
+
+	const [role, setrole] = useState('');
+
+
+	console.log(role)
   return (
-    // <div className="App">
-     		<Router>					
+     			<Router>					
 					<Switch>
 						<Route path='/' exact>
-							<Login />
+							<Login roleData={setrole}/>
 						</Route>
-						
 					</Switch>
 					
-						<Switch>
+					{role !=='apprenant'?(
+					<Switch>
 						<Route path='/welcome' exact>
 							<Sidebar />
-							<Welcome />
+							<Welcome roleStatut={role}/>
 						</Route>
 
 						<Route path='/signin' exact>
@@ -63,11 +70,17 @@ function App() {
 							<Modal />		
 						</Route>
 
-					</Switch>
-						
+					</Switch> 		
+					):(
+						<Switch>
+							<Route path='/welcome' exact>
+								<ApprenantHeader />
+								<Welcome />
+							</Route>
+						</Switch>	
+					)}
 					
-			</Router>		
-    // </div>
+				</Router>		
 	
   );
 }

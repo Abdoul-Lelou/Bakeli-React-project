@@ -2,8 +2,7 @@ import React,{useState, useEffect} from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useHistory } from 'react-router';
-import { dbArchive, dbArchiveProfs, dbFirestore, dbFirestores, dbProf } from '../../firebase';
+import { dbArchiveProfs, dbFirestore, dbFirestores } from '../../firebase';
 import img1 from'../../images/img1.jpg';
 import './index.css';
 
@@ -79,7 +78,6 @@ const ListApprenant = () => {
                     dataProf.map((prof, index) => (
                         prof.role ==='apprenant'?(
                             <div  key={index} className="pb-2">
-                            {console.log(prof)}
                             <div className="card" style={{maxWidth: '600px'}}>
                                 <div className="row no-gutters">
                                   <div className="col ">

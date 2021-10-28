@@ -3,7 +3,10 @@ import Main from '../main';
 import MainRight from '../mainRight';
 
 
-const Welcome = () => {
+const Welcome = ({roleStatut}) => {
+
+    console.log(roleStatut)
+    
     return (
         <div className='App'> 
             <Main />

@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import { useHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { db,dbCours } from "../../firebase";
+import { dbCours } from "../../firebase";
 import './index.css';
 
 const Cours = () => {
@@ -33,7 +33,7 @@ const Cours = () => {
         setDetail('');
     }
     const notify = () => toast("Cours ajouté!");
-    const notifyFalse = (err) => toast(err);
+    // const notifyFalse = (err) => toast(err);
 
     return (
         <div className=' mainDiv ml-4'>

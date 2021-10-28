@@ -1,10 +1,11 @@
 import React,{useState} from 'react';
 import { useHistory } from 'react-router';
-import { auth,dbFirestore, dbFirestores } from "../../firebase";
+import { auth,dbFirestore} from "../../firebase";
 import './index.css';
+import MyContext from '../../App'
 
 
-const Login = () => {
+const Login = ({roleData}) => {
 
     const [email, setEmail] = useState('apprenant@gmail.com');
     const [password, setPassword] = useState('apprenant');
@@ -13,33 +14,19 @@ const Login = () => {
 
     const handleChange= e=>{
         e.preventDefault();
-        // setUsername(e.target.value)
        const login =auth.signInWithEmailAndPassword(email,password);
 
        return login.then(res=>{
-           let roleUser;
-            dbFirestore.get().then((snapshot) => {
-             snapshot.docs.map((doc) => {
-                //   id: doc.id,
-                //   ...doc.data(),
-                roleUser = doc.data().role;
-                });
-                console.log(roleUser)
-              });
+    
+            dbFirestore.doc(res.user.uid).get().then(result => {
+                roleData(result.data().role);
+            });
 
+            route.push('/welcome');
 
-        // route.push("/welcome");
-        //  console.log(logFirestore)
-       })
-
-       const { user } = login; 
-
-    //    const logFirestore=  dbFirestore.doc(user.uid).set({email});
-
-    //    console.log(login.then(res=> console.log(res.user.uid)));
-        
+       })  
     }
-        
+       
 
     return (
       
@@ -59,7 +46,7 @@ const Login = () => {
                         <input type="submit"  value="Sign In" onClick={handleChange} /> 
                     </div>
                 </div>
-                <p className="forgot">Forgot Password? <a href="#">Click Here</a></p>
+                {/* <p className="forgot">Forgot Password? <a href="#">Click Here</a></p> */}
                 
             </div>
         </div>   

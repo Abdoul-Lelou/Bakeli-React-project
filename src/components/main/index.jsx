@@ -108,7 +108,7 @@ const Main = () => {
   // function pour modifier un cour
   const submit=(e)=> {
 
-    dbCours.doc(editId).update({'cours':courEdit,'detail':detailEdit}).then(res=> console.log(res));
+    dbCours.doc(editId).update({'cours':courEdit,'detail':detailEdit}).then();
 
     setdisableButton(true );
     notify('Modifié avec succes');

@@ -33,37 +33,38 @@ const Header = () => {
   
     //create initial menuCollapse state using useState hook
     const [menuCollapse, setMenuCollapse] = useState(true);
-     const [active, setActive] = useState(true)
+    //  const [active, setActive] = useState(true)
 
     const routeLink= useHistory()
 
     //create a custom function that will change menucollapse state from false to true and true to false
-  const menuIconClick = () => {
-    //condition checking to change state from true to false and vice versa
-    menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
-  };
+  // const menuIconClick = () => {
+  //   //condition checking to change state from true to false and vice versa
+  //   menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
+  // };
 
   const logout= ()=>{
       auth.signOut();
       routeLink.push('')
   }
 
-  useEffect(() => {
+  // useEffect(() => {
     
-  }, [])
+  // }, [])
 
   return (
     <>
       <div id="header">
           {/* collapsed props to change menu size using menucollapse state */}
         <ProSidebar collapsed={menuCollapse}>
+
           <SidebarHeader>
-          <div className="logotext">
-              {/* small and big change using menucollapse state */}
-              <p>{menuCollapse ? "Logo" : "Big Logo"}</p>
+            <div className="logotext">
+                {/* small and big change using menucollapse state */}
+                <p>{menuCollapse ? "Logo" : "Big Logo"}</p>
             </div>
-           
           </SidebarHeader>
+
           <SidebarContent>
             <Menu iconShape="square">
               <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
@@ -76,11 +77,13 @@ const Header = () => {
               <MenuItem icon={<BiCog />}>Settings</MenuItem>
             </Menu>
           </SidebarContent>
+
           <SidebarFooter>
             <Menu iconShape="square">
               <MenuItem icon={<FiLogOut />} onClick={()=>logout()}>Logout</MenuItem>
             </Menu>
           </SidebarFooter>
+
         </ProSidebar>
       </div>
     </>

@@ -18,7 +18,6 @@ const Archives = () => {
               ...doc.data(),
             }));
             setArchiveCours(data)
-            console.log(data);
           });
           dbArchiveProfs.get().then((snapshot) => {
             const data = snapshot.docs.map((doc) => ({
@@ -26,7 +25,6 @@ const Archives = () => {
               ...doc.data(),
             }));
             setArchiveProfs(data)
-            console.log(data);
           });
     }, [])
 
@@ -37,7 +35,6 @@ const Archives = () => {
               ...doc.data(),
             }));
             setArchiveProfs(data)
-            console.log(data);
           });
           
     }
