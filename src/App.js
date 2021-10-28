@@ -13,11 +13,12 @@ import Prof from './components/prof';
 import ListProf from './components/listProf';
 import ListApprenant from './components/listApprenant';
 import ApprenantHeader from './components/apprenantHead';
+import WelcomeApprenant from './components/welcomeApprenant';
 
 function App() {
 
 	const [role, setrole] = useState('');
-
+	const [roleStat , setRoleStat]= useState('');
 
 	console.log(role)
   return (
@@ -32,7 +33,7 @@ function App() {
 					<Switch>
 						<Route path='/welcome' exact>
 							<Sidebar />
-							<Welcome roleStatut={role}/>
+							<Welcome/>
 						</Route>
 
 						<Route path='/signin' exact>
@@ -72,10 +73,11 @@ function App() {
 
 					</Switch> 		
 					):(
+						
 						<Switch>
 							<Route path='/welcome' exact>
 								<ApprenantHeader />
-								<Welcome />
+								<WelcomeApprenant  roleStatut={role}/>
 							</Route>
 						</Switch>	
 					)}

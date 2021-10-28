@@ -28,14 +28,14 @@ const MainRight = () => {
             <Calendar
                 onChange={setCalendar}
                 value={value}
-                className='calend w-75 m-2 mx-5'
+                className='calend w-75 m-2 mx-4'
                
                 tileClassName={tileClassName}
                 defaultActiveStartDate={new Date()}
                 style={{border: 'none'}}
             />
             {/* </div> */}
-                      <div className="card" style={{maxWidth: '350px'}}>
+                      <div className="card" style={{maxWidth: '330px'}}>
                         <div className="row no-gutters">
                           <div className="col ">
                             <img src={img1} className="card-img" alt="..."/>
@@ -60,7 +60,7 @@ const MainRight = () => {
                         </div>
                       </div>
 
-                      <div className="row row-cols-2">
+                      <div className="row row-cols-2 mx-0 mb-4 mt-2">
 
                       <div className="card" style={{maxWidth: '150px', maxHeight:'100px'}}>
                         <div className="row no-gutters">

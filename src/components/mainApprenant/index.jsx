@@ -8,7 +8,7 @@ import {dbCours,dbArchive,dbFirestores} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import './index.css';
 
-const Main = ({roleUser}) => {
+const MainApprenant = ({roleUser}) => {
 
   const [dataCours, setDataCours] = useState([]);
   const [search, setSearch] = useState('');
@@ -171,9 +171,9 @@ const Main = ({roleUser}) => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); setshow( true)}}>
+                                    {/* <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); setshow( true)}}>
                                       <i className="fa fa-edit" aria-hidden="true"></i>
-                                    </button> &nbsp;
+                                    </button> &nbsp; */}
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
                                     <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
@@ -207,7 +207,7 @@ const Main = ({roleUser}) => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id); setshow( true)}}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                    {/* <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id); setshow( true)}}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp; */}
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
                                     <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
@@ -253,4 +253,4 @@ const Main = ({roleUser}) => {
     )
 }
 
-export default Main
+export default MainApprenant

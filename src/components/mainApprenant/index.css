@@ -1,0 +1,169 @@
+.mains{
+    background-color: rgb(242, 242, 243);
+    float: left;
+    margin-left: 220px;
+    width: 45%;
+}
+.card{
+    left:5%;
+    /* height: fit-content; */
+    border-radius: 2%;
+}
+.card img{
+    border-radius: 10%;
+    margin: 2%;
+    width: 40%;
+    float: left;
+    height: 80%;
+}
+
+.card .height{
+    height: 10%;
+}
+
+@media screen and (max-width: 924px)
+{
+   .mains
+    {
+        margin-left: 150px;
+    }
+    .searchBar{
+    margin-left: 50px;
+    width: 10%;
+    }
+}
+h4{
+    margin-left: 4.5%;
+}
+
+.search-box{
+    width: 70%;
+    position: relative;
+    display: flex;
+    left:5%;
+    /* top:40% */
+    margin-top:2%;
+  }
+  .search-input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #111d5e;
+    border-radius:10px 0 0 10px ;
+    border-right: none;
+    outline: none;
+    font-size: 15px;
+    color: tomato;
+    background: none;
+  }
+  .search-button{
+    text-align: center;
+    height: 51px;
+    width: 40px;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid #111d5e;
+    border-radius: 0 10px 10px 0 ;
+    border-left: none;
+    background: none;
+    font-size: 20px;
+    border-left: 4px solid #111d5e;
+   
+  }
+
+
+  .box {
+    width: 70%;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.2);
+    padding: 35px;
+    border: 2px solid #fff;
+    border-radius: 20px/50px;
+    background-clip: padding-box;
+    text-align: center;
+  }
+  
+  .button {
+    font-size: 1em;
+    padding: 10px;
+    color: #fff;
+    border: 2px solid #06D85F;
+    border-radius: 20px/50px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+  }
+  .button:hover {
+    background: #06D85F;
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+  }
+  .overlay:target {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 80%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    z-index: 200;
+  }
+  
+  .popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+  }
+  .popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+  .popup .close:hover {
+    color: #06D85F;
+  }
+  .popup .content {
+    max-height: 70%;
+    overflow: auto;
+    width: 100%;
+  }
+  
+  @media screen and (max-width: 700px){
+    .box{
+      width: 70%;
+    }
+    .popup{
+      width: 70%;
+    }
+  }
+
+
+  
+
+
+
+
+  
+
+
+
+

@@ -1,15 +1,15 @@
 import React from 'react';
-import Main from '../main';
+import MainApprenant from '../mainApprenant';
 import MainRight from '../mainRight';
 
 
-const Welcome = ({roleStatut}) => {
+const WelcomeApprenant = ({roleStatut}) => {
 
     console.log(roleStatut)
 
     return (
         <div className='App'> 
-            <Main />
+            <MainApprenant />
             <div className='container mainRight'>
                 <MainRight />
             </div>
@@ -17,4 +17,4 @@ const Welcome = ({roleStatut}) => {
     )
 }
 
-export default Welcome
+export default WelcomeApprenant
