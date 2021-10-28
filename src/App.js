@@ -18,9 +18,7 @@ import WelcomeApprenant from './components/welcomeApprenant';
 function App() {
 
 	const [role, setrole] = useState('');
-	const [roleStat , setRoleStat]= useState('');
 
-	console.log(role)
   return (
      			<Router>					
 					<Switch>
@@ -28,50 +26,53 @@ function App() {
 							<Login roleData={setrole}/>
 						</Route>
 					</Switch>
-					
+
+
+					{/* ternaire pour verifier le role du user */}
+
 					{role !=='apprenant'?(
-					<Switch>
-						<Route path='/welcome' exact>
-							<Sidebar />
-							<Welcome/>
-						</Route>
+						<Switch>
+							<Route path='/welcome' exact>
+								<Sidebar />
+								<Welcome/>
+							</Route>
 
-						<Route path='/signin' exact>
-							<Sidebar />
-							<SignIn />		
-						</Route>
+							<Route path='/signin' exact>
+								<Sidebar />
+								<SignIn />		
+							</Route>
 
-						<Route path='/cours' exact>
-							<Sidebar />
-							<Cours />		
-						</Route>
+							<Route path='/cours' exact>
+								<Sidebar />
+								<Cours />		
+							</Route>
 
-						<Route path='/archives' exact>
-							<Sidebar />
-							<Archives />		
-						</Route>
+							<Route path='/archives' exact>
+								<Sidebar />
+								<Archives />		
+							</Route>
 
-						<Route path='/prof' exact>
-							<Sidebar />
-							<Prof />		
-						</Route>
+							<Route path='/prof' exact>
+								<Sidebar />
+								<Prof />		
+							</Route>
 
-						<Route path='/listprof' exact>
-							<Sidebar />
-							<ListProf />		
-						</Route>
+							<Route path='/listprof' exact>
+								<Sidebar />
+								<ListProf />		
+							</Route>
 
-						<Route path='/listapprenant' exact>
-							<Sidebar />
-							<ListApprenant />		
-						</Route>
+							<Route path='/listapprenant' exact>
+								<Sidebar />
+								<ListApprenant />		
+							</Route>
 
-						<Route path='/mod' exact>
-							<Sidebar />
-							<Modal />		
-						</Route>
+							<Route path='/mod' exact>
+								<Sidebar />
+								<Modal />		
+							</Route>
 
-					</Switch> 		
+						</Switch> 		
 					):(
 						
 						<Switch>
