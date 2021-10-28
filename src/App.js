@@ -77,7 +77,7 @@ function App() {
 						<Switch>
 							<Route path='/welcome' exact>
 								<ApprenantHeader />
-								<WelcomeApprenant  roleStatut={role}/>
+								<WelcomeApprenant />
 							</Route>
 						</Switch>	
 					)}

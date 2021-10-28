@@ -3,9 +3,8 @@ import MainApprenant from '../mainApprenant';
 import MainRight from '../mainRight';
 
 
-const WelcomeApprenant = ({roleStatut}) => {
+const WelcomeApprenant = () => {
 
-    console.log(roleStatut)
 
     return (
         <div className='App'> 

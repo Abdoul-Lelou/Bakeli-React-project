@@ -8,7 +8,7 @@ import {dbCours,dbArchive,dbFirestores} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import './index.css';
 
-const MainApprenant = ({roleUser}) => {
+const MainApprenant = () => {
 
   const [dataCours, setDataCours] = useState([]);
   const [search, setSearch] = useState('');
@@ -38,7 +38,6 @@ const MainApprenant = ({roleUser}) => {
         });
         
     }, [dataChange])        
-    console.log(roleUser)
      // function pour effectuer l'archivage d'un cour
 
     const archive=(id,cours,detail)=>{
