@@ -6,9 +6,26 @@ import 'react-toastify/dist/ReactToastify.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import {dbCours,dbArchive,dbFirestores} from "../../firebase";
 import img1 from '../../images/img1.jpg'
+import Modal from 'react-modal';
 import './index.css';
 
-const Main = ({roleUser}) => {
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    background:'red'
+  },
+};
+
+// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+// Modal.setAppElement('');
+
+const Main = () => {
 
   const [dataCours, setDataCours] = useState([]);
   const [search, setSearch] = useState('');
@@ -18,6 +35,22 @@ const Main = ({roleUser}) => {
   const [dataSearch, setdataSearch] = useState([]);
   const [disableButton, setdisableButton] = useState(false);
   const [show, setshow] = useState(false);
+
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  const openModal=()=> {
+    setIsOpen(true);
+  }
+
+  const afterOpenModal=()=> {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00';
+  }
+
+  const closeModal=()=> {
+    setIsOpen(false);
+  }
 
   // const route= useHistory();
 
@@ -38,7 +71,6 @@ const Main = ({roleUser}) => {
         });
         
     }, [dataChange])        
-    console.log(roleUser)
      // function pour effectuer l'archivage d'un cour
 
     const archive=(id,cours,detail)=>{
@@ -60,9 +92,10 @@ const Main = ({roleUser}) => {
     // function pour effectuer la recherche d'un cour
     const filterSearch=()=>{
         let dataFind= []
-
+        const srch= search.toLowerCase();
         dataCours.map((data,index)=>{
-          if (search.toUpperCase() === data.cours.toUpperCase() ) {
+          console.log(data.cours)
+          if (srch === data.cours ) {
             dataFind.push(data)
             setdataSearch(dataFind)
           }
@@ -72,7 +105,7 @@ const Main = ({roleUser}) => {
 
    // function pour determiner le contenu du modal de modification
    //  installer le module react-bootstrap-sweetalert pour cela
-  const SweetAlertFunction = ({ show, disableButton, submit, hideAlert }) => {
+  const SweetAlertFunction =  ({ show, disableButton, submit, hideAlert }) => {
       return (
         <SweetAlert
           info
@@ -86,11 +119,17 @@ const Main = ({roleUser}) => {
           title="Editer"
           onConfirm={submit}
           onCancel={hideAlert}
+          dependencies={[courEdit, detailEdit]}
         >
           <form>
             <label htmlFor="cour">Cours</label>
             <br /> 
-            <input value={courEdit} className="input-control" onChange={(e) => setCourEdit(e.target.value)} /> <br /> 
+            <input 
+                value={courEdit} 
+                className="input-control" 
+                onChange={(e) => setCourEdit(e.target.value)}
+                onKeyDown={e=>e.onEnterKeyDownConfirm}
+                /> <br /> 
             <label htmlFor="cour">Details</label>
             <br /> 
             <input value={detailEdit} onChange={(e) => setdEtailEdit(e.target.value)} />
@@ -171,7 +210,7 @@ const Main = ({roleUser}) => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); setshow( true)}}>
+                                    <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); openModal()}}>
                                       <i className="fa fa-edit" aria-hidden="true"></i>
                                     </button> &nbsp;
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
@@ -189,8 +228,8 @@ const Main = ({roleUser}) => {
                   ))
                 ):(
                   dataCours.map((cour, index) => (
-                    
                     <div  key={index} className="pb-2">
+                      {console.log(index)}
                     
                       <div className="card" style={{maxWidth: '480px'}}>
                           <div className="row no-gutters">
@@ -223,6 +262,29 @@ const Main = ({roleUser}) => {
                   ))
                 )}
               </InfiniteScroll>
+
+              <div>
+      <button onClick={openModal}>Open Modal</button>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        appElement={document.getElementById('root')}
+        contentLabel="Example Modal"
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+        <button onClick={closeModal}>close</button>
+        <div>I am a modal</div>
+        <form>
+          <input />
+          <button>tab navigation</button>
+          <button>stays</button>
+          <button>inside</button>
+          <button>the modal</button>
+        </form>
+      </Modal>
+    </div>
             </div>
   
             <ToastContainer

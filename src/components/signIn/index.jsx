@@ -13,16 +13,11 @@ const SignIn = () => {
     const [prenom, setPrenom] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
-    const [btn, setbtn] = useState(false);
+
 
     const route= useHistory();
 
 
-    useEffect(() => {
-        if (email.length>=12 && nom.length> 5 && prenom.length> 5 && password.length>= 6 ) {
-          setbtn(true);
-        }
-    }, [email,nom,prenom,password])
 
     const notify = (msg) => toast(msg);
 
@@ -30,9 +25,11 @@ const SignIn = () => {
         e.preventDefault();
         
         const signInFirebase= auth.createUserWithEmailAndPassword(email,password);
-
+       
         return signInFirebase.then(res=>{
+          
             dbFirestore.doc(res.user.uid).set({email,nom,prenom,role}).then(resp=>{
+              console.log(resp)
              });
              notify('Reussie');
              setTimeout(() => {
@@ -41,8 +38,6 @@ const SignIn = () => {
         }).catch(err=> notify(err))
     }
 
-    const btnActive = btn?( <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>)
-                          :( <button name="submit" disabled type="submit" id="contact-submit" data-submit="...Sending">Submit</button>);
 
     return (
         
@@ -68,7 +63,7 @@ const SignIn = () => {
               </select>
           </fieldset>
           <fieldset>
-           {btnActive}
+          <button name="submit"  type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
           </fieldset>
         </form>
 

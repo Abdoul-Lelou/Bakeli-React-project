@@ -2,10 +2,9 @@ import React,{useState} from 'react';
 import { useHistory } from 'react-router';
 import { auth,dbFirestore} from "../../firebase";
 import './index.css';
-import MyContext from '../../App'
 
 
-const Login = ({roleData}) => {
+const Login = () => {
 
     const [email, setEmail] = useState('apprenant@gmail.com');
     const [password, setPassword] = useState('apprenant');
@@ -14,15 +13,15 @@ const Login = ({roleData}) => {
 
     const handleChange= e=>{
         e.preventDefault();
-       const login =auth.signInWithEmailAndPassword(email,password);
-
-       return login.then(res=>{
-    
+        const login =auth.signInWithEmailAndPassword(email,password);
+        let roleUser=''; 
+        return login.then(res=>{
             dbFirestore.doc(res.user.uid).get().then(result => {
-                roleData(result.data().role);
+                roleUser= result.data().role;
+                localStorage.setItem('userRole', roleUser);
+                route.push('/welcome');
             });
 
-            route.push('/welcome');
 
        })  
     }
