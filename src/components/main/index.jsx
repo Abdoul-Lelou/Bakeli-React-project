@@ -8,6 +8,7 @@ import {dbCours,dbArchive,dbFirestores} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import Modal from 'react-modal';
 import './index.css';
+import { useHistory } from 'react-router';
 
 
 const customStyles = {
@@ -18,7 +19,7 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    background:'red'
+    background:'#541'
   },
 };
 
@@ -35,6 +36,7 @@ const Main = () => {
   const [dataSearch, setdataSearch] = useState([]);
   const [disableButton, setdisableButton] = useState(false);
   const [show, setshow] = useState(false);
+  const route= useHistory();
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -45,7 +47,7 @@ const Main = () => {
 
   const afterOpenModal=()=> {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
+    subtitle.style.color = '#fa0';
   }
 
   const closeModal=()=> {
@@ -126,13 +128,11 @@ const Main = () => {
             <br /> 
             <input 
                 value={courEdit} 
-                className="input-control" 
-                onChange={(e) => setCourEdit(e.target.value)}
-                onKeyDown={e=>e.onEnterKeyDownConfirm}
+                disabled
                 /> <br /> 
             <label htmlFor="cour">Details</label>
             <br /> 
-            <input value={detailEdit} onChange={(e) => setdEtailEdit(e.target.value)} />
+            <input value={detailEdit} />
           </form>
 
         </SweetAlert>
@@ -157,6 +157,19 @@ const Main = () => {
 
       window.location.reload();
     }, 2000);
+  }
+
+  const edit=(er)=>{
+    er.preventDefault();
+    const e=dbCours.doc(editId).set({cours:courEdit,detail:detailEdit});
+    
+    e.then(r=> {  
+        notify('Modifié')
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000);
+      }
+    );
   }
   
 
@@ -213,8 +226,8 @@ const Main = () => {
                                     <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); openModal()}}>
                                       <i className="fa fa-edit" aria-hidden="true"></i>
                                     </button> &nbsp;
-                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail) }> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                    <button className='btn btn-outline-success' title='detail' onClick={setshow(true)} > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
                                 </p>
                               </div>
@@ -229,7 +242,7 @@ const Main = () => {
                 ):(
                   dataCours.map((cour, index) => (
                     <div  key={index} className="pb-2">
-                      {console.log(index)}
+                     
                     
                       <div className="card" style={{maxWidth: '480px'}}>
                           <div className="row no-gutters">
@@ -246,9 +259,9 @@ const Main = () => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id); setshow( true)}}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id); openModal()}}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                    <button className='btn btn-outline-success' title='detail' onClick={()=> setshow(true)}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
                                 </p>
                               </div>
@@ -273,23 +286,33 @@ const Main = () => {
         appElement={document.getElementById('root')}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-        <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Modifier </h2>
+        <div className='col-md-4 col-md-offset-4 w-75'>
+            
+                <form className='form-group' onSubmit={e=>edit(e)}>
+                  <div className='container'>
+                    <div className="row">
+                      <label htmlFor="cours">Cour</label>
+                      <input className='input-control' value={courEdit} onChange={e=>setCourEdit(e.target.value)}/>
+                    </div>
+                    <div className="row">
+                      <label htmlFor="detail">Detail</label>
+                      <input className='input-control' value={detailEdit} onChange={e=>setdEtailEdit(e.target.value)}/>
+                    </div>
+                  <br />
+                  <button type="submit">Modifier</button>
+
+                  </div>
+                </form>
+            
+        </div>
       </Modal>
     </div>
             </div>
   
             <ToastContainer
             position="top-right"
-            autoClose={5000}
+            autoClose={3000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

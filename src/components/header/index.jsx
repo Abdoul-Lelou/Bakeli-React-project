@@ -15,7 +15,7 @@ import {
 //import icons from react icons
 import { FaList,FaSign } from "react-icons/fa";
 import { FiHome, FiLogOut} from "react-icons/fi";
-import { BsFileEarmarkPlusFill } from "react-icons/bs";
+import { BsFileEarmarkPlusFill,BsCalendarDay } from "react-icons/bs";
 import { BiCog } from "react-icons/bi";
 import {IoIosPersonAdd} from "react-icons/io";
 import {CgUserList} from "react-icons/cg";
@@ -75,10 +75,14 @@ const Header = () => {
             <Menu iconShape="square">
 
               {role === 'apprenant'?(
-                <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                <>
+                  <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  <MenuItem active={true} icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                </>
               ):(
                 <>
                   <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  <MenuItem active={true} icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
                   <MenuItem icon={<FaList />} onClick={()=>routeLink.push('archives')} title='Archives'/>
                   <MenuItem icon={<CgUserList />} onClick={()=>routeLink.push('listprof')} title='Professeurs'/>
                   <MenuItem icon={<MdSupervisedUserCircle />} onClick={()=>routeLink.push('listapprenant')} title='Apprenants'/>
