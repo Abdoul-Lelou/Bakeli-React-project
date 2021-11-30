@@ -3,6 +3,7 @@
     float: left;
     margin-left: 220px;
     width: 45%;
+    /* padding-bottom: 2%; */
 }
 .card{
     left:5%;
@@ -30,6 +31,9 @@
     .searchBar{
     margin-left: 50px;
     width: 10%;
+    }
+    .card{
+      left:0%
     }
 }
 h4{
@@ -156,7 +160,13 @@ h4{
     }
   }
 form{
-  margin-left: 12%;
+  /* margin-left: 12%; */
+  padding: 2%;
+  background-color: rgb(21, 148, 89);
+}
+
+.infoPostion{
+  margin-left:12%
 }
 
   

@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import 'firebase/storage';
 
 var firebaseConfig = {
   apiKey: "AIzaSyDmi9wvoG616bFNAfQhrOhVSfrbvHymfSk",
@@ -21,4 +22,5 @@ export const dbCours = firebase.firestore().collection("cours");
 export const dbProf = firebase.firestore().collection("prof");
 export const dbArchive = firebase.firestore().collection("archiveCours");
 export const dbArchiveProfs = firebase.firestore().collection("archiveProfs");
+export const storageFirebase= firebase.storage();
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider()

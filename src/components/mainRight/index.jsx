@@ -22,112 +22,47 @@ const MainRight = () => {
       }
 
     return (
-        <div className='mainRight '>
+        <div className='mainRight border border-success'>
             
-            {/* <div className='bg-light'> */}
+            
             <Calendar
                 onChange={setCalendar}
                 value={value}
-                className='calend w-75 m-2 mx-4'
+                className='calend w-75 m-2 mx-4 calendar'
                
                 tileClassName={tileClassName}
                 defaultActiveStartDate={new Date()}
                 style={{border: 'none'}}
             />
-            {/* </div> */}
-                      <div className="card" style={{maxWidth: '330px'}}>
-                        <div className="row no-gutters">
-                          <div className="col ">
-                            <img src={img1} className="card-img" alt="..."/>
-                            <div className="card-body">
-                              <p className="card-text text-center">
-                               <span className="card-text">Card title</span>
-                                <small className="text-muted">  </small>
-                              </p>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="card-body">
-                              <p className="card-text">
-                                <span className="fa fa-star checked"></span>
-                                <span className="fa fa-star checked"></span>
-                                <span className="fa fa-star checked"></span>
-                                <span className="fa fa-star"></span>
-                                <span className="fa fa-star"></span>
-                              </p>
-                            </div>
-                          </div>
+           
+            <div className='right-bar'>
+              <h6>About Teacher</h6>
+
+            <div class="cards">
+                <div class="middle-container d-flex justify-content-between align-items-center ">
+                    <div class="dollar-div px-3">
+                        <div class="round-div">
+                          <i class="fa fa-dollar dollar"> </i>
                         </div>
-                      </div>
+                    </div>
+                    <div class="col">
+                      Mr Diatta
+                    <p className="card-text bg-light">
+                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star checked"></span>
+                          <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star"></span>
+                      <span className="fa fa-star"></span>
+                    </p>
+                    </div>
+                </div>
+                
+            </div>
 
-                      <div className="row row-cols-2 mx-0 mb-4 mt-2">
+                  <div className="row row-cols-2 mx-0 mb-4 mt-2">
 
-                      <div className="card" style={{maxWidth: '150px', maxHeight:'100px'}}>
-                        <div className="row no-gutters">
-                          <div className="col ">
-                            <img src={img1} className="card-img" alt="..."/>
-                            <div className="card-body">
-                              <p className="card-text text-center">
-                               <span className="card-text">Card title</span>
-                                <small className="text-muted">  </small>
-                              </p>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="card-body">
-                              <p className="card-text">
-                               
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="card" style={{maxWidth: '150px', maxHeight:'100px'}}>
-                        <div className="row no-gutters">
-                          <div className="col ">
-                            <img src={img1} className="card-img" alt="..."/>
-                            <div className="card-body">
-                              <p className="card-text text-center">
-                               <span className="card-text">Card title</span>
-                                <small className="text-muted">  </small>
-                              </p>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="card-body">
-                              <p className="card-text">
-                                
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-                      <div className="card" style={{maxWidth: '150px', maxHeight:'100px'}}>
-                        <div className="row no-gutters">
-                          <div className="col ">
-                            <img src={img1} className="card-img" alt="..."/>
-                            <div className="card-body">
-                              <p className="card-text text-center">
-                               <span className="card-text">Card title</span>
-                                <small className="text-muted">  </small>
-                              </p>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="card-body">
-                              <p className="card-text">
-                              
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="card" style={{maxWidth: '150px', maxHeight:'100px'}}>
-                        <div className="row no-gutters">
+                      {/* <div className="card" style={{maxWidth: '150px', maxHeight:'80px'}}>
+                        <div className="row ">
                           <div className="col ">
                             <img src={img1} className="card-img" alt="..."/>
                             <div className="card-body">
@@ -145,9 +80,56 @@ const MainRight = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
 
-                      </div>
+                   <div className='p-0 border border-success'>
+                        <div class="card">
+                            <div class="middle-container d-flex justify-content-between align-items-center ">
+                                <div class="dollar-div px-3">
+                                    <div class="round-div">
+                                      <i class="fa fa-dollar dollar"> </i>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                  Mr Diatta
+                                <p className="card-text">
+                                    <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star checked"></span>
+                                      <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star"></span>
+                                  <span className="fa fa-star"></span>
+                                </p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                   </div>
+                   <div className='p-0 border border-success'>
+                        <div class="card">
+                            <div class="middle-container d-flex justify-content-between align-items-center ">
+                                <div class="dollar-div">
+                                    <div class="round-div">
+                                      <i class="fa fa-dollar dollar"> </i>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                  Mr Diatta
+                                <p className="card-text">
+                                    <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star checked"></span>
+                                      <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star"></span>
+                                  <span className="fa fa-star"></span>
+                                </p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                   </div>
+                  
+
+               </div>
+            </div>         
         </div>
     )
 }

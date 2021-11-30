@@ -1,14 +1,13 @@
 import React,{useEffect,useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-// import { useHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import {dbCours,dbArchive,dbFirestores} from "../../firebase";
+import {dbCours,dbArchive,dbFirestores,storageFirebase} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import Modal from 'react-modal';
 import './index.css';
-import { useHistory } from 'react-router';
+import Footer from '../footer';
 
 
 const customStyles = {
@@ -17,9 +16,12 @@ const customStyles = {
     left: '50%',
     right: 'auto',
     bottom: 'auto',
-    marginRight: '-50%',
+    margin: 'auto',
+    // marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    background:'#541'
+    background:'#fff',
+    width: '30%',
+    border: '1px solid #445'
   },
 };
 
@@ -36,7 +38,8 @@ const Main = () => {
   const [dataSearch, setdataSearch] = useState([]);
   const [disableButton, setdisableButton] = useState(false);
   const [show, setshow] = useState(false);
-  const route= useHistory();
+  const [file] = useState('');
+  const [color] = useState(['#758','#a87','#faa','#263'])
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -54,12 +57,11 @@ const Main = () => {
     setIsOpen(false);
   }
 
-  // const route= useHistory();
 
-  let dataChange= '';
+    let dataChange= '';
 
-   // function pour afficher les notifications
-  const notify = (msg) => toast(msg);
+    // function pour afficher les notifications
+    const notify = (msg) => toast(msg);
 
 
     useEffect(() => {
@@ -71,9 +73,34 @@ const Main = () => {
           setDataCours(data);
           dataChange =data
         });
+
+        // console.log(storageFirebase.put(`${img1}`)
+        //     .then( url => {
+        //         url.ref.getDownloadURL().then(p=>console.log(p))
+        //     })
+        // );
+
+
+        // const fetchImages = async () => {
+
+        //   let result = await storageFirebase.child('images/').listAll();
+        //       let urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
+          
+        //       return Promise.all(urlPromises);
+      
+        //   }
+          
+        //   const loadImages = async () => {
+        //       const urls = await fetchImages();
+        //       setFiles(urls);
+        //   }
+        //   loadImages();
         
-    }, [dataChange])        
+    }, [dataChange])  
+    
+    
      // function pour effectuer l'archivage d'un cour
+      console.log(file)
 
     const archive=(id,cours,detail)=>{
       dbArchive.doc(id).set({cours,detail}).then(resp=>{
@@ -107,71 +134,71 @@ const Main = () => {
 
    // function pour determiner le contenu du modal de modification
    //  installer le module react-bootstrap-sweetalert pour cela
-  const SweetAlertFunction =  ({ show, disableButton, submit, hideAlert }) => {
-      return (
-        <SweetAlert
-          info
-          show={show}
-          showCancel
-          confirmBtnText="editer"
-          cancelBtnText="annuler"
-          confirmBtnBsStyle="success"
-          cancelBtnBsStyle="default"
-          disabled={disableButton}
-          title="Editer"
-          onConfirm={submit}
-          onCancel={hideAlert}
-          dependencies={[courEdit, detailEdit]}
-        >
-          <form>
-            <label htmlFor="cour">Cours</label>
-            <br /> 
-            <input 
-                value={courEdit} 
-                disabled
-                /> <br /> 
-            <label htmlFor="cour">Details</label>
-            <br /> 
-            <input value={detailEdit} />
-          </form>
+    const SweetAlertFunction =  ({ show, disableButton, submit, hideAlert }) => {
+        return (
+          <SweetAlert
+            info
+            show={show}
+            // showCancel
+            // confirmBtnText="OK !"
+            // cancelBtnText="OK !"
+            confirmBtnBsStyle="success"
+            // cancelBtnBsStyle="success"
+            disabled={disableButton}
+            title="Détails"
+            onConfirm={hideAlert}
+            onCancel={hideAlert}
+            dependencies={[courEdit, detailEdit]}
+          >
+           <div className="row m-0">
+              <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
+                <div className="card bg-light shadow">
+                  <div className="card-body">
+                    {/* <h6 className"card-title text-info ">Détails</h6> */}
+                    <p className="card-text ">{detailEdit}</p>
+                    <span  className="btn btn-primary" disabled>{courEdit}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SweetAlert>
+        );
+    };
 
-        </SweetAlert>
+    // function pour masquer le modal de modification
+    const hideAlert=()=> {
+      setshow(false);
+    }
+
+    // function pour modifier un cour
+    const submit=(e)=> {
+      console.log(courEdit);
+      return;
+      dbCours.doc(editId).update({'cours':courEdit,'detail':detailEdit}).then();
+
+      setdisableButton(true );
+      notify('Modifié avec succes');
+      setshow(false);
+      setTimeout(() => {
+        setdisableButton(false );
+
+        window.location.reload();
+      }, 2000);
+    }
+
+    const edit=(val)=>{
+      val.preventDefault();
+      const e=dbCours.doc(editId).set({cours:courEdit,detail:detailEdit});
+      
+      e.then(r=> {  
+          notify('Modifié')
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
+        }
       );
-  };
-
-  // function pour masquer le modal de modification
-  const hideAlert=()=> {
-    setshow(false);
-  }
-
-  // function pour modifier un cour
-  const submit=(e)=> {
-
-    dbCours.doc(editId).update({'cours':courEdit,'detail':detailEdit}).then();
-
-    setdisableButton(true );
-    notify('Modifié avec succes');
-    setshow(false);
-    setTimeout(() => {
-      setdisableButton(false );
-
-      window.location.reload();
-    }, 2000);
-  }
-
-  const edit=(er)=>{
-    er.preventDefault();
-    const e=dbCours.doc(editId).set({cours:courEdit,detail:detailEdit});
+    }
     
-    e.then(r=> {  
-        notify('Modifié')
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000);
-      }
-    );
-  }
-  
 
     return (
         <div className='mains'>
@@ -187,7 +214,7 @@ const Main = () => {
             <div
               id="scrollableDiv"
               style={{
-                height: 500,
+                height: 320,
                 overflow: 'auto',
                 // display: 'flex',
                 flexDirection: 'column-reverse',
@@ -223,11 +250,11 @@ const Main = () => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); openModal()}}>
+                                    <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); openModal() }}>
                                       <i className="fa fa-edit" aria-hidden="true"></i>
                                     </button> &nbsp;
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail) }> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' onClick={setshow(true)} > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}} > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
                                 </p>
                               </div>
@@ -241,10 +268,10 @@ const Main = () => {
                   ))
                 ):(
                   dataCours.map((cour, index) => (
-                    <div  key={index} className="pb-2">
+                    <div  key={index} className="w-100 ">
                      
                     
-                      <div className="card" style={{maxWidth: '480px'}}>
+                      <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:color[index]}}>
                           <div className="row no-gutters">
                             <div className="col ">
                               <img src={img1} className="card-img" alt="..."/>
@@ -259,9 +286,9 @@ const Main = () => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id); openModal()}}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
                                     <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' onClick={()=> setshow(true)}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
                                 </p>
                               </div>
@@ -274,42 +301,47 @@ const Main = () => {
                     
                   ))
                 )}
+
               </InfiniteScroll>
-
-              <div>
-      <button onClick={openModal}>Open Modal</button>
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        appElement={document.getElementById('root')}
-        contentLabel="Example Modal"
-      >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Modifier </h2>
-        <div className='col-md-4 col-md-offset-4 w-75'>
-            
-                <form className='form-group' onSubmit={e=>edit(e)}>
-                  <div className='container'>
-                    <div className="row">
-                      <label htmlFor="cours">Cour</label>
-                      <input className='input-control' value={courEdit} onChange={e=>setCourEdit(e.target.value)}/>
-                    </div>
-                    <div className="row">
-                      <label htmlFor="detail">Detail</label>
-                      <input className='input-control' value={detailEdit} onChange={e=>setdEtailEdit(e.target.value)}/>
-                    </div>
-                  <br />
-                  <button type="submit">Modifier</button>
-
-                  </div>
-                </form>
-            
-        </div>
-      </Modal>
-    </div>
+                    
             </div>
-  
+              <Footer />
+                <Modal
+                  isOpen={modalIsOpen}
+                  onAfterOpen={afterOpenModal}
+                  onRequestClose={closeModal}
+                  style={customStyles}
+                  appElement={document.getElementById('root')}
+                  contentLabel="Example Modal"
+                >
+                  <h2 ref={(_subtitle) => (subtitle = _subtitle)} className='text-info'>Modifier </h2>
+                  
+
+                        <form className='border border-success' onSubmit={e=>edit(e)}>
+                          <fieldset >
+                            <div className="form-group">
+                              <label for="disabledTextInput">Cours</label>
+                              <input type="text" value={courEdit}  className="form-control" placeholder="Cours" onChange={(e)=>{setCourEdit(e.target.value);console.log(e.target.value)}} />
+                            </div>
+                            
+                             <div className="form-group">
+                                <label for="exampleFormControlTextarea1">Details</label>
+                                <textarea className="form-control" value={detailEdit} onChange={(e)=> setdEtailEdit(e.target.value)} rows="3"></textarea>
+                             </div>
+                            <div classNameName="form-check">
+                              
+                            </div>
+                            {courEdit==='' || courEdit.length <=1 && detailEdit==='' || detailEdit.length <=4?(
+                               <button type="submit" className="btn btn-primary disabled">Modifier</button>
+                            ):(
+                              <button type="submit" className="btn btn-primary " >Modifier</button>
+                            )}
+                            <button type="submit" className="btn btn-danger m-2" onClick={closeModal}>Annuler</button>
+                          </fieldset>
+                        </form>
+                      
+                 
+                </Modal>
             <ToastContainer
             position="top-right"
             autoClose={3000}
@@ -326,14 +358,14 @@ const Main = () => {
 
                   
 
-       {/* Affichage du modal sweet Alert pour la modification      */}
-        <SweetAlertFunction
-          show={show}
-          disableButton={disableButton}
-          submit={() => submit()}
-          hideAlert={() => hideAlert()}
-        />
-       
+          {/* Affichage du modal sweet Alert pour la modification      */}
+            <SweetAlertFunction
+              show={show}
+              disableButton={disableButton}
+              submit={() => submit()}
+              hideAlert={() => hideAlert()}
+            />
+
         </div>
     )
 }

@@ -53,7 +53,6 @@ const Header = () => {
   useEffect(() => {
     const currentRole=localStorage.getItem('userRole');
     setRole(currentRole);
-    console.log(role)
   }, [role])
 
 
@@ -77,12 +76,12 @@ const Header = () => {
               {role === 'apprenant'?(
                 <>
                   <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
-                  <MenuItem active={true} icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  <MenuItem icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
                 </>
               ):(
                 <>
                   <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
-                  <MenuItem active={true} icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  <MenuItem icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
                   <MenuItem icon={<FaList />} onClick={()=>routeLink.push('archives')} title='Archives'/>
                   <MenuItem icon={<CgUserList />} onClick={()=>routeLink.push('listprof')} title='Professeurs'/>
                   <MenuItem icon={<MdSupervisedUserCircle />} onClick={()=>routeLink.push('listapprenant')} title='Apprenants'/>

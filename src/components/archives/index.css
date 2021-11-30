@@ -3,7 +3,7 @@
     /* background-color: black; */
     padding-left: 20%;
     /* border: 1px red solid */
-    max-width: 90%;
+    max-width: 70%;
 }
 /* .header{
     max-height: 15%;
@@ -11,3 +11,7 @@
     border: 1px solid red;
     margin-left:10% ;
 } */
+#img{
+    padding-left: 4%;
+    border-radius: 50%;
+}

@@ -1,0 +1,121 @@
+.pos{
+    margin-top: 12%;
+
+}
+
+.pos2{
+    /* margin-right: 50%; */
+}
+
+.cardsGroup{
+    background-color: transparent;
+    width: 100%;
+    border-radius: 33px;
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+    /* padding: 0.5rem !important; */
+    /* margin-right:200px; */
+    margin-top:20%;
+    display: block;
+}
+
+.profil{
+    width: 15%;
+}
+
+.profils{
+    width: 4.7rem;
+    height: 85%
+    /* padding: 4%; */
+}
+
+#img{
+    /* border-radius: 20%; */
+    /* border: 1px solid red; */
+    /* margin: 0%; */
+    /* width: 10%; */
+    border-radius:20% 0 0% 20%;
+    /* border: 1px solid red; */
+    /* margin: 1%; */
+}
+
+#imgs{
+    border-radius: 20%;
+    border: 1px solid red;
+    margin: 4%;
+    /* margin: 0%; */
+    
+}
+
+#colName{
+    width: 15%;
+    margin-left: -4%;
+    margin-right: 2%;
+}
+
+#colNames{
+    width: 15%;
+    margin: 0.4%;
+}
+
+.grid-container {
+    display:grid;
+    grid-template-columns: auto auto auto;
+    /* grid-gap: 1px; */
+    /* background-color: #2196F3; */
+    /* grid-gap: 0%; */
+    z-index: 500;
+    /* padding: 10px; */
+    margin-left: 7%;
+  }
+  
+  .grid-container > div {
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    text-align: left;
+    /* padding: 20px 0; */
+    /* font-size: 30px; */
+    width: 85%;
+  }
+  
+  .item1 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    background-color: transparent;
+  }
+
+  .text{
+      font-size: 72%;
+      width: 28%;
+      top: 0;
+      padding: 0;
+      margin: 0;
+    
+  }
+
+  .htSpan{
+      /* height: 100%; */
+      /* width: 100%; */
+      /* background-color: #dae; */
+      /* border: 1px red solid;   */
+  }
+  .tailleCol{
+      /* width: 95%; */
+  }
+
+  @media screen and (max-width: 1070px){
+
+    #imgs{
+        display: none;
+
+    }
+
+    .widthImg{
+        width: 50%;
+    }
+
+
+
+  }
+
+  .title{
+    padding-left: 4%;
+  }

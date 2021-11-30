@@ -8,7 +8,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
   -o-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
@@ -22,6 +21,7 @@
 }
 
 #contact input[type="text"],
+#contact input[type="file"]
 #contact button[type="submit"] {
   font: 400 12px/16px "Roboto", Helvetica, Arial, sans-serif;
 }
@@ -45,6 +45,14 @@ fieldset {
 }
 
 #contact input[type="text"] {
+  width: 100%;
+  border: 1px solid #ccc;
+  background: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+}
+
+#contact input[type="file"] {
   width: 100%;
   border: 1px solid #ccc;
   background: #FFF;
