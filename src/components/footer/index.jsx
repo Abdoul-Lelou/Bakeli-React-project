@@ -17,12 +17,12 @@ const Footer = () => {
 
                                       <div class="grid-container">
                                         {/* <div class="item1"> */}
-                                          <div className='item1 row '>
-                                            <div className=' middle-container d-flex  align-items-center tailleCol  '>
-                                                <img src={img} alt="" id='img' srcset="" className='profils ' />
-                                              <div class="col col-sm-2  widthImg" style={{backgroundColor:'#c4c4c4 ', padding:'2.3px'}}>
+                                          <div className='item1  row '>
+                                            <div className=' middle-container d-flex w-100  align-items-center shadow tailleCol border  '>
+                                              <img src={img} alt="" id='imgMain' srcset="" className='profils pl-2' />
+                                              <div class="col col-sm-2  widthImg" style={{backgroundColor:' ', padding:'2.3px'}}>
                                                   <b className="title">Mr Diatta</b>
-                                                <p className='title'>
+                                                <p className='title bg-dark'>
                                                     <span className="fa fa-star checked"></span>
                                                     <span className="fa fa-star checked"></span>
                                                       <span className="fa fa-star checked"></span>
@@ -31,13 +31,13 @@ const Footer = () => {
                                                 </p>
                                                </div>
 
-                                               <img src={img} alt="" id='imgs' srcset="" className='profils' />
+                                               <img src={img} alt="" id='imgSecond' srcset="" className='profils' />
                                                
 
-                                               <img src={img} alt="" id='imgs' srcset="" className='profils pr-2' />
+                                               <img src={img} alt="" id='imgSecond' srcset="" className='profils pr-2' />
                                               
 
-                                               <img src={img} alt="" id='imgs' srcset="" className='profils pr-2' />
+                                               <img src={img} alt="" id='imgSecond' srcset="" className='profils ' />
                                               
 
                                            </div>

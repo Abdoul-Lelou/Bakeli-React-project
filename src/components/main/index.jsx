@@ -235,7 +235,7 @@ const Main = () => {
                   
                     <div  key={index} className="pb-2">
   
-                      <div className="card" style={{maxWidth: '480px'}}>
+                      <div className="card mb-4" style={{maxWidth: '480px'}}>
                           <div className="row no-gutters">
                             <div className="col ">
                               <img src={img1} className="card-img" alt="..."/>
@@ -268,13 +268,13 @@ const Main = () => {
                   ))
                 ):(
                   dataCours.map((cour, index) => (
-                    <div  key={index} className="w-100 ">
+                    <div  key={index} className="w-100 mb-4   ">
                      
                     
                       <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:color[index]}}>
                           <div className="row no-gutters">
                             <div className="col ">
-                              <img src={img1} className="card-img" alt="..."/>
+                              <img src={img1} className="card-img p-2" alt="..."/>
                               <div className="card-body">
                                 <p className="card-text text-center">
                                  <span className="card-text">{cour.cours}</span>

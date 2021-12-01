@@ -22,77 +22,60 @@ const MainRight = () => {
       }
 
     return (
-        <div className='mainRight border border-success'>
+        <div className='mainRight   border border-success'>
             
             
             <Calendar
                 onChange={setCalendar}
                 value={value}
-                className='calend w-75 m-2 mx-4 calendar'
+                className='calend w-75 p-4 m-4'
                
                 tileClassName={tileClassName}
                 defaultActiveStartDate={new Date()}
-                style={{border: 'none'}}
+
+                
             />
            
-            <div className='right-bar'>
-              <h6>About Teacher</h6>
+            <div className='right-bar '>
+                  <h6>About Teacher</h6>
 
-            <div class="cards">
-                <div class="middle-container d-flex justify-content-between align-items-center ">
-                    <div class="dollar-div px-3">
-                        <div class="round-div">
-                          <i class="fa fa-dollar dollar"> </i>
-                        </div>
-                    </div>
-                    <div class="col">
-                      Mr Diatta
-                    <p className="card-text bg-light">
-                        <span className="fa fa-star checked"></span>
-                        <span className="fa fa-star checked"></span>
-                          <span className="fa fa-star checked"></span>
-                        <span className="fa fa-star"></span>
-                      <span className="fa fa-star"></span>
-                    </p>
-                    </div>
-                </div>
-                
-            </div>
-
-                  <div className="row row-cols-2 mx-0 mb-4 mt-2">
-
-                      {/* <div className="card" style={{maxWidth: '150px', maxHeight:'80px'}}>
-                        <div className="row ">
-                          <div className="col ">
-                            <img src={img1} className="card-img" alt="..."/>
-                            <div className="card-body">
-                              <p className="card-text text-center">
-                               <span className="card-text">Card title</span>
-                                <small className="text-muted">  </small>
-                              </p>
+                  <div className="item p-2">
+                    <div class="card" style={{backgroundColor:'transparent',border: '0px'}}>
+                        <div class="middle-container d-flex w-75 justify-content-between align-items-center ">
+                            <div class="dollar-div px-3">
+                                <div class="round-div">
+                                  <i class="fa fa-dollar dollar"> </i>
+                                </div>
                             </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="card-body">
-                              <p className="card-text">
-                               
-                              </p>
+                            <div class="col">
+                              Mr Diatta
+                            <p className="card-text ">
+                                <span className="fa fa-star checked"></span>
+                                <span className="fa fa-star checked"></span>
+                                  <span className="fa fa-star checked"></span>
+                                <span className="fa fa-star"></span>
+                              <span className="fa fa-star"></span>
+                            </p>
                             </div>
-                          </div>
                         </div>
-                      </div> */}
+                        
+                    </div>
+                  </div>
 
-                   <div className='p-0 border border-success'>
-                        <div class="card">
-                            <div class="middle-container d-flex justify-content-between align-items-center ">
-                                <div class="dollar-div px-3">
+                  <div className="row row-cols-2 mx-0 p-2 mb-2">
+
+                   
+                   <div className='item'>
+                        <div class="card" style={{backgroundColor:'transparent', border:'0px'}}>
+                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
+                                <div class="dollar-div">
                                     <div class="round-div">
                                       <i class="fa fa-dollar dollar"> </i>
                                     </div>
                                 </div>
                                 <div class="col">
-                                  Mr Diatta
-                                <p className="card-text">
+                                  <b className='name'>Mr Diatta</b>
+                                <p className="card-text displaytext">
                                     <span className="fa fa-star checked"></span>
                                     <span className="fa fa-star checked"></span>
                                       <span className="fa fa-star checked"></span>
@@ -104,17 +87,64 @@ const MainRight = () => {
                             
                         </div>
                    </div>
-                   <div className='p-0 border border-success'>
-                        <div class="card">
-                            <div class="middle-container d-flex justify-content-between align-items-center ">
+
+                   <div className='item'>
+                        <div class="card" style={{backgroundColor:'transparent', border:'0px'}}>
+                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
                                 <div class="dollar-div">
                                     <div class="round-div">
                                       <i class="fa fa-dollar dollar"> </i>
                                     </div>
                                 </div>
                                 <div class="col">
-                                  Mr Diatta
-                                <p className="card-text">
+                                  <b className='name'>Mr Diatta</b>
+                                <p className="card-text displaytext">
+                                    <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star checked"></span>
+                                      <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star"></span>
+                                  <span className="fa fa-star"></span>
+                                </p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                   </div>
+
+                   <div className='item' >
+                        <div class="card" style={{border: '0px'}}>
+                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
+                                <div class="dollar-div">
+                                    <div class="round-div">
+                                      <i class="fa fa-dollar dollar"> </i>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                  <b className='name'>Mr Diatta</b>
+                                <p className="card-text displaytext">
+                                    <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star checked"></span>
+                                      <span className="fa fa-star checked"></span>
+                                    <span className="fa fa-star"></span>
+                                  <span className="fa fa-star"></span>
+                                </p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                   </div>
+
+                   <div className='item' >
+                        <div class="card" style={{backgroundColor:'transparent', border:'0px'}}>
+                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
+                                <div class="dollar-div">
+                                    <div class="round-div">
+                                      <i class="fa fa-dollar dollar"> </i>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                  <b className='name'>Mr Diatta</b>
+                                <p className="card-text displaytext">
                                     <span className="fa fa-star checked"></span>
                                     <span className="fa fa-star checked"></span>
                                       <span className="fa fa-star checked"></span>

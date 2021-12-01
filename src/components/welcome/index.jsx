@@ -10,7 +10,7 @@ const Welcome = () => {
         <div className='App'> 
             <Main />
             <div className='container mainRight'>
-                {/* <MainRight /> */}
+                <MainRight />
             </div>
         </div>
     )

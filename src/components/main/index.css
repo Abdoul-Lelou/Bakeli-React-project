@@ -1,7 +1,7 @@
 .mains{
     background-color: rgb(242, 242, 243);
     float: left;
-    margin-left: 220px;
+    margin-left: 205px;
     width: 45%;
     /* padding-bottom: 2%; */
 }
@@ -13,10 +13,16 @@
 .card img{
     border-radius: 10%;
     margin: 2%;
+    padding: 2%;
     width: 40%;
     float: left;
-    height: 80%;
+    /* height: 80%; */
 }
+/* 
+.imgIndex{
+  width: 30%;
+  border:1px red solid
+} */
 
 .card .height{
     height: 10%;
@@ -26,7 +32,8 @@
 {
    .mains
     {
-        margin-left: 150px;
+        margin-left: 85px;
+       
     }
     .searchBar{
     margin-left: 50px;
@@ -36,12 +43,15 @@
       left:0%
     }
 }
+
+
+
 h4{
     margin-left: 4.5%;
 }
 
 .search-box{
-    width: 70%;
+    width: 80%;
     position: relative;
     display: flex;
     left:5%;

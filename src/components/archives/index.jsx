@@ -80,7 +80,7 @@ const Archives = () => {
                                                     <div className="card" style={{maxWidth: '600px'}}>
                                                         <div className="row no-gutters">
                                                             <div className="col ">
-                                                            <img src={img1} className="" id='img' alt="..."/>
+                                                            <img src={img1} className="" id='imgArchive' alt="..."/>
                                                             <div className="card-body">
                                                                 <p className="card-text text-center">
                                                                 <span className="card-text">{prof.name} {prof.matiere}</span>
@@ -117,7 +117,7 @@ const Archives = () => {
                                                             <div className="card" style={{maxWidth: '600px'}}>
                                                                 <div className="row no-gutters">
                                                                     <div className="col ">
-                                                                    <img src={img1} id='img' className="" alt="..."/>
+                                                                    <img src={img1} id='imgArchive' className="" alt="..."/>
                                                                     <div className="card-body">
                                                                         <p className="card-text text-center">
                                                                         <span className="card-text">{cour.cours}</span>

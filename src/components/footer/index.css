@@ -1,5 +1,5 @@
 .pos{
-    margin-top: 12%;
+    margin-top: 10%;
 
 }
 
@@ -28,23 +28,25 @@
     /* padding: 4%; */
 }
 
-#img{
+#imgMain{
     /* border-radius: 20%; */
     /* border: 1px solid red; */
     /* margin: 0%; */
-    /* width: 10%; */
-    border-radius:20% 0 0% 20%;
+    width: 20%;
+    border-radius:13%;
     /* border: 1px solid red; */
     /* margin: 1%; */
+    padding: 0.2%;
 }
 
-#imgs{
-    border-radius: 20%;
-    border: 1px solid red;
-    margin: 4%;
-    /* margin: 0%; */
-    
+#imgSecond{
+    border-radius: 13%;
+    /* border: 1px solid red; */
+    margin: 2%;
+    width: 17%;
 }
+
+
 
 #colName{
     width: 15%;
@@ -79,16 +81,21 @@
   .item1 {
     grid-column-start: 1;
     grid-column-end: 4;
-    background-color: transparent;
+    /* background-color: blue; */
+    /* border-radius: 20%; */
+    height: auto;
+    padding-bottom: 1%;
+    /* position: relative; */
+
   }
 
   .text{
-      font-size: 72%;
+      /* font-size: 72%;
       width: 28%;
       top: 0;
       padding: 0;
       margin: 0;
-    
+     */
   }
 
   .htSpan{
@@ -97,8 +104,10 @@
       /* background-color: #dae; */
       /* border: 1px red solid;   */
   }
+
   .tailleCol{
-      /* width: 95%; */
+      /* width: 115%; */
+      padding: 1.8%;
   }
 
   @media screen and (max-width: 1070px){
@@ -108,14 +117,27 @@
 
     }
 
+    .item1{
+        width: 80%;
+    }
+
     .widthImg{
-        width: 50%;
+        /* width: 50%; */
     }
 
 
 
   }
 
+
+@media screen and (max-width: 924px){
+    .item1{
+        /* background-color: violet; */
+        margin-left: 7%;
+        width: 100%;
+    }
+}
+
   .title{
-    padding-left: 4%;
+    /* padding-left: 4%; */
   }
