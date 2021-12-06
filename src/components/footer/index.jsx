@@ -15,29 +15,29 @@ const Footer = () => {
                                 <div className='row w-100 pos'>
                                   
 
-                                      <div class="grid-container">
-                                        {/* <div class="item1"> */}
+                                      <div className="grid-container">
+                                        {/* <div className="item1"> */}
                                           <div className='item1  row '>
                                             <div className=' middle-container d-flex w-100  align-items-center shadow tailleCol border  '>
-                                              <img src={img} alt="" id='imgMain' srcset="" className='profils pl-2' />
-                                              <div class="col col-sm-2  widthImg" style={{backgroundColor:' ', padding:'2.3px'}}>
+                                              <img src={img} alt="" id='imgMain' srcSet="" className='profils pl-2' />
+                                              <div className="col col-sm-2  widthImg" style={{backgroundColor:' ', padding:'2.3px'}}>
                                                   <b className="title">Mr Diatta</b>
-                                                <p className='title bg-dark'>
-                                                    <span className="fa fa-star checked"></span>
-                                                    <span className="fa fa-star checked"></span>
-                                                      <span className="fa fa-star checked"></span>
+                                                <p className='title '>
+                                                    <span className="fa fa-star checked" id='fa'></span>
+                                                    <span className="fa fa-star checked" id='fa'></span>
+                                                      <span className="fa fa-star checked" id='fa'></span>
                                                     {/* <span className="fa fa-star"></span> */}
-                                                  <span className="fa fa-star"></span>
+                                                  <span className="fa fa-star text-default"></span>
                                                 </p>
                                                </div>
 
-                                               <img src={img} alt="" id='imgSecond' srcset="" className='profils' />
+                                               <img src={img} alt="" id='imgSecond' srcSet="" className='profils' />
                                                
 
-                                               <img src={img} alt="" id='imgSecond' srcset="" className='profils pr-2' />
+                                               <img src={img} alt="" id='imgSecond' srcSet="" className='profils pr-2' />
                                               
 
-                                               <img src={img} alt="" id='imgSecond' srcset="" className='profils ' />
+                                               <img src={img} alt="" id='imgSecond' srcSet="" className='profils ' />
                                               
 
                                            </div>

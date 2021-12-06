@@ -19,6 +19,7 @@
  .mainRight {
     position: absolute;
     width: 53%;
+    float: right;
     /* margin: 0 auto; */
     margin-left: 45%;
     /* margin: 0 77%; */
@@ -32,11 +33,11 @@
     box-shadow: inset;
     
   }
-  .card {
+  /* .card {
     margin-left: 5px !important;
     margin-top: 2px !important;
     background-color: transparent;
-  }
+  } */
   
   .card img {
     height: 80%;
@@ -59,21 +60,26 @@
     font-weight: bold;
   }
 
+  .calend{
+    width: 80%;
+    padding-right: 6%;
+  }
   @media only screen and (max-width: 840px){
     .displaytext{
-      display: none;
+      /* display: none; */
     }
 
     #displayCol{
       display: none;
       background-color: transparent;
     }
-    .name{
+    /* .name{
       display: none;
-    }
+    } */
     .middle-container{
       display: none;
     }
+    
   }
 
   @media only screen and (max-width: 720px) {
@@ -90,10 +96,34 @@
       /* padding-bottom: 10%; */
     }
     .calend{
-      width: 100%;
+      width: 90%;
       padding-right: 6%;
     }
+
+    .colTextName{
+      width: 100%;
+      display: none;
+    }
+
+    .middle-container{
+      width: 100%;
+      background: transparent;
+      /* background-color: lawngreen; */
+    /* border: red 2px solid; */
+    }
+  }
+
+  @media only screen and (max-width: 800px){
     
+  }
+
+  #widthContainer{
+    width: 70%
+  }
+
+  .colTextName{
+    width: 50%;
+    /* float: left;   */
   }
   
   #img-profil{
@@ -133,12 +163,40 @@
     border: 2px solid #5957f9
 }
 
-.name {
-    font-size: 15px;
+.itemCard{
+  padding: 0px;
+  margin: 0px;
+  width: 40%;
+}
+
+#names {
+    /* font-size: 15px;
     font-weight: bold;
     color: #272727;
     position: relative;
-    top: 8px
+    top: 8px */
+    /* margin-left: 0%; */
+    /* float: left; */
+}
+
+.pBr{
+  white-space: pre;
+}
+
+.checked {
+ color: rgb(224, 213, 50);
+}
+
+.bgPre{
+  border-radius: 7%;
+  background-color: #c8c8c8c8;
+}
+/* p span {
+  display: block;
+} */
+
+#chiffre{
+  margin-left: 1%
 }
 
 .mail {
@@ -223,5 +281,10 @@
     font-size: 16px;
     font-weight: 700;
     color: #272727
+}
+
+#fa{
+  color: yellow;
+  
 }
 

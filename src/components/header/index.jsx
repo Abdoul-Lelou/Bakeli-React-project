@@ -53,6 +53,10 @@ const Header = () => {
   useEffect(() => {
     const currentRole=localStorage.getItem('userRole');
     setRole(currentRole);
+    window.onhashchange = function() { 
+      console.log('okkkkkkkkkkkkkkkkk')  
+ }
+    // console.log(window.location.pathname)
   }, [role])
 
 
@@ -75,20 +79,20 @@ const Header = () => {
 
               {role === 'apprenant'?(
                 <>
-                  <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
-                  <MenuItem icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  {/* <MenuItem id='welcome' active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/> */}
+                  <MenuItem id='welcome' icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
                 </>
               ):(
                 <>
-                  <MenuItem active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
-                  <MenuItem icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
-                  <MenuItem icon={<FaList />} onClick={()=>routeLink.push('archives')} title='Archives'/>
-                  <MenuItem icon={<CgUserList />} onClick={()=>routeLink.push('listprof')} title='Professeurs'/>
-                  <MenuItem icon={<MdSupervisedUserCircle />} onClick={()=>routeLink.push('listapprenant')} title='Apprenants'/>
-                  <MenuItem icon={<BsFileEarmarkPlusFill />}  onClick={()=>routeLink.push('cours')} title='Ajouter Cours'/>
-                  <MenuItem icon={<IoIosPersonAdd />}  onClick={()=>routeLink.push('prof')} title='Ajouter Professeur'/>
-                  <MenuItem icon={<FaSign />} onClick={()=>routeLink.push('signin')} title='Inscription'/>
-                  <MenuItem icon={<BiCog />}>Settings</MenuItem>
+                  <MenuItem id='welcome' active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  {/* <MenuItem id='welcome' icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/> */}
+                  <MenuItem id='archives' active={window.location.pathname === "/archives"} icon={<FaList />} onClick={()=>routeLink.push('archives')} title='Archives'/>
+                  <MenuItem id='listprof' icon={<CgUserList />} onClick={()=>routeLink.push('listprof')} title='Professeurs'/>
+                  <MenuItem id='listapprenant' icon={<MdSupervisedUserCircle />} onClick={()=>routeLink.push('listapprenant')} title='Apprenants'/>
+                  <MenuItem id='cours' icon={<BsFileEarmarkPlusFill />}  onClick={()=>routeLink.push('cours')} title='Ajouter Cours'/>
+                  <MenuItem id='prof' icon={<IoIosPersonAdd />}  onClick={()=>routeLink.push('prof')} title='Ajouter Professeur'/>
+                  <MenuItem id='signin' icon={<FaSign />} onClick={()=>routeLink.push('signin')} title='Inscription'/>
+                  <MenuItem id='welcome' icon={<BiCog />}>Settings</MenuItem>
                 </>
               )}
              

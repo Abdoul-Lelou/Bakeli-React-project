@@ -28,8 +28,13 @@ const MainRight = () => {
             <Calendar
                 onChange={setCalendar}
                 value={value}
-                className='calend w-75 p-4 m-4'
-               
+                className='calend    m-4'
+                minDate={new Date()}
+                next2Label={null}
+                prev2Label={null}
+                showNavigation={true}
+                tileDisabled={({activeStartDate, date, view }) => date.getDay() === 0}
+                onClickDay={(v,e)=>(console.log(v))}
                 tileClassName={tileClassName}
                 defaultActiveStartDate={new Date()}
 
@@ -40,21 +45,20 @@ const MainRight = () => {
                   <h6>About Teacher</h6>
 
                   <div className="item p-2">
-                    <div class="card" style={{backgroundColor:'transparent',border: '0px'}}>
-                        <div class="middle-container d-flex w-75 justify-content-between align-items-center ">
-                            <div class="dollar-div px-3">
-                                <div class="round-div">
-                                  <i class="fa fa-dollar dollar"> </i>
+                    <div className="card" style={{backgroundColor:'transparent',border: '0px'}}>
+                        <div className="middle-container bg-default d-flex  justify-content-between align-items-center " id='widthContainer'>
+                            <div className="dollar-div ">
+                                <div className="round-div">
+                                  <i className="fa fa-dollar dollar"> </i>
                                 </div>
                             </div>
-                            <div class="col">
-                              Mr Diatta
-                            <p className="card-text ">
-                                <span className="fa fa-star checked"></span>
-                                <span className="fa fa-star checked"></span>
-                                  <span className="fa fa-star checked"></span>
+                            <div className="col">
+                             <p className="card-text colTextName "> Mr Diatta</p>
+                            <p className="card-text  colTextName" >
+                                <span className="fa fa-star checked" id='fa'></span>
+                                <span className="fa fa-star checked" id='fa'></span>
+                                <span className="fa fa-star checked" id='fa'></span>
                                 <span className="fa fa-star"></span>
-                              <span className="fa fa-star"></span>
                             </p>
                             </div>
                         </div>
@@ -62,102 +66,54 @@ const MainRight = () => {
                     </div>
                   </div>
 
-                  <div className="row row-cols-2 mx-0 p-2 mb-2">
+                  <div className="row row-cols-2 mx-0 ">
 
-                   
-                   <div className='item'>
-                        <div class="card" style={{backgroundColor:'transparent', border:'0px'}}>
-                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
-                                <div class="dollar-div">
-                                    <div class="round-div">
-                                      <i class="fa fa-dollar dollar"> </i>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                  <b className='name'>Mr Diatta</b>
-                                <p className="card-text displaytext">
-                                    <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star checked"></span>
-                                      <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star"></span>
-                                  <span className="fa fa-star"></span>
-                                </p>
-                                </div>
-                            </div>
-                            
-                        </div>
-                   </div>
+                      <div className="col">
 
-                   <div className='item'>
-                        <div class="card" style={{backgroundColor:'transparent', border:'0px'}}>
-                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
-                                <div class="dollar-div">
-                                    <div class="round-div">
-                                      <i class="fa fa-dollar dollar"> </i>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                  <b className='name'>Mr Diatta</b>
-                                <p className="card-text displaytext">
-                                    <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star checked"></span>
-                                      <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star"></span>
-                                  <span className="fa fa-star"></span>
-                                </p>
-                                </div>
-                            </div>
+                      <pre className='text-start bgPre card m-2 w-75'>
+                          Completed
+                          <p className='text-start'>
                             
-                        </div>
-                   </div>
+                            Courses</p>
+                          {/* <p className='text-start border w-25' id='chiffre'>12</p> */}
+                          12
+                        </pre> 
 
-                   <div className='item' >
-                        <div class="card" style={{border: '0px'}}>
-                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
-                                <div class="dollar-div">
-                                    <div class="round-div">
-                                      <i class="fa fa-dollar dollar"> </i>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                  <b className='name'>Mr Diatta</b>
-                                <p className="card-text displaytext">
-                                    <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star checked"></span>
-                                      <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star"></span>
-                                  <span className="fa fa-star"></span>
-                                </p>
-                                </div>
-                            </div>
+                        <pre className='text-start bgPre card m-2 w-75'>
+                          Completed
+                          <p className='text-start'>
                             
-                        </div>
-                   </div>
+                            Courses</p>
+                          {/* <p className='text-start border w-25' id='chiffre'>12</p> */}
+                          12
+                        </pre> 
 
-                   <div className='item' >
-                        <div class="card" style={{backgroundColor:'transparent', border:'0px'}}>
-                            <div class="middle-container  d-flex justify-content-between align-items-center " id='displayCol'>
-                                <div class="dollar-div">
-                                    <div class="round-div">
-                                      <i class="fa fa-dollar dollar"> </i>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                  <b className='name'>Mr Diatta</b>
-                                <p className="card-text displaytext">
-                                    <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star checked"></span>
-                                      <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star"></span>
-                                  <span className="fa fa-star"></span>
-                                </p>
-                                </div>
-                            </div>
+
+                      </div>
+
+                      <div className="col ">
+
+                        <pre className='text-start card bgPre m-2 w-75'>
+                          Completed
+                          <p className='text-start'>
                             
-                        </div>
-                   </div>
+                            Courses</p>
+                          {/* <p className='text-start border w-25' id='chiffre'>12</p> */}
+                          12
+                        </pre> 
+
+                        <pre className='text-start bgPre card m-2 w-75'>
+                          Completed
+                          <p className='text-start'>
+                            
+                            Courses</p>
+                          {/* <p className='text-start border w-25' id='chiffre'>12</p> */}
+                          12
+                        </pre> 
+
+
+                      </div>
                   
-
                </div>
             </div>         
         </div>

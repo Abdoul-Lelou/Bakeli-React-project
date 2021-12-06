@@ -1,3 +1,17 @@
 .infoPostion{
-    margin-left:18%
+    /* margin-left:18% */
+  }
+
+  .prof{
+      width: 50%;
+  }
+
+  .sweetRow{
+      margin-left: 5%;
+  }
+
+  @media screen and (max-width: 700px) {
+    .prof{
+        width: 70%;
+    }
   }

@@ -7,6 +7,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { dbArchiveProfs, dbFirestore, dbFirestores } from '../../firebase';
 import img1 from'../../images/img1.jpg';
 import './index.css';
+import Swal from 'sweetalert2';
 
 const customStyles = {
   content: {
@@ -88,23 +89,23 @@ const ListApprenant = () => {
           onCancel={hideAlert}
           dependencies={[profEdit, matiereEdit]}
         >
-         <div className="row m-0">
+         <div className="row sweetRow">
             <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
             <ul className="list-group w-100">
               <li className="list-group-item d-flex justify-content-between align-items-center">
-                <h4>Nom</h4>
-                <span className="badge badge-primary bg-primary badge-pill">{nom}</span>
+                <h4>Nom:</h4>
+                <span className="badge badge-primary bg-primary badge-pill text">{nom}</span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
-              <h4>Prenom</h4>
+              <h4>Prenom:</h4>
                 <span className="badge badge-primary bg-primary badge-pill"> {prenom} </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
-              <h4>Email</h4>
+              <h4>Email:</h4>
                 <span className="badge badge-primary bg-primary badge-pill"> {email} </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
-              <h4>Role</h4>
+              <h4>Role:</h4>
                 <span className="badge badge-primary bg-primary badge-pill"> {role} </span>
               </li>
             </ul>
@@ -129,24 +130,51 @@ const ListApprenant = () => {
     }
 
     const archive=(id)=>{
-        dbArchiveProfs.doc(id).set({nom:nom,prenom:prenom,email:email,role:role}).then(resp=>{
+
+      Swal.fire({
+        title: 'Archiver?',
+        text: "Action irreversible!",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Archiver!',
+        width:'30%',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+
+          dbArchiveProfs.doc(id).set({nom:nom,prenom:prenom,email:email,role:role}).then(resp=>{
             notify('Archivé avec succés');
            dbFirestores.collection("users")
            .doc(id)
            .delete()
            .then(() => {
-            notify('Deplacé avec succes');
+            Swal.fire(
+              'Archivé!',
+              'Fichier archivé',
+              'success'
+            )
             setTimeout(() => {
               window.location.reload();
             }, 2000);
            }) // Document deleted
-           .catch((error) => notify(error));
+           .catch((error) => Swal.fire(
+            'Erreur!',
+            ''+error,
+            'error'
+          ));
          })
+        
+          
+        }
+      })
+       
     }
 
     return (
-        <div className='prof w-50 bg-light shadow pt-2'>
-            <h4  className='text-start'>Apprenants</h4>
+        <div className='prof bg-light shadow '>
             <div
               id="scrollableDiv"
               style={{
@@ -155,7 +183,10 @@ const ListApprenant = () => {
                 flexDirection: 'column-reverse',
               }}
             >
+            <h4  className='text-start '>APPRENANTS</h4>
+
               {/*Put the scroll bar always on the bottom*/}
+              
               <InfiniteScroll
                 dataLength={5}
                 style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
@@ -174,32 +205,53 @@ const ListApprenant = () => {
                       aprnt.role ==='apprenant'?(
                         <div  key={index} className="pb-2">
                              
-                            <div className="card" style={{maxWidth: '600px'}}>
-                                <div className="row no-gutters">
-                                  <div className="col ">
-                                    <img src={img1} className="card-img" alt="..."/>
+
+                              {/* <div className="card" style={{maxWidth:'50rem',height:'8rem',backgroundColor:"#" + ((1<<24)*Math.random() | 2).toString(16)}}>
+                                <div className="row  no-gutters">
+                                    <div className="col  ">
+                                    <img src={img1} className="" id='imgArchive' alt="..."/>
                                     <div className="card-body">
-                                      <p className="card-text text-center">
-                                       <span className="card-text">{aprnt.prenom} {aprnt.nom}</span>
+                                        <p className="card-text text-center">
+                                        <span className="card-text">{aprnt.prenom} {aprnt.nom}</span>
                                         <small className="text-muted"></small>
-                                      </p>
+                                        </p>
                                     </div>
-                                  </div>
-                                  <div className="col-6">
-                                    <div className="card-body">
-                                      <p className="card-text">
-                                          {aprnt.matiere}
-                                          &nbsp;
-                                        <small className="text-muted">
-                                          <button className='btn btn-outline-warning' title='edit' onClick={()=>{setEditId(aprnt.id);setNom(aprnt.nom);setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);openModal()}}> <i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                          <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(aprnt.id,aprnt.nom,aprnt.prenom,aprnt.email,aprnt.role)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                          <button className='btn btn-outline-success' title='detail' onClick={()=>{setNom(aprnt.nom); setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                        </small>
-                                      </p>
                                     </div>
-                                  </div>
+                                    <div className="col col-sm-6 ">
+                                    <div className="card-body w-100 ">
+                                      <button className='btn btn-default' title='edit' onClick={()=>{setEditId(aprnt.id);setNom(aprnt.nom);setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);openModal()}}> <i className="fa fa-edit text-primary" aria-hidden="true"></i></button> &nbsp;
+                                      <button className='btn btn-default' title='archive' onClick={()=>archive(aprnt.id)}> <i className="fa fa-archive text-info" aria-hidden="true"></i></button>&nbsp;
+                                      <button className='btn btn-default' title='detail' onClick={()=>{setNom(aprnt.nom); setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                    </div>
+                                    </div>
                                 </div>
+                              </div> */}
+
+                          <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
+                              <div className="row no-gutters">
+                                  <div className="col ">
+                                  <div className="card-body   " id='card-body'>
+                                      <img src={img1} className=" " alt="..."/>
+                                      &nbsp; &nbsp;
+                                      <strong >{aprnt.prenom}</strong> <br />
+                                      &nbsp; &nbsp;
+                                      <em className='text  text-default'>{aprnt.nom}</em>
+                                      
+                                  </div>
+                                  </div>
+                                  <div className="col-6 ">
+                                  <div className="card-body">
+                                      <p className="card-text">
+                                      <small className="text-muted">
+                                      <button className='btn btn-outline-warning' title='edit' onClick={()=>{setEditId(aprnt.id);setNom(aprnt.nom);setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);openModal()}}> <i className="fa fa-edit text-primary" aria-hidden="true"></i></button> &nbsp;
+                                      <button className='btn btn-default' title='archive' onClick={()=>archive(aprnt.id)}> <i className="fa fa-archive text-info" aria-hidden="true"></i></button>&nbsp;
+                                      <button className='btn btn-outline-info' title='detail' onClick={()=>{setNom(aprnt.nom); setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                      </small>
+                                      </p>
+                                  </div>
+                                  </div>
                               </div>
+                          </div>
         
                           </div>
                         ):(null)
@@ -262,7 +314,7 @@ const ListApprenant = () => {
 
             <ToastContainer
             position="top-right"
-            autoClose={5000}
+            autoClose={4000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

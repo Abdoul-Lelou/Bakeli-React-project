@@ -11,7 +11,7 @@ const Cours = () => {
     const [detail, setDetail] = useState('');
     const [coursArchiches, setuoursArchiches] = useState('')
     const [btn, setBtn] = useState(false);
-    const [dater, setDater] = useState('');
+    const [date, setDater] = useState('');
     const [coursStatus, setCoursStatus] = useState(false);
     const [imageAsFile, setImageAsFile] = useState('');
     const [imageAsUrl, setImageAsUrl] = useState('')
@@ -88,7 +88,7 @@ const Cours = () => {
             console.log('ratée')
           } else {
             console.log('gagnée')
-            dbCours.doc().set({cours,detail,dater}).then(resp=>{
+            dbCours.doc().set({cours,detail,date}).then(resp=>{
               notify();
               setTimeout(()=>{
                 route.push('/welcome');
@@ -107,8 +107,9 @@ const Cours = () => {
     // const notifyFalse = (err) => toast(err);
 
     return (
-        <div className=' mainDiv ml-4'>
-        <form id="contact" onSubmit={handleFireBaseUpload}>
+        <>
+        &nbsp;
+        <form id="contact" onSubmit={handleClick}>
           <h6>AJOUTER UN COURS</h6>
           <fieldset>
             <input 
@@ -127,7 +128,7 @@ const Cours = () => {
             <label htmlFor="Details" className='text-info'>Details</label>
           </fieldset>
           <fieldset>
-            <input placeholder=" detail" type="date" tabIndex="2" value={dater} required onChange={(e)=>setDater(e.target.value)}/>
+            <input placeholder=" detail" type="date" tabIndex="2" value={date} required onChange={(e)=>setDater(e.target.value)}/>
           </fieldset>
           <fieldset>
 
@@ -151,7 +152,7 @@ const Cours = () => {
             />
             {/* Same as */}
             <ToastContainer />
-      </div>
+      </>
     )
 }
 

@@ -12,9 +12,9 @@
 }
 .card img{
     border-radius: 10%;
-    margin: 2%;
-    padding: 2%;
-    width: 40%;
+    margin: 0% 0 0 5%;
+    /*padding: 2%; */
+    width: 30%;
     float: left;
     /* height: 80%; */
 }
@@ -179,6 +179,16 @@ form{
   margin-left:12%
 }
 
+#card-body{
+  /* float: right; */
+  padding: 0px 0px 0px 0px;
+  margin: 2px 0 0 0;
+  height: 100%;
+}
+
+strong{
+  /* border: brown 1px solid; */
+}
   
 
 

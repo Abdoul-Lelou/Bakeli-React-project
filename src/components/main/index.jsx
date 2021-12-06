@@ -3,11 +3,12 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import {dbCours,dbArchive,dbFirestores,storageFirebase} from "../../firebase";
+import {dbCours,dbArchive,dbFirestores} from "../../firebase";
 import img1 from '../../images/img1.jpg'
 import Modal from 'react-modal';
 import './index.css';
 import Footer from '../footer';
+import Swal from 'sweetalert2';
 
 
 const customStyles = {
@@ -17,7 +18,6 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     margin: 'auto',
-    // marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     background:'#fff',
     width: '30%',
@@ -38,8 +38,7 @@ const Main = () => {
   const [dataSearch, setdataSearch] = useState([]);
   const [disableButton, setdisableButton] = useState(false);
   const [show, setshow] = useState(false);
-  const [file] = useState('');
-  const [color] = useState(['#758','#a87','#faa','#263'])
+
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -100,22 +99,48 @@ const Main = () => {
     
     
      // function pour effectuer l'archivage d'un cour
-      console.log(file)
 
     const archive=(id,cours,detail)=>{
-      dbArchive.doc(id).set({cours,detail}).then(resp=>{
-        notify('Archivé avec succés');
-       dbFirestores.collection("cours")
-       .doc(id)
-       .delete()
-       .then(() => {
-        notify('Deplacé avec succes');
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-       }) // Document deleted
-       .catch((error) => notify(error));
-     })
+
+      Swal.fire({
+        title: 'Archiver?',
+        text: "Action irreversible!",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Archiver!',
+        width:'30%',
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          dbArchive.doc(id).set({cours,detail}).then(resp=>{
+            notify('Archivé avec succés');
+           dbFirestores.collection("cours")
+           .doc(id)
+           .delete()
+           .then(() => {
+
+            Swal.fire(
+              'Archivé!',
+              'Fichier archivé',
+              'success'
+            )
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+           }) // Document deleted
+           .catch((error) =>Swal.fire(
+              'Erreur!',
+              'Oups! erreur',
+              'error'
+            ));
+         })
+          
+        }
+      })
+     
     }
 
     // function pour effectuer la recherche d'un cour
@@ -139,11 +164,7 @@ const Main = () => {
           <SweetAlert
             info
             show={show}
-            // showCancel
-            // confirmBtnText="OK !"
-            // cancelBtnText="OK !"
             confirmBtnBsStyle="success"
-            // cancelBtnBsStyle="success"
             disabled={disableButton}
             title="Détails"
             onConfirm={hideAlert}
@@ -154,7 +175,6 @@ const Main = () => {
               <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
                 <div className="card bg-light shadow">
                   <div className="card-body">
-                    {/* <h6 className"card-title text-info ">Détails</h6> */}
                     <p className="card-text ">{detailEdit}</p>
                     <span  className="btn btn-primary" disabled>{courEdit}</span>
                   </div>
@@ -235,26 +255,24 @@ const Main = () => {
                   
                     <div  key={index} className="pb-2">
   
-                      <div className="card mb-4" style={{maxWidth: '480px'}}>
+                        <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
                           <div className="row no-gutters">
                             <div className="col ">
-                              <img src={img1} className="card-img" alt="..."/>
-                              <div className="card-body">
-                                <p className="card-text text-center">
-                                 <span className="card-text">{cour.cours}</span>
-                                  <small className="text-muted"></small>
-                                </p>
+                              <div className="card-body   " id='card-body'>
+                                <img src={img1} className=" " alt="..."/>
+                               
+                                 <strong >{cour.cours}</strong> <br />
+                                 <em className='text  text-default'>{cour.date}</em>
+                                
                               </div>
                             </div>
-                            <div className="col-6">
+                            <div className="col-6 ">
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={() =>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id); openModal() }}>
-                                      <i className="fa fa-edit" aria-hidden="true"></i>
-                                    </button> &nbsp;
-                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail) }> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}} > <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
                                 </p>
                               </div>
@@ -271,18 +289,18 @@ const Main = () => {
                     <div  key={index} className="w-100 mb-4   ">
                      
                     
-                      <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:color[index]}}>
+                        <div  className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
                           <div className="row no-gutters">
                             <div className="col ">
-                              <img src={img1} className="card-img p-2" alt="..."/>
-                              <div className="card-body">
-                                <p className="card-text text-center">
-                                 <span className="card-text">{cour.cours}</span>
-                                  <small className="text-muted"></small>
-                                </p>
+                              <div className="card-body   " id='card-body'>
+                                <img src={img1} className=" " alt="..."/>
+                               
+                                 <strong >{cour.cours}</strong> <br />
+                                 <em className='text  text-default'>{cour.date}</em>
+                                
                               </div>
                             </div>
-                            <div className="col-6">
+                            <div className="col-6 ">
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
@@ -328,10 +346,10 @@ const Main = () => {
                                 <label for="exampleFormControlTextarea1">Details</label>
                                 <textarea className="form-control" value={detailEdit} onChange={(e)=> setdEtailEdit(e.target.value)} rows="3"></textarea>
                              </div>
-                            <div classNameName="form-check">
+                            <div className="form-check">
                               
                             </div>
-                            {courEdit==='' || courEdit.length <=1 && detailEdit==='' || detailEdit.length <=4?(
+                            {(courEdit==='' || courEdit.length <=1) && detailEdit==='' || detailEdit.length <=4?(
                                <button type="submit" className="btn btn-primary disabled">Modifier</button>
                             ):(
                               <button type="submit" className="btn btn-primary " >Modifier</button>

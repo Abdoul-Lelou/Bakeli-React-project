@@ -41,7 +41,8 @@ const SignIn = () => {
 
     return (
         
-      <div className=' mainDiv ml-4'>
+      <>
+      &nbsp;
         <form id="contact" onSubmit={handleSubmit}>
           <h6>INSCRIPTION</h6>
           <fieldset>
@@ -81,7 +82,7 @@ const SignIn = () => {
             {/*  Affichage des notifications*/}
             <ToastContainer />
 
-      </div>
+      </>
 
     )
 }
