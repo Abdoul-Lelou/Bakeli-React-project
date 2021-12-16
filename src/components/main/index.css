@@ -28,19 +28,25 @@
     height: 10%;
 }
 
-@media screen and (max-width: 924px)
+@media screen and (max-width: 804px)
 {
    .mains
     {
         margin-left: 85px;
-       
+        
     }
+
+    .card img{
+      margin: 0% 0 0 8%;
+  }
+
     .searchBar{
-    margin-left: 50px;
-    width: 10%;
+      margin-left: 50px;
+      width: 10%;
     }
     .card{
-      left:0%
+      left:1%;
+      
     }
 }
 

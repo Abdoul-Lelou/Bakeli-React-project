@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Sidebar from './components/header';
-import { Route, Switch, withRouter} from 'react-router-dom'
+import { Route, Switch, withRouter,useHistory} from 'react-router-dom'
 import Welcome from './components/welcome';
 import Login from './components/login';
 import SignIn from './components/signIn';
@@ -11,41 +11,41 @@ import Archives from './components/archives';
 import Prof from './components/prof';
 import ListProf from './components/listProf';
 import ListApprenant from './components/listApprenant';
-import { auth } from './firebase';
+import { auth, dbFirestore } from './firebase';
+import UserCards from './components/userCard';
 
 
 
 
 
-class App extends React.Component {
+const App =()=> {
 
-	constructor(props) {
-		super(props)
+	const [prenom, setPrenom] = useState('');
+	const [nom, setNom] = useState('');
+	const [url, setUrl] = useState('')
+
+	const path= useHistory('')
 	
-		this.state = {
+		useEffect(() => {
+			const uid = localStorage.getItem('uidLogin');
+			// if (!uid) {
+			// 	path.push('')
+			// }
+			!uid ?(
+				path.push('')
+			):(
+				dbFirestore.doc(uid).get().then(res => {
+					setUrl(res.data().url)
+					setPrenom(res.data().prenom)
+					setNom(res.data().nom)
+					console.log(res.data().prenom)
+					})
+			)		
 			
-			userSession:(null),
-			activeLink: false
-		}
-	}
+		}, [])
 	
-	
-
-	componentDidMount() {
-		// console.log(auth.onAuthStateChanged(user=> console.log(user)))
-		let listener=auth.onAuthStateChanged(user=>{
-            user ? (this.setState({userSession:user})
-            ): this.props.history.push('/')
-			console.log(this.state.userSession)
-        })
-		console.log(window.location.pathname)
-		// return () => {
-        //     listener()
-        // }
-	}
 	
 		
-	render() {
 		return (
 			<>
 			
@@ -95,6 +95,10 @@ class App extends React.Component {
 						<ListApprenant />
 					</Route>
 
+					<Route path='/user' exact>
+						{/* <Sidebar /> */}
+						<UserCards />
+					</Route>
 					
 
 				</Switch>
@@ -103,7 +107,6 @@ class App extends React.Component {
 			
 			</>
 		)
-	}
 }
 export default  App;
 

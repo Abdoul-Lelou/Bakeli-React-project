@@ -18,6 +18,10 @@ const Cours = () => {
     const route= useHistory();
 
     useEffect(() => {
+        const uid = localStorage.getItem('uidLogin');
+        if (!uid) {
+          route.push('')
+        }
         if (cours.lenght >2) {
             setBtn(true)
         }
@@ -83,12 +87,12 @@ const Cours = () => {
               dataCours='';
             }
           });
-          console.log(coursStatus)
+  
           if (!!coursStatus) {
-            console.log('ratée')
+            return
           } else {
             console.log('gagnée')
-            dbCours.doc().set({cours,detail,date}).then(resp=>{
+            dbCours.doc().set({cour:cours,detail,date},{merge:true}).then(resp=>{
               notify();
               setTimeout(()=>{
                 route.push('/welcome');
@@ -103,7 +107,14 @@ const Cours = () => {
        
       
     }
+
     const notify = () => toast("Cours ajouté!");
+
+    const toInputUppercase = e => {
+      if(e.target.value !==''){
+        e.target.value = ("" + e.target.value.replace(/[^a-zA-Z ]/g, ""))[0].toUpperCase() + e.target.value.slice(1).toLowerCase();
+      } 
+    }
     // const notifyFalse = (err) => toast(err);
 
     return (
@@ -119,16 +130,17 @@ const Cours = () => {
               value={cours} 
               required 
               onChange={e=>setCours(e.target.value)}
+              onInput={toInputUppercase}
             />
             <label htmlFor="Cour" className='text-info'>Cour</label>
 
           </fieldset>
           <fieldset>
-            <input placeholder=" detail" type="text" tabIndex="2" value={detail} required onChange={(e)=>setDetail(e.target.value)}/>
+            <input placeholder=" detail" type="text" tabIndex="2" value={detail} required onChange={(e)=>setDetail(e.target.value)} onInput={toInputUppercase}/>
             <label htmlFor="Details" className='text-info'>Details</label>
           </fieldset>
           <fieldset>
-            <input placeholder=" detail" type="date" tabIndex="2" value={date} required onChange={(e)=>setDater(e.target.value)}/>
+            <input placeholder=" detail" type="date" tabIndex="2" value={date} required onChange={(e)=>setDater(e.target.value)} />
           </fieldset>
           <fieldset>
 

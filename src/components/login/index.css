@@ -101,3 +101,20 @@
 {
     color: #ff0800;
 }
+
+.toastBody {
+    font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
+    color: #c40202; /* #10171D */
+    font-size: 1.875rem !important;
+}
+
+.Toastify__toast--warning {
+    background: #FFE8BC !important;
+  }
+  .Toastify__toast--error {
+    background: #FCA7A9 !important;
+  }
+  
+  .toastProgress {
+    background: #333F48 !important;
+  }

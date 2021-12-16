@@ -1,30 +1,45 @@
 import React,{useState} from 'react';
 import { useHistory } from 'react-router';
 import { auth,dbFirestore} from "../../firebase";
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 
-const Login = () => {
+const Login = (props) => {
 
     const [email, setEmail] = useState('apprenant@gmail.com');
     const [password, setPassword] = useState('apprenant');
     const route = useHistory();
 
+    const notify = (msg) => toast(msg);
 
     const handleChange= e=>{
         e.preventDefault();
-        const login =auth.signInWithEmailAndPassword(email,password);
-        let roleUser=''; 
-        return login.then(res=>{
-            dbFirestore.doc(res.user.uid).get().then(result => {
-                roleUser= result.data().role;
-                localStorage.setItem('userRole', roleUser);
-                route.push('/welcome');
-            });
-
-
-       })  
+        signInWithEmailAndPassword(email,password);
     }
+
+    const signInWithEmailAndPassword = async (emailUser, passwordUser) => {
+        let roleUser= '';
+        try {
+            await auth.signInWithEmailAndPassword(emailUser, passwordUser).then(res=>{
+            localStorage.setItem('uidLogin', res.user.uid)  
+            dbFirestore.doc(res.user.uid).get().then(result => {
+                
+                if (result.data() !== undefined) {
+                    roleUser= result.data().role;
+                    localStorage.setItem('userRole', roleUser);
+                    route.push('/welcome');
+                    notify('Bienvenue')  
+                    return;  
+                }
+                notify('Utilisateur supprimé') 
+            })
+          })
+        } catch (err) {
+          notify(err.message) 
+        }
+    };
        
 
     return (
@@ -48,6 +63,22 @@ const Login = () => {
                 {/* <p className="forgot">Forgot Password? <a href="#">Click Here</a></p> */}
                 
             </div>
+
+            <ToastContainer
+            position="top-right"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            bodyClassName="toastBody"
+            />
+            {/*  Affichage des notifications*/}
+            {/* <ToastContainer /> */}
+
         </div>   
     )
 }

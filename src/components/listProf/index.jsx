@@ -4,10 +4,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Modal from 'react-modal';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { dbArchiveProfs, dbFirestores, dbProf } from '../../firebase';
+import { dbArchiveProfs, dbFirestores, dbProf, storageFirebase } from '../../firebase';
 import img1 from'../../images/img1.jpg';
 import './index.css';
 import Swal from 'sweetalert2';
+import { useHistory } from 'react-router';
 
 
 const customStyles = {
@@ -28,14 +29,15 @@ const ListProf = () => {
 
     const [dataProf, setDataProf] = useState([]);
     const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [profEdit, setProfEdit] = useState('');
-    const [matiereEdit, setMatiereEdit] = useState('');
+    const [nom, setNom] = useState('');
+    const [matieres, setMatiere] = useState('');
     const [editId, setEditId] = useState('');
     const [disableButton, setdisableButton] = useState(false);
     const [show, setshow] = useState(false);
-    const [photo, setphoto] = useState([])
-
+    const [url, setUrl] = useState('')
     const [color] = useState(['#758','#a87','#faa','#263'])
+
+    const path= useHistory('')
 
     let dataChange= '';
 
@@ -59,6 +61,12 @@ const ListProf = () => {
     }
 
     useEffect(() => {
+
+        const uid = localStorage.getItem('uidLogin');
+        if (!uid) {
+          path.push('')
+        }
+        
         dbProf.get().then((snapshot) => {
           const data = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -69,15 +77,33 @@ const ListProf = () => {
         });
 
 
-        console.log(dataProf)
        
-        dataProf.map((prof,index)=>{
-          setphoto(prof.image)
-        })
+        // dataProf.map((prof,index)=>{
+        //   setphoto(prof.image)
+        // })
+
+        // const fetchImages = async () => {
+        //   let result = await storageFirebase.ref('images/');
+        //   // console.log((await result.list()).items.map(item=>{
+        //   //   console.log(item.data)
+        //   // }))
+        //   // let urlPromises = result.items.map((imageRef) =>
+        //   //   imageRef.getDownloadURL()
+        //   // );
+    
+        //   // return Promise.all(urlPromises);
+        // };
+        // fetchImages();
+        // const loadImages = async () => {
+        //   const urls = await fetchImages();
+        //   setFiles(urls);
+        // };
+        // loadImages();
         
-    }, [dataChange])  
+    }, [])  
     
     const notify=(msg) => toast(msg);
+
     
     const fetchImages = async(e) => {
 
@@ -93,28 +119,26 @@ const ListProf = () => {
     //   // return all resolved promises
     //   return Promise.all(urlPromises);
     }
-    // const urls = await fetchImages();
-    // setphoto(urls);
-    // console.log("inside .then() ", urls) ;
-    
-    
+   
+
 
     const edit=(val)=>{
       val.preventDefault();
-      const e=dbProf.doc(editId).set({name:profEdit,matiere:matiereEdit});
-      console.log(e)
+      console.log(nom+' '+matieres+' '+editId)
+      const e=dbProf.doc(editId).set({nom,matieres},{merge:true});
+     
       e.then(r=> {  
           notify('Modifié')
           setTimeout(() => {
             window.location.reload()
           }, 1000);
-          console.log(r)
+     
         }
       );
     }
 
     const deleteProf=(e)=>{
-      console.log(e)
+    
       Swal.fire({
         title: 'Supprimer?',
         text: "Action irreversible!",
@@ -137,6 +161,8 @@ const ListProf = () => {
         }
       })
     }
+
+
     
     const SweetAlertFunction =  ({ show, disableButton, submit, hideAlert }) => {
       return (
@@ -148,22 +174,19 @@ const ListProf = () => {
           title="Détails"
           onConfirm={hideAlert}
           onCancel={hideAlert}
-          dependencies={[profEdit, matiereEdit]}
+          dependencies={[nom, matieres]}
         >
          <div className="row sweetRow">
             <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
             <ul className="list-group w-100">
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 <h4>Nom:</h4>
-                <span className="badge badge-primary bg-primary badge-pill text">{matiereEdit}</span>
+                <span className="badge badge-primary bg-primary badge-pill text">{nom}</span>
               </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-              <h4>Prenom:</h4>
-                <span className="badge badge-primary bg-primary badge-pill"> {profEdit} </span>
-              </li>
+             
               <li className="list-group-item d-flex justify-content-between align-items-center">
               <h4>Matiere:</h4>
-                <span className="badge badge-primary bg-primary badge-pill"> {matiereEdit} </span>
+                <span className="badge badge-primary bg-primary badge-pill"> {matieres} </span>
               </li>
               
             </ul>
@@ -173,32 +196,69 @@ const ListProf = () => {
       );
     };
 
-    const archive=(id,name,matiere)=>{
-        dbArchiveProfs.doc(id).set({name,matiere}).then(resp=>{
-            notify('Archivé avec succés');
-           dbFirestores.collection("prof")
-           .doc(id)
-           .delete()
-           .then(() => {
-            notify('Deplacé avec succes');
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
-           }) // Document deleted
-           .catch((error) => notify(error));
-         })
+
+
+    const archive=(id,nom,matieres,url)=>{
+
+        Swal.fire({
+          title: 'Archiver?',
+          text: "Action irreversible!",
+          icon: 'warning',
+          showCancelButton: true,
+          cancelButtonText: 'Annuler',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Archiver!',
+          width:'30%',
+        }).then((result) => {
+          if (result.isConfirmed) {
+  
+              dbArchiveProfs.doc(id).set({nom,matieres,url},{merge:true}).then(resp=>{
+                notify('Archivé avec succés');
+                dbFirestores.collection("prof")
+                .doc(id)
+                .delete()
+                .then(() => {
+      
+                  Swal.fire(
+                    'Archivé!',
+                    'Fichier archivé',
+                    'success'
+                  )
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 2000);
+                }) // Document deleted
+                .catch((error) =>Swal.fire(
+                    'Erreur!',
+                    'Oups! erreur',
+                    'error'
+                  ));
+            })
+            
+          }
+        })
+
     }
 
+
+
     return (
-        <div className='prof bg-light shadow w-50 border '>
-            <h4  className='text-start'>PROFESSEURS</h4>
+        <div className='prof bg-light  '>
+          <div className='pt-2'>
+            <ul className="nav nav-pills clearfix border  mb-2" >
+                <li className="active " id='linkActive'><a data-toggle="pill" href="#home">PROFESSEURS</a></li>       
+            </ul>
             <div
               id="scrollableDiv"
               style={{
                 height: 500,
                 overflow: 'auto',
                 flexDirection: 'column-reverse',
+                paddingBottom:'5px'
               }}
+
+              className='border border-success bg-light shadow'
             >
               {/*Put the scroll bar always on the bottom*/}
               <InfiniteScroll
@@ -206,76 +266,63 @@ const ListProf = () => {
                 style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
                 inverse={true} //
                 hasMore={true}
-                loader={
-                    <>
-                    <h4>Loading...</h4>
-                        <p>Donnees introuvable</p>
-                    </>
-            }
+                
                 scrollableTarget="scrollableDiv"
               >
-                {
-                    dataProf.map((prof, index) => (
-                    
-                    <div  key={index} className="pb-2 ">
-                      {/* <div className="card" style={{maxWidth: '600px',backgroundColor: color[index]}}>
-                          <div className="row no-gutters">
-                            <div className="col ">
-                              <img src={photo} className="card-img" alt="..."/>
-                              
-                              <div className="card-body">
-                                <p className="card-text text-center">
-                                 <span className="card-text">{prof.name}</span>
-                                  <small className="text-muted"></small>
-                                </p>
-                              </div>
-                            </div>
-                            <div className="col-6">
-                              <div className="card-body">
-                                <p className="card-text">
-                                    {prof.matiere}
-                                    &nbsp;
-                                  <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit' onClick={()=>{setEditId(prof.id);setProfEdit(prof.name);setMatiereEdit(prof.matiere);openModal()}}> <i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(prof.id,prof.name,prof.matiere)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setProfEdit(prof.name); setMatiereEdit(prof.matiere);setEditId(prof.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                  </small>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div> */}
+                <div className="tab-content  w-75">
+                                    
+                    <div id="home" className="tab-pane fade in active"> 
+                    <h3>PROFESSEURS</h3>
 
-                        <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
-                              <div className="row no-gutters">
-                                  <div className="col ">
-                                  <div className="card-body   " id='card-body'>
-                                      <img src={img1} className=" " alt="..."/>
-                                      &nbsp; &nbsp;
-                                      <strong >{prof.name}</strong> <br />
-                                      &nbsp; &nbsp;
-                                      <em className='text  text-default'>{prof.name}</em>
-                                      
+                    {dataProf.length >0?(
+                         dataProf.map((prof, index) => (
+                      
+                          <div  key={index} className="pb-2  pt-2">
+                            <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
+                                  <div className="row no-gutters">
+                                      <div className="col ">
+                                      <div className="card-body   " id='card-body'>
+                                          <img src={prof.url} className=" " alt="..."/>
+                                          &nbsp; &nbsp;
+                                          <strong >{prof.nom}</strong> <br />
+                                          &nbsp; &nbsp;
+                                          <em className='text  text-default'>{prof.matieres}</em>
+                                          
+                                      </div>
+                                      </div>
+                                      <div className="col-6 ">
+                                      <div className="card-body">
+                                          <p className="card-text">
+                                          <small className="text-muted">
+                                              <button className='btn btn-outline-warning' title='edit' onClick={(e)=> {setEditId(prof.id);setNom(prof.nom);setMatiere(prof.matieres);setUrl(prof.url);openModal()}} ><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                              <button className='btn btn-outline-warning' title='archive' onClick={()=>{setUrl(prof.url);archive(prof.id,prof.nom,prof.matieres,prof.url)}} ><i className="fa fa-archive" aria-hidden="true"></i></button> &nbsp;
+                                              <button className='btn btn-outline-success' title='detail' onClick={()=>{setMatiere(prof.matieres);setNom(prof.nom);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                          </small>
+                                          </p>
+                                      </div>
+                                      </div>
                                   </div>
-                                  </div>
-                                  <div className="col-6 ">
-                                  <div className="card-body">
-                                      <p className="card-text">
-                                      <small className="text-muted">
-                                          <button className='btn btn-outline-warning' title='supprimer' onClick={(e)=> deleteProf(e)} ><i className="fa fa-trash" aria-hidden="true"></i></button> &nbsp;
-                                          <button className='btn btn-outline-success' title='detail' onClick={()=>setshow(true)}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                      </small>
-                                      </p>
-                                  </div>
-                                  </div>
-                              </div>
+                            </div>
+      
+                        </div>
+      
+                        
+                      )
+                      )
+                    ):(
+                      <div className="card p-4 bg-danger">
+                          <div className="card-body  border border-warning w-75 bg-light shadow">
+                              <h5 className="card-title"><strong>Liste vide</strong></h5>
+                              <p className="card-text"> Aucun professeur n'est archivé</p>
+
                           </div>
-  
-                    </div>
-  
-                    
-                  )
-                )}
+                      </div>
+                    )
+                     
+                    }
+                  </div>
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                </div>
               </InfiniteScroll>
 
               <Modal
@@ -293,17 +340,17 @@ const ListProf = () => {
                           <fieldset >
                             <div className="form-group">
                               <label htmlFor="disabledTextInput">Prof</label>
-                              <input type="text" value={profEdit}  className="form-control" placeholder="Cours" onChange={(e)=>{setProfEdit(e.target.value);console.log(e.target.value)}} />
+                              <input type="text" value={nom}  className="form-control" placeholder="Cours" onChange={(e)=>{setNom(e.target.value)}} />
                             </div>
                             
                              <div className="form-group">
                                 <label htmlFor="exampleFormControlTextarea1">Matiere</label>
-                                <textarea className="form-control" value={matiereEdit} onChange={(e)=> setMatiereEdit(e.target.value)} rows="3"></textarea>
+                                <textarea className="form-control" value={matieres} onChange={(e)=> setMatiere(e.target.value)} rows="3"></textarea>
                              </div>
                             <div className="form-check">
                               
                             </div>
-                            {profEdit==='' || profEdit.length <=1 && matiereEdit==='' || matiereEdit.length <=4?(
+                            {!nom || !matieres ?(
                                <button type="submit" className="btn btn-primary disabled">Modifier</button>
                             ):(
                               <button type="submit" className="btn btn-primary " >Modifier</button>
@@ -336,6 +383,7 @@ const ListProf = () => {
               submit={() => hideAlert()}
               hideAlert={() => hideAlert()}
             />
+          </div>
         </div>
     )
 }

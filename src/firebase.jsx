@@ -20,6 +20,7 @@ export const dbFirestore = firebase.firestore().collection("users");
 export const dbFirestores = firebase.firestore();
 export const dbCours = firebase.firestore().collection("cours");
 export const dbProf = firebase.firestore().collection("prof");
+export const dbArchiveUsers = firebase.firestore().collection("archiveUsers");
 export const dbArchive = firebase.firestore().collection("archiveCours");
 export const dbArchiveProfs = firebase.firestore().collection("archiveProfs");
 export const storageFirebase= firebase.storage();

@@ -9,6 +9,7 @@ import Modal from 'react-modal';
 import './index.css';
 import Footer from '../footer';
 import Swal from 'sweetalert2';
+import { useHistory } from 'react-router';
 
 
 const customStyles = {
@@ -28,17 +29,18 @@ const customStyles = {
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 // Modal.setAppElement('');
 
-const Main = () => {
+const Main = ({nom,prenom,url}) => {
 
   const [dataCours, setDataCours] = useState([]);
   const [search, setSearch] = useState('');
-  const [courEdit, setCourEdit] = useState('');
+  const [coursEdit, setCourEdit] = useState('');
   const [detailEdit, setdEtailEdit] = useState('');
   const [editId, setEditId] = useState('');
   const [dataSearch, setdataSearch] = useState([]);
   const [disableButton, setdisableButton] = useState(false);
   const [show, setshow] = useState(false);
 
+  const path= useHistory('')
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -64,6 +66,10 @@ const Main = () => {
 
 
     useEffect(() => {
+        const uid = localStorage.getItem('uidLogin');
+        if (!uid) {
+          path.push('')
+        }
         dbCours.get().then((snapshot) => {
           const data = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -98,10 +104,10 @@ const Main = () => {
     }, [dataChange])  
     
     
-     // function pour effectuer l'archivage d'un cour
+     // function pour effectuer l'archivage d'un cours
 
-    const archive=(id,cours,detail)=>{
-
+    const archive=(id,cours,detail,date)=>{
+        console.log(date);
       Swal.fire({
         title: 'Archiver?',
         text: "Action irreversible!",
@@ -115,8 +121,7 @@ const Main = () => {
       }).then((result) => {
         if (result.isConfirmed) {
 
-          dbArchive.doc(id).set({cours,detail}).then(resp=>{
-            notify('Archivé avec succés');
+          dbArchive.doc(id).set({cours:cours,detail:detail,date:date},{merge:true}).then(resp=>{
            dbFirestores.collection("cours")
            .doc(id)
            .delete()
@@ -143,44 +148,45 @@ const Main = () => {
      
     }
 
-    // function pour effectuer la recherche d'un cour
+    // function pour effectuer la recherche d'un cours
     const filterSearch=()=>{
-        let dataFind= []
-        const srch= search.toLowerCase();
-        dataCours.map((data,index)=>{
-          console.log(data.cours)
-          if (srch === data.cours ) {
+        let dataFind= [],srchCapital='',courCapital='';
+        let srch= search;
+        srchCapital= srch.toUpperCase()
+        dataCours.map((data)=>{
+          courCapital= data.cour.toUpperCase();
+          if (courCapital === srchCapital ) {
             dataFind.push(data)
             setdataSearch(dataFind)
           }
+          return true;
         })
     }
 
 
    // function pour determiner le contenu du modal de modification
    //  installer le module react-bootstrap-sweetalert pour cela
-    const SweetAlertFunction =  ({ show, disableButton, submit, hideAlert }) => {
+    const SweetAlertFunction =  ({ show, disableButton, hideAlert }) => {
         return (
           <SweetAlert
             info
             show={show}
             confirmBtnBsStyle="success"
             disabled={disableButton}
-            title="Détails"
+            title={coursEdit}
             onConfirm={hideAlert}
             onCancel={hideAlert}
-            dependencies={[courEdit, detailEdit]}
+            dependencies={[coursEdit, detailEdit]}
           >
-           <div className="row m-0">
-              <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
-                <div className="card bg-light shadow">
-                  <div className="card-body">
-                    <p className="card-text ">{detailEdit}</p>
-                    <span  className="btn btn-primary" disabled>{courEdit}</span>
-                  </div>
-                </div>
+
+            <div className="card p-4">
+              <div className="card-body">
+                  
+                  <p className="card-text"> {detailEdit}</p>
+
               </div>
             </div>
+
           </SweetAlert>
         );
     };
@@ -190,11 +196,11 @@ const Main = () => {
       setshow(false);
     }
 
-    // function pour modifier un cour
+    // function pour modifier un cours
     const submit=(e)=> {
-      console.log(courEdit);
+      console.log(coursEdit);
       return;
-      dbCours.doc(editId).update({'cours':courEdit,'detail':detailEdit}).then();
+      dbCours.doc(editId).update({'courss':coursEdit,'detail':detailEdit}).then();
 
       setdisableButton(true );
       notify('Modifié avec succes');
@@ -208,7 +214,7 @@ const Main = () => {
 
     const edit=(val)=>{
       val.preventDefault();
-      const e=dbCours.doc(editId).set({cours:courEdit,detail:detailEdit});
+      const e=dbCours.doc(editId).update({cours:coursEdit,detail:detailEdit});
       
       e.then(r=> {  
           notify('Modifié')
@@ -221,16 +227,16 @@ const Main = () => {
     
 
     return (
-        <div className='mains'>
+        <div className='mains shadow border '>
          
             <div className="search-box mb-2">
-                <input type="text" className="search-input" placeholder="Search.." value={search} onChange={(e)=>setSearch(e.target.value)}/>
+                <input type="text" className="search-input" placeholder="Search.." value={search} onChange={(e)=>{setSearch(e.target.value)}}/>
 
-                <button className="search-button" onClick={()=>filterSearch()} >
-                <i className="fa fa-search" aria-hidden="true"></i>
+                <button className="btn btn-search search-button" onClick={()=>filterSearch()} >
+                <i className="text-success fa fa-search" aria-hidden="true"></i>
                 </button>
             </div>
-            <h4  className='text-start'>Popular courses</h4>
+            <h4  className='text-start'>Popular coursses</h4>
             <div
               id="scrollableDiv"
               style={{
@@ -252,40 +258,50 @@ const Main = () => {
               >
                 {search !==''?(
                   dataSearch.map((cour, index) => (
-                  
+                   cour.cour.toUpperCase() === search.toUpperCase()?(
+
                     <div  key={index} className="pb-2">
-  
-                        <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
-                          <div className="row no-gutters">
-                            <div className="col ">
-                              <div className="card-body   " id='card-body'>
-                                <img src={img1} className=" " alt="..."/>
-                               
-                                 <strong >{cour.cours}</strong> <br />
-                                 <em className='text  text-default'>{cour.date}</em>
-                                
-                              </div>
+
+                    <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
+                        <div className="row no-gutters">
+                          <div className="col ">
+                            <div className="card-body   " id='card-body'>
+                              <img src={img1} className="img " alt="..."/>
+                             
+                               <strong >{cour.cour}</strong> <br />
+                               <em className='text  text-default'>{cour.date}</em>
+                              
                             </div>
-                            <div className="col-6 ">
-                              <div className="card-body">
-                                <p className="card-text">
-                                  <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                  </small>
-                                </p>
-                              </div>
+                          </div>
+                          <div className="col-6 ">
+                            <div className="card-body">
+                              <p className="card-text">
+                                <small className="text-muted">
+                                  <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cour); setdEtailEdit(cour.detail); setEditId(cour.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                  <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cour,cour.detail,cour.date)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                  <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cour); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                </small>
+                              </p>
                             </div>
                           </div>
                         </div>
-  
                     </div>
-  
-                    
+
+                  </div>
+
+                   ):(
+                    <div key={index} className="card p-4 bg-danger">
+                      <div className="card-body  border border-warning w-75 bg-light shadow">
+                          <h5 className="card-title"><strong>Liste vide</strong></h5>
+                          <p className="card-text"> Ce cour n'existe pas dans la liste</p>
+
+                      </div>
+                    </div>
+                   )   
                   ))
+                          
                 ):(
-                  dataCours.map((cour, index) => (
+                  dataCours.map((cours, index) => (
                     <div  key={index} className="w-100 mb-4   ">
                      
                     
@@ -295,8 +311,8 @@ const Main = () => {
                               <div className="card-body   " id='card-body'>
                                 <img src={img1} className=" " alt="..."/>
                                
-                                 <strong >{cour.cours}</strong> <br />
-                                 <em className='text  text-default'>{cour.date}</em>
+                                 <strong >{cours.cour}</strong> <br />
+                                 <em className='text  text-default'>{cours.date}</em>
                                 
                               </div>
                             </div>
@@ -304,9 +320,9 @@ const Main = () => {
                               <div className="card-body">
                                 <p className="card-text">
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cours); setdEtailEdit(cour.detail); setEditId(cour.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cours,cour.detail)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cours); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cours.cour); setdEtailEdit(cours.detail); setEditId(cours.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cours.id,cours.cour,cours.detail,cours.date)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cours.cour); setdEtailEdit(cours.detail);setEditId(cours.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                   </small>
                                 </p>
                               </div>
@@ -323,7 +339,7 @@ const Main = () => {
               </InfiniteScroll>
                     
             </div>
-              <Footer />
+              <Footer prenom={prenom} nom={nom} url={url}/>
                 <Modal
                   isOpen={modalIsOpen}
                   onAfterOpen={afterOpenModal}
@@ -338,18 +354,18 @@ const Main = () => {
                         <form className='border border-success' onSubmit={e=>edit(e)}>
                           <fieldset >
                             <div className="form-group">
-                              <label for="disabledTextInput">Cours</label>
-                              <input type="text" value={courEdit}  className="form-control" placeholder="Cours" onChange={(e)=>{setCourEdit(e.target.value);console.log(e.target.value)}} />
+                              <label htmlFor="disabledTextInput">Cours</label>
+                              <input type="text" value={coursEdit}  className="form-control" placeholder="Cours" onChange={(e)=>{setCourEdit(e.target.value);console.log(e.target.value)}} />
                             </div>
                             
                              <div className="form-group">
-                                <label for="exampleFormControlTextarea1">Details</label>
+                                <label htmlFor="exampleFormControlTextarea1">Details</label>
                                 <textarea className="form-control" value={detailEdit} onChange={(e)=> setdEtailEdit(e.target.value)} rows="3"></textarea>
                              </div>
                             <div className="form-check">
                               
                             </div>
-                            {(courEdit==='' || courEdit.length <=1) && detailEdit==='' || detailEdit.length <=4?(
+                            {(!coursEdit) || (!detailEdit) ?(
                                <button type="submit" className="btn btn-primary disabled">Modifier</button>
                             ):(
                               <button type="submit" className="btn btn-primary " >Modifier</button>

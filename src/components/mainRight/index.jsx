@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import img1 from '../../images/img1.jpg'
 import './index.css';
 
-const MainRight = () => {
+const MainRight = ({nom,prenom,url}) => {
 
     const [value, setCalendar] = useState(new Date());
   
@@ -46,14 +46,15 @@ const MainRight = () => {
 
                   <div className="item p-2">
                     <div className="card" style={{backgroundColor:'transparent',border: '0px'}}>
-                        <div className="middle-container bg-default d-flex  justify-content-between align-items-center " id='widthContainer'>
-                            <div className="dollar-div ">
-                                <div className="round-div">
-                                  <i className="fa fa-dollar dollar"> </i>
+                        <div className="middle-container t d-flex  justify-content-between align-items-center " id='widthContainer'>
+                            {/* <div className=" w-50 border">
+                                <div className="">
                                 </div>
-                            </div>
-                            <div className="col">
-                             <p className="card-text colTextName "> Mr Diatta</p>
+                            </div> */}
+                                <img src={url} alt="" srcset="" />
+
+                            <div className="col ">
+                             <p className="card-text colTextName "> {prenom} {nom} </p>
                             <p className="card-text  colTextName" >
                                 <span className="fa fa-star checked" id='fa'></span>
                                 <span className="fa fa-star checked" id='fa'></span>

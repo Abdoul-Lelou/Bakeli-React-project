@@ -1,20 +1,24 @@
 .archive{
-    width: 62%;
-    padding: 0 auto;
+    width: 48%;
+    /* padding: 0 auto; */
     margin:0 auto;
 }
 
 #imgArchive{
-    padding-left: 4%;
+    padding-left: 7%;
     border-radius: 50%;
 }
 
 @media screen and (max-width: 700px){
-    .archive{
+    /* .archive{
       width: 65%;
       margin-left: 22%;
-    }
-
+    } */
+/* 
+#imgArchive{
+    padding-left: 16%;
+    border-radius: 50%;
+} */
     .tab-content {
         margin: 0 auto;
     }
@@ -35,13 +39,14 @@
 }
 
 .card{
-    padding-right: 4%;
+    margin-right: 10%;
 }
 
 .card-body{
     margin-left: 10%;
     padding: 5%;
 }
+
 h3{
     border-bottom: 1px cornflowerblue solid;
    

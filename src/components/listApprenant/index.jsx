@@ -4,10 +4,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Modal from 'react-modal';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { dbArchiveProfs, dbFirestore, dbFirestores } from '../../firebase';
+import {dbArchiveUsers, dbArchiveProfs, dbFirestore, dbFirestores } from '../../firebase';
 import img1 from'../../images/img1.jpg';
 import './index.css';
 import Swal from 'sweetalert2';
+import { useHistory } from 'react-router';
 
 const customStyles = {
   content: {
@@ -17,7 +18,7 @@ const customStyles = {
     bottom: 'auto',
     margin: 'auto',
     transform: 'translate(-50%, -50%)',
-    background:'#fff',
+    background:'#456',
     width: '30%',
     border: '1px solid #445'
   },
@@ -28,7 +29,7 @@ const ListApprenant = () => {
     const [dataProf, setDataProf] = useState([]);
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [profEdit, setProfEdit] = useState('');
+    const [aprntEdit, setAprntEdit] = useState('');
     const [matiereEdit, setMatiereEdit] = useState('');
     const [editId, setEditId] = useState('');
     const [disableButton, setdisableButton] = useState(false);
@@ -37,8 +38,10 @@ const ListApprenant = () => {
     const [prenom, setPrenom] = useState();
     const [email, setEmail] = useState();
     const [role, setRole] = useState();
+    const [url, setUrl] = useState()
+    const [color] = useState(['#758','#a87','#faa','#263']);
 
-    const [color] = useState(['#758','#a87','#faa','#263'])
+    const path= useHistory('')
 
     let dataChange= '';
 
@@ -64,6 +67,12 @@ const ListApprenant = () => {
 
 
     useEffect(() => {
+
+        const uid = localStorage.getItem('uidLogin');
+        if (!uid) {
+          path.push('')
+        }
+        
         dbFirestore.get().then((snapshot) => {
           const data = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -77,7 +86,7 @@ const ListApprenant = () => {
     
     const notify=(msg) => toast(msg);
     
-    const SweetAlertFunction =  ({ show, disableButton, submit, hideAlert }) => {
+    const SweetAlertFunction =  ({ show, disableButton, hideAlert }) => {
       return (
         <SweetAlert
           info
@@ -87,7 +96,7 @@ const ListApprenant = () => {
           title="Détails"
           onConfirm={hideAlert}
           onCancel={hideAlert}
-          dependencies={[profEdit, matiereEdit]}
+          dependencies={[aprntEdit, matiereEdit]}
         >
          <div className="row sweetRow">
             <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
@@ -117,8 +126,7 @@ const ListApprenant = () => {
 
     const edit=(val)=>{
       val.preventDefault();
-      const e=dbFirestore.doc(editId).set({nom:nom,prenom:prenom,email:email,role:role});
-      console.log(e)
+      const e=dbFirestore.doc(editId).set({nom,prenom,email,role,url},{merge:true});
       e.then(r=> {  
           notify('Modifié')
           setTimeout(() => {
@@ -129,7 +137,7 @@ const ListApprenant = () => {
       );
     }
 
-    const archive=(id)=>{
+    const archive=(id,nom,prenom,email,role,url)=>{
 
       Swal.fire({
         title: 'Archiver?',
@@ -144,29 +152,29 @@ const ListApprenant = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           
-
-          dbArchiveProfs.doc(id).set({nom:nom,prenom:prenom,email:email,role:role}).then(resp=>{
+        console.log(nom)
+          dbArchiveUsers.doc(id).set({nom:nom,prenom:prenom,email:email,role:role,url:url},{merge:true}).then(resp=>{
             notify('Archivé avec succés');
-           dbFirestores.collection("users")
-           .doc(id)
-           .delete()
-           .then(() => {
-            Swal.fire(
-              'Archivé!',
-              'Fichier archivé',
-              'success'
-            )
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
-           }) // Document deleted
-           .catch((error) => Swal.fire(
-            'Erreur!',
-            ''+error,
-            'error'
-          ));
-         })
-        
+            dbFirestores.collection("users")
+            .doc(id)
+            .delete()
+            .then(() => {
+  
+              Swal.fire(
+                'Archivé!',
+                'Fichier archivé',
+                'success'
+              )
+              setTimeout(() => {
+                window.location.reload();
+              }, 2000);
+            }) // Document deleted
+            .catch((error) =>Swal.fire(
+                'Erreur!',
+                'Oups! erreur',
+                'error'
+              ));
+        })
           
         }
       })
@@ -174,7 +182,11 @@ const ListApprenant = () => {
     }
 
     return (
-        <div className='prof bg-light shadow '>
+        <div className='prof bg-light '>
+          <div className='pt-2'>
+            <ul className="nav nav-pills clearfix border  mb-2 " >
+                <li className="active " id='linkActive'><a data-toggle="pill" href="#home">APPRENANTS</a></li>       
+            </ul>
             <div
               id="scrollableDiv"
               style={{
@@ -182,56 +194,34 @@ const ListApprenant = () => {
                 overflow: 'auto',
                 flexDirection: 'column-reverse',
               }}
+              className='border border-success bg-light shadow'
             >
-            <h4  className='text-start '>APPRENANTS</h4>
+          
 
               {/*Put the scroll bar always on the bottom*/}
               
               <InfiniteScroll
                 dataLength={5}
-                style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
+                style={{ display: 'flex', flexDirection: 'column-reverse', paddingBottom:'5px' }} //To put endMessage and loader to the top.
                 inverse={true} //
                 hasMore={true}
-                loader={
-                    <>
-                    <h4>Loading...</h4>
-                        <p>Donnees introuvable</p>
-                    </>
-            }
+               
                 scrollableTarget="scrollableDiv"
               >
-                {
-                    dataProf.map((aprnt, index) => (
-                      aprnt.role ==='apprenant'?(
-                        <div  key={index} className="pb-2">
-                             
-
-                              {/* <div className="card" style={{maxWidth:'50rem',height:'8rem',backgroundColor:"#" + ((1<<24)*Math.random() | 2).toString(16)}}>
-                                <div className="row  no-gutters">
-                                    <div className="col  ">
-                                    <img src={img1} className="" id='imgArchive' alt="..."/>
-                                    <div className="card-body">
-                                        <p className="card-text text-center">
-                                        <span className="card-text">{aprnt.prenom} {aprnt.nom}</span>
-                                        <small className="text-muted"></small>
-                                        </p>
-                                    </div>
-                                    </div>
-                                    <div className="col col-sm-6 ">
-                                    <div className="card-body w-100 ">
-                                      <button className='btn btn-default' title='edit' onClick={()=>{setEditId(aprnt.id);setNom(aprnt.nom);setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);openModal()}}> <i className="fa fa-edit text-primary" aria-hidden="true"></i></button> &nbsp;
-                                      <button className='btn btn-default' title='archive' onClick={()=>archive(aprnt.id)}> <i className="fa fa-archive text-info" aria-hidden="true"></i></button>&nbsp;
-                                      <button className='btn btn-default' title='detail' onClick={()=>{setNom(aprnt.nom); setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                    </div>
-                                    </div>
-                                </div>
-                              </div> */}
+                <div className="tab-content w-75">
+                                    
+                  <div id="home" className="tab-pane fade in active"> 
+                    <h3>APPRENANTS</h3>
+                    {dataProf.length >0?(
+                      dataProf.map((aprnt, index) => (
+                        aprnt.role ==='apprenant'?(
+                          <div  key={index} className="pb-2 ">
 
                           <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
                               <div className="row no-gutters">
                                   <div className="col ">
-                                  <div className="card-body   " id='card-body'>
-                                      <img src={img1} className=" " alt="..."/>
+                                  <div className="card-body" id='card-body'>
+                                      <img src={aprnt.url} className=" " size={1} alt="VIDE"/>
                                       &nbsp; &nbsp;
                                       <strong >{aprnt.prenom}</strong> <br />
                                       &nbsp; &nbsp;
@@ -243,9 +233,9 @@ const ListApprenant = () => {
                                   <div className="card-body">
                                       <p className="card-text">
                                       <small className="text-muted">
-                                      <button className='btn btn-outline-warning' title='edit' onClick={()=>{setEditId(aprnt.id);setNom(aprnt.nom);setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);openModal()}}> <i className="fa fa-edit text-primary" aria-hidden="true"></i></button> &nbsp;
-                                      <button className='btn btn-default' title='archive' onClick={()=>archive(aprnt.id)}> <i className="fa fa-archive text-info" aria-hidden="true"></i></button>&nbsp;
-                                      <button className='btn btn-outline-info' title='detail' onClick={()=>{setNom(aprnt.nom); setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                        <button className='btn btn-outline-warning' title='edit' onClick={()=>{setEditId(aprnt.id);setNom(aprnt.nom);setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);setUrl(aprnt.url);openModal()}}> <i className="fa fa-edit text-primary" aria-hidden="true"></i></button> &nbsp;
+                                        <button className='btn btn-outline-danger' title='archive' onClick={()=>{archive(aprnt.id,aprnt.nom,aprnt.prenom,aprnt.email,aprnt.role,aprnt.url)}}> <i className="fa fa-archive text-info" aria-hidden="true"></i></button>&nbsp;
+                                        <button className='btn btn-outline-info' title='detail' onClick={()=>{setNom(aprnt.nom); setPrenom(aprnt.prenom);setEmail(aprnt.email);setRole(aprnt.role);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
                                       </small>
                                       </p>
                                   </div>
@@ -255,8 +245,20 @@ const ListApprenant = () => {
         
                           </div>
                         ):(null)
-                  )
-                )}
+                      )
+                    )
+                    ):(
+                      <div className="card p-4 bg-danger">
+                        <div className="card-body  border border-warning w-75 bg-light shadow">
+                            <h5 className="card-title"><strong>Liste vide</strong></h5>
+                            <p className="card-text"> Aucun apprenat</p>
+
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+                </div>
               </InfiniteScroll>
 
               <Modal
@@ -292,14 +294,14 @@ const ListApprenant = () => {
                              <div className="form-group">
                                 <label htmlFor="exampleFormControlTextarea1">Role</label>
                                 <select className="form-select" aria-label="Default select example" onChange={(e)=>{setRole(e.target.value)}}>
-                                  <option value="apprenant">admin</option>
-                                  <option value="admin" defaultValue>apprenant</option>
+                                  <option value="apprenant" defaultValue>apprenant</option>
+                                  <option value="admin">admin</option>
                                 </select>
                              </div>
                             <div className="form-check">
                               
                             </div>
-                            {nom===''  || prenom==='' || email==='' ?(
+                            {!nom  || !prenom || !email==='' ?(
                                <button type="submit" className="btn btn-primary disabled">Modifier</button>
                             ):(
                               <button type="submit" className="btn btn-primary " >Modifier</button>
@@ -330,7 +332,7 @@ const ListApprenant = () => {
               submit={() => hideAlert()}
               hideAlert={() => hideAlert()}
             />
-
+          </div>
         </div>
     )
 }

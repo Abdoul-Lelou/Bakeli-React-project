@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from "react";
 import { useHistory } from 'react-router';
 import { auth } from "../../firebase";
+import logo from '../../images/logoBakeli.png'
 
 //import react pro sidebar components
 import {
@@ -34,6 +35,7 @@ const Header = () => {
     //create initial menuCollapse state using useState hook
     const [menuCollapse, setMenuCollapse] = useState(true);
     const [role, setRole] = useState('');
+    const [currentRoute, setCurrentRoute] = useState('')
     //  const [active, setActive] = useState(true)
 
     const routeLink= useHistory()
@@ -46,19 +48,24 @@ const Header = () => {
 
   const logout= ()=>{
     localStorage.removeItem('userRole');
+    localStorage.removeItem('uidLogin')
     auth.signOut();
     routeLink.push('')
+    window.location.reload()
   }
 
   useEffect(() => {
     const currentRole=localStorage.getItem('userRole');
     setRole(currentRole);
-    window.onhashchange = function() { 
-      console.log('okkkkkkkkkkkkkkkkk')  
- }
     // console.log(window.location.pathname)
-  }, [role])
+  }, [role,currentRoute])
 
+  const activeRoute=(e)=>{
+   e.preventDefault();
+   const path= window.location.pathname;
+    setCurrentRoute(path)
+    console.log(path.split('/').join(''))
+  }
 
   return (
       
@@ -70,7 +77,7 @@ const Header = () => {
           <SidebarHeader>
             <div className="logotext">
                 {/* small and big change using menucollapse state */}
-                <p>{menuCollapse ? "Logo" : "Big Logo"}</p>
+                 <img src={logo} height={50} className='border' width={80} alt="" srcset="" />  
             </div>
           </SidebarHeader>
 
@@ -80,19 +87,20 @@ const Header = () => {
               {role === 'apprenant'?(
                 <>
                   {/* <MenuItem id='welcome' active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/> */}
-                  <MenuItem id='welcome' icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  <MenuItem id='welcome' icon={<BsCalendarDay />} onClick={(e)=>{routeLink.push('welcome');activeRoute(e)}} title='Acceuil'/>
+                  <MenuItem id='welcome' icon={<BiCog />} onClick={()=>routeLink.push('user')}>Settings</MenuItem>
                 </>
               ):(
                 <>
-                  <MenuItem id='welcome' active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/>
+                  <MenuItem id='welcome' active={window.location.pathname === "/welcome"} icon={<FiHome />} onClick={(e)=>{routeLink.push('welcome');activeRoute(e)}} title='Acceuil'/>
                   {/* <MenuItem id='welcome' icon={<BsCalendarDay />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/> */}
-                  <MenuItem id='archives' active={window.location.pathname === "/archives"} icon={<FaList />} onClick={()=>routeLink.push('archives')} title='Archives'/>
-                  <MenuItem id='listprof' icon={<CgUserList />} onClick={()=>routeLink.push('listprof')} title='Professeurs'/>
-                  <MenuItem id='listapprenant' icon={<MdSupervisedUserCircle />} onClick={()=>routeLink.push('listapprenant')} title='Apprenants'/>
-                  <MenuItem id='cours' icon={<BsFileEarmarkPlusFill />}  onClick={()=>routeLink.push('cours')} title='Ajouter Cours'/>
-                  <MenuItem id='prof' icon={<IoIosPersonAdd />}  onClick={()=>routeLink.push('prof')} title='Ajouter Professeur'/>
-                  <MenuItem id='signin' icon={<FaSign />} onClick={()=>routeLink.push('signin')} title='Inscription'/>
-                  <MenuItem id='welcome' icon={<BiCog />}>Settings</MenuItem>
+                  <MenuItem id='archives' className='ok' active={window.location.pathname === "/archives"} icon={<FaList />} onClick={(e)=>{routeLink.push('archives');activeRoute(e)}} title='Archives'/>
+                  <MenuItem id='listprof' active={window.location.pathname === "/listprof"} icon={<CgUserList />} onClick={(e)=>{routeLink.push('listprof');activeRoute(e)}} title='Professeurs'/>
+                  <MenuItem id='listapprenant' active={window.location.pathname === "/listapprenant"} icon={<MdSupervisedUserCircle />} onClick={(e)=>{routeLink.push('listapprenant');activeRoute(e)}} title='Apprenants'/>
+                  <MenuItem id='cours' active={window.location.pathname === "/cours"} icon={<BsFileEarmarkPlusFill />}  onClick={(e)=>{routeLink.push('cours');activeRoute(e)}} title='Ajouter Cours'/>
+                  <MenuItem id='prof' active={window.location.pathname === "/prof"} icon={<IoIosPersonAdd />}  onClick={(e)=>{routeLink.push('prof');activeRoute(e)}} title='Ajouter Professeur'/>
+                  <MenuItem id='signin' active={window.location.pathname === "/signin"} icon={<FaSign />} onClick={(e)=>{routeLink.push('signin');activeRoute(e)}} title='Inscription'/>
+                  <MenuItem id='welcome' active={window.location.pathname === "/user"} icon={<BiCog />} onClick={(e)=>{routeLink.push('user');activeRoute(e)}}>Settings</MenuItem>
                 </>
               )}
              
