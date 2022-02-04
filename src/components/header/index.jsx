@@ -28,13 +28,14 @@ import {MdSupervisedUserCircle} from "react-icons/md";
 //import sidebar css from react-pro-sidebar module and our custom css 
 import "react-pro-sidebar/dist/css/styles.css";
 import "./index.css";
+import { cleanup } from "@testing-library/react";
 
 
-const Header = () => {
+const Header = ({role}) => {
   
     //create initial menuCollapse state using useState hook
     const [menuCollapse, setMenuCollapse] = useState(true);
-    const [role, setRole] = useState('');
+    const [roles, setRoles] = useState('');
     const [currentRoute, setCurrentRoute] = useState('')
     //  const [active, setActive] = useState(true)
 
@@ -50,18 +51,21 @@ const Header = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('uidLogin')
     auth.signOut();
-    routeLink.push('')
+    routeLink.push('welcome')
     window.location.reload()
+
   }
 
-  useEffect(() => {
+  useEffect((e) => {
     const currentRole=localStorage.getItem('userRole');
-    setRole(currentRole);
+    setRoles(currentRole);
+    activeRoute(e);
     // console.log(window.location.pathname)
+    cleanup();
   }, [role,currentRoute])
 
   const activeRoute=(e)=>{
-   e.preventDefault();
+  //  e.preventDefault();
    const path= window.location.pathname;
     setCurrentRoute(path)
     console.log(path.split('/').join(''))
@@ -77,7 +81,7 @@ const Header = () => {
           <SidebarHeader>
             <div className="logotext">
                 {/* small and big change using menucollapse state */}
-                 <img src={logo} height={50} className='border' width={80} alt="" srcset="" />  
+                 <img src={logo} height={50} className='border' width={80} alt="" srcSet="" />  
             </div>
           </SidebarHeader>
 
@@ -87,8 +91,8 @@ const Header = () => {
               {role === 'apprenant'?(
                 <>
                   {/* <MenuItem id='welcome' active={true} icon={<FiHome />} onClick={()=>routeLink.push('welcome')} title='Acceuil'/> */}
-                  <MenuItem id='welcome' icon={<BsCalendarDay />} onClick={(e)=>{routeLink.push('welcome');activeRoute(e)}} title='Acceuil'/>
-                  <MenuItem id='welcome' icon={<BiCog />} onClick={()=>routeLink.push('user')}>Settings</MenuItem>
+                  <MenuItem id='welcome' active={window.location.pathname === "/welcome"} icon={<FaList />} onClick={(e)=>{routeLink.push('welcome');activeRoute(e)}} title='Acceuil'/>
+                  <MenuItem id='welcome'active={window.location.pathname === "/user"} icon={<BiCog />} onClick={(e)=>{routeLink.push('user');activeRoute(e)}}>Settings</MenuItem>
                 </>
               ):(
                 <>

@@ -55,7 +55,7 @@
 
 fieldset {
   border: medium none !important;
-  margin: 0 0 10px;
+  margin: 0 0 5px;
   min-width: 100%;
   padding: 0;
   width: 100%;
@@ -96,8 +96,8 @@ fieldset {
   background: #4CAF50;
   color: #FFF;
   margin: 0 0 5px;
-  padding: 10px;
-  font-size: 15px;
+  padding: 5px;
+  font-size: 1px;
 }
 
 #contact button[type="submit"]:hover {
@@ -118,7 +118,7 @@ fieldset {
 #contact input:focus,
 #contact select:focus {
   outline: 0;
-  border: 1px solid #aaa;
+  border: 0.1px solid #aaa;
 }
 
 ::-webkit-input-placeholder {

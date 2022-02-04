@@ -98,28 +98,47 @@ const ListApprenant = () => {
           onCancel={hideAlert}
           dependencies={[aprntEdit, matiereEdit]}
         >
-         <div className="row sweetRow">
-            <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
-            <ul className="list-group w-100">
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-                <h4>Nom:</h4>
-                <span className="badge badge-primary bg-primary badge-pill text">{nom}</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-              <h4>Prenom:</h4>
-                <span className="badge badge-primary bg-primary badge-pill"> {prenom} </span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-              <h4>Email:</h4>
-                <span className="badge badge-primary bg-primary badge-pill"> {email} </span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-              <h4>Role:</h4>
-                <span className="badge badge-primary bg-primary badge-pill"> {role} </span>
-              </li>
-            </ul>
+         <div className="row ">
+            <div className="col-sm-12 m-0 mb-md-0 infoPostion ">
+              <ul className=" w-100 bg-light ">
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                  <h4>Nom:</h4>
+                  <span className="badge badge-primary bg-primary badge-pill text">{nom}</span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                <h4>Prenom:</h4>
+                  <span className="badge badge-primary bg-primary badge-pill"> {prenom} </span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                <h4>Email:</h4>
+                  <span className="badge badge-primary bg-primary badge-pill"> {email} </span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                <h4>Role:</h4>
+                  <span className="badge badge-primary bg-primary badge-pill"> {role} </span>
+                </li>
+              </ul>
             </div>
           </div>
+
+          {/* <ul className='  bg-light shadow'>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+                <h4>Nom:</h4>
+                <span className="badge badge-primary bg-primary badge-pill text">{nom}</span>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              <h4>Prenom:</h4>
+                <span className="badge badge-primary bg-primary badge-pill"> {prenom} </span>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              <h4>Email:</h4>
+                <span className="badge badge-primary bg-primary badge-pill"> {email} </span>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+                <h4>Role:</h4>
+                <span className="badge badge-primary bg-primary badge-pill"> {role} </span>    
+            </li>
+          </ul> */}
         </SweetAlert>
       );
     };

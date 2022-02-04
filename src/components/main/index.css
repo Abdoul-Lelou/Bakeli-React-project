@@ -1,5 +1,5 @@
 .mains{
-    background-color: rgb(242, 242, 243);
+    background-color: rgb(195, 195, 197);
     float: left;
     margin-left: 205px;
     width: 45%;
@@ -112,9 +112,7 @@ h4{
     cursor: pointer;
     transition: all 0.3s ease-out;
   }
-  .button:hover {
-    background: #06D85F;
-  }
+  
   
   .overlay {
     position: fixed;
@@ -158,9 +156,7 @@ h4{
     text-decoration: none;
     color: #333;
   }
-  .popup .close:hover {
-    color: #06D85F;
-  }
+ 
   .popup .content {
     max-height: 70%;
     overflow: auto;
@@ -175,6 +171,7 @@ h4{
       width: 70%;
     }
   }
+
 form{
   /* margin-left: 12%; */
   padding: 2%;
@@ -192,9 +189,20 @@ form{
   height: 100%;
 }
 
-strong{
-  /* border: brown 1px solid; */
+
+.list-group{
+  margin-left: auto;
+  display: none;
+
 }
+
+.btn-action{
+  /* display: none; */
+}
+
+
+
+  
   
 
 

@@ -27,7 +27,7 @@ const Footer = ({nom,prenom,url}) => {
              <>
 
                       <div className="grid-container " >
-                          <div className='item1 border row mb-3' >
+                          <div className='item1   row mb-3'  style={{ width: '85%', padding:'5px'}}>
                             <div className=' middle-container d-flex  w-100  align-items-center shadow tailleCol border'  style={{ maxHeight: '80px'}}>
                               <img src={url} id='imgMain' alt="vide" srcSet="" className='profils' />
                               <div className="col col-sm-2  widthImg" style={{ padding:'2.3px'}}>

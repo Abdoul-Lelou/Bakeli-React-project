@@ -3,8 +3,17 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import {dbCours,dbArchive,dbFirestores} from "../../firebase";
-import img1 from '../../images/img1.jpg'
+import {dbCours,dbArchive,dbFirestores, dbFirestore} from "../../firebase";
+import img1 from '../../images/Cours.jpg';
+import img2 from '../../images/teach.jpeg';
+import img3 from '../../images/learn.png';
+import img4 from '../../images/cerveau.jpg';
+import img5 from '../../images/exo.jpeg';
+import img6 from '../../images/exoLecteur.jpeg';
+import img7 from '../../images/exoTree.jpeg';
+import img8 from '../../images/info.jpeg';
+
+
 import Modal from 'react-modal';
 import './index.css';
 import Footer from '../footer';
@@ -39,8 +48,12 @@ const Main = ({nom,prenom,url}) => {
   const [dataSearch, setdataSearch] = useState([]);
   const [disableButton, setdisableButton] = useState(false);
   const [show, setshow] = useState(false);
+  const [role, setRole] = useState('')
 
-  const path= useHistory('')
+  const path= useHistory('');
+
+  const imageTitle= [img1,img2,img3,img4,img5,img6,img7,img8];
+
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -66,10 +79,13 @@ const Main = ({nom,prenom,url}) => {
 
 
     useEffect(() => {
+
         const uid = localStorage.getItem('uidLogin');
         if (!uid) {
-          path.push('')
+          path.push('');
+          return false;
         }
+
         dbCours.get().then((snapshot) => {
           const data = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -79,27 +95,9 @@ const Main = ({nom,prenom,url}) => {
           dataChange =data
         });
 
-        // console.log(storageFirebase.put(`${img1}`)
-        //     .then( url => {
-        //         url.ref.getDownloadURL().then(p=>console.log(p))
-        //     })
-        // );
-
-
-        // const fetchImages = async () => {
-
-        //   let result = await storageFirebase.child('images/').listAll();
-        //       let urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
-          
-        //       return Promise.all(urlPromises);
-      
-        //   }
-          
-        //   const loadImages = async () => {
-        //       const urls = await fetchImages();
-        //       setFiles(urls);
-        //   }
-        //   loadImages();
+        dbFirestore.doc(uid).get().then(res => {
+          setRole(res.data().role);
+        })
         
     }, [dataChange])  
     
@@ -179,10 +177,10 @@ const Main = ({nom,prenom,url}) => {
             dependencies={[coursEdit, detailEdit]}
           >
 
-            <div className="card p-4">
-              <div className="card-body">
+            <div className="card p-0" style={{border:'none'}}>
+              <div className="card-body bg-light shadow">
                   
-                  <p className="card-text"> {detailEdit}</p>
+                  <p className="card-text text-break text-start"> {detailEdit}</p>
 
               </div>
             </div>
@@ -230,7 +228,7 @@ const Main = ({nom,prenom,url}) => {
         <div className='mains shadow border '>
          
             <div className="search-box mb-2">
-                <input type="text" className="search-input" placeholder="Search.." value={search} onChange={(e)=>{setSearch(e.target.value)}}/>
+                <input type="text" className="search-input" placeholder="Search.." value={search} onChange={(e)=>{setSearch(e.target.value);filterSearch()}}/>
 
                 <button className="btn btn-search search-button" onClick={()=>filterSearch()} >
                 <i className="text-success fa fa-search" aria-hidden="true"></i>
@@ -266,7 +264,8 @@ const Main = ({nom,prenom,url}) => {
                         <div className="row no-gutters">
                           <div className="col ">
                             <div className="card-body   " id='card-body'>
-                              <img src={img1} className="img " alt="..."/>
+    
+                              <img src={imageTitle[Math.floor(Math.random() * imageTitle.length)]} className="img " alt="..."/>
                              
                                <strong >{cour.cour}</strong> <br />
                                <em className='text  text-default'>{cour.date}</em>
@@ -277,9 +276,15 @@ const Main = ({nom,prenom,url}) => {
                             <div className="card-body">
                               <p className="card-text">
                                 <small className="text-muted">
-                                  <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cour); setdEtailEdit(cour.detail); setEditId(cour.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                  <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cour,cour.detail,cour.date)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
-                                  <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cour); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                  {role !=='apprenant'?(
+                                      <>
+                                        <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cour.cour); setdEtailEdit(cour.detail); setEditId(cour.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                        <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cour.id,cour.cour,cour.detail,cour.date)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                        <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cour); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                      </>
+                                  ):(
+                                    <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cour.cour); setdEtailEdit(cour.detail);setEditId(cour.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                  )}
                                 </small>
                               </p>
                             </div>
@@ -305,26 +310,45 @@ const Main = ({nom,prenom,url}) => {
                     <div  key={index} className="w-100 mb-4   ">
                      
                     
-                        <div  className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
+                        <div  className="card " style={{maxWidth: '480px',maxHeight: '70px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
                           <div className="row no-gutters">
                             <div className="col ">
                               <div className="card-body   " id='card-body'>
-                                <img src={img1} className=" " alt="..."/>
+                                <img src={imageTitle[Math.floor(Math.random() * imageTitle.length)]} className=" " alt="..."/>
                                
                                  <strong >{cours.cour}</strong> <br />
-                                 <em className='text  text-default'>{cours.date}</em>
+                                 <em className='text-default'>{cours.date}</em>
                                 
                               </div>
                             </div>
                             <div className="col-6 ">
                               <div className="card-body">
-                                <p className="card-text">
+                                {/* <p className="card-text"> */}
                                   <small className="text-muted">
-                                    <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cours.cour); setdEtailEdit(cours.detail); setEditId(cours.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                    <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cours.id,cours.cour,cours.detail,cours.date)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                    
+                                    {role !=='apprenant'?(
+                                      <>
+                                      <ul className="list-group w-25">
+                                        <li className="list-group-item justify-content-between align-items-center">
+                                         
+                                          <span className="badge bg-primary rounded-pill">14</span>
+                                    
+                                        </li>
+                        
+                                      </ul>
+
+                                      <span className='btn-action'>
+                                          <button className='btn btn-outline-warning' title='edit'  onClick={() => {setCourEdit(cours.cour); setdEtailEdit(cours.detail); setEditId(cours.id);openModal() }}><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                          <button className='btn btn-outline-primary' title='archive' onClick={()=>archive(cours.id,cours.cour,cours.detail,cours.date)}> <i className="fa fa-archive" aria-hidden="true"></i></button>&nbsp;
+                                          <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cours.cour); setdEtailEdit(cours.detail);setEditId(cours.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                      </span>
+                                        
+                                      </>
+                                  ):(
                                     <button className='btn btn-outline-success' title='detail' onClick={()=>{setCourEdit(cours.cour); setdEtailEdit(cours.detail);setEditId(cours.id);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                  )}
                                   </small>
-                                </p>
+                                {/* </p> */}
                               </div>
                             </div>
                           </div>
@@ -340,55 +364,56 @@ const Main = ({nom,prenom,url}) => {
                     
             </div>
               <Footer prenom={prenom} nom={nom} url={url}/>
-                <Modal
-                  isOpen={modalIsOpen}
-                  onAfterOpen={afterOpenModal}
-                  onRequestClose={closeModal}
-                  style={customStyles}
-                  appElement={document.getElementById('root')}
-                  contentLabel="Example Modal"
-                >
-                  <h2 ref={(_subtitle) => (subtitle = _subtitle)} className='text-info'>Modifier </h2>
-                  
+              <Modal
+                isOpen={modalIsOpen}
+                onAfterOpen={afterOpenModal}
+                onRequestClose={closeModal}
+                style={customStyles}
+                appElement={document.getElementById('root')}
+                contentLabel="Example Modal"
+              >
+                <h2 ref={(_subtitle) => (subtitle = _subtitle)} className='text-info'>Modifier </h2>
+                
 
-                        <form className='border border-success' onSubmit={e=>edit(e)}>
-                          <fieldset >
+                      <form className='border border-success' onSubmit={e=>edit(e)}>
+                        <fieldset >
+                          <div className="form-group">
+                            <label htmlFor="disabledTextInput">Cours</label>
+                            <input type="text" value={coursEdit}  className="form-control" placeholder="Cours" onChange={(e)=>{setCourEdit(e.target.value);console.log(e.target.value)}} />
+                          </div>
+                          
                             <div className="form-group">
-                              <label htmlFor="disabledTextInput">Cours</label>
-                              <input type="text" value={coursEdit}  className="form-control" placeholder="Cours" onChange={(e)=>{setCourEdit(e.target.value);console.log(e.target.value)}} />
+                              <label htmlFor="exampleFormControlTextarea1">Details</label>
+                              <textarea className="form-control" value={detailEdit} onChange={(e)=> setdEtailEdit(e.target.value)} rows="3"></textarea>
                             </div>
+                          <div className="form-check">
                             
-                             <div className="form-group">
-                                <label htmlFor="exampleFormControlTextarea1">Details</label>
-                                <textarea className="form-control" value={detailEdit} onChange={(e)=> setdEtailEdit(e.target.value)} rows="3"></textarea>
-                             </div>
-                            <div className="form-check">
-                              
-                            </div>
-                            {(!coursEdit) || (!detailEdit) ?(
-                               <button type="submit" className="btn btn-primary disabled">Modifier</button>
-                            ):(
-                              <button type="submit" className="btn btn-primary " >Modifier</button>
-                            )}
-                            <button type="submit" className="btn btn-danger m-2" onClick={closeModal}>Annuler</button>
-                          </fieldset>
-                        </form>
-                      
-                 
-                </Modal>
-            <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            />
-            {/*  Affichage des notifications*/}
-            <ToastContainer />
+                          </div>
+                          {(!coursEdit) || (!detailEdit) ?(
+                              <button type="submit" className="btn btn-primary disabled">Modifier</button>
+                          ):(
+                            <button type="submit" className="btn btn-primary " >Modifier</button>
+                          )}
+                          <button type="submit" className="btn btn-danger m-2" onClick={closeModal}>Annuler</button>
+                        </fieldset>
+                      </form>
+                    
+                
+              </Modal>
+              <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              color='#258'
+              />
+              {/*  Affichage des notifications*/}
+              <ToastContainer />
 
                   
 

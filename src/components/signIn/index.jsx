@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { auth,dbFirestore, dbProf, storageFirebase } from "../../firebase";
+import { auth,dbFirestore, storageFirebase } from "../../firebase";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,12 +14,13 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const [imageAsFile, setImageAsFile] = useState('')
-
+    const [currentRole, setcurrentRole] = useState('')
 
     const route= useHistory();
 
     useEffect(() => {
       const uid = localStorage.getItem('uidLogin');
+      setcurrentRole(localStorage.getItem('userRole'))
 			if (!uid) {
 				route.push('')
 			}
@@ -31,7 +32,7 @@ const SignIn = () => {
 
         e.preventDefault();
         let nbrCalls=0;
-
+    
         return  storageFirebase.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
           .on('state_changed', 
             (snapShot) => {
@@ -67,15 +68,13 @@ const SignIn = () => {
         
     }
 
-    const handleImageAsFile = (e) => {
-      setImageAsFile(e.target.files[0])
-    }
 
     const toInputUppercase = e => {
       if(e.target.value !==''){
         e.target.value = ("" + e.target.value.replace(/[^a-zA-Z ]/g, ""))[0].toUpperCase() + e.target.value.slice(1).toLowerCase();
       } 
     }
+    
     
 
 
@@ -86,25 +85,30 @@ const SignIn = () => {
         <form id="contact" onSubmit={handleSubmit}>
           <h6>INSCRIPTION</h6>
           <fieldset>
+            <label htmlFor="Email">Email</label>
             <input placeholder="Email" type="email" tabIndex="1" required onChange={(e)=>setEmail(e.target.value)} onInput={toInputUppercase} />
           </fieldset>
           <fieldset>
+            <label htmlFor="Nom">Nom</label>
             <input placeholder="Nom" type="text" tabIndex="2" required autoFocus onChange={(e)=>setNom(e.target.value)} onInput={toInputUppercase} />
           </fieldset>
           <fieldset>
+            <label htmlFor="Prenom">Prenom</label>
             <input placeholder="Prenom" type="text" tabIndex="3" required onChange={(e)=>setPrenom(e.target.value)} onInput={toInputUppercase} />
           </fieldset>
           <fieldset>
+            <label htmlFor="Password">Password</label>
             <input placeholder="Password" type="password" tabIndex="4" required onChange={(e)=>setPassword(e.target.value)}/>
           </fieldset>
           <fieldset>
+            <label htmlFor="Role">Role</label>
               <select name="pets" id="pet-select" required onChange={e=> setRole(e.target.value)}>
                   <option value="">--Please choose an option--</option>
                   <option value="apprenant">apprenant</option>
               </select>
           </fieldset>
           <fieldset>
-                  <label htmlFor="ppt" data-role="button" className='text-info' data-inline="true" data-mini="true" data-corners="false">Photo</label>
+                  <label htmlFor="Photo" data-role="button" className='text-info' data-inline="true" data-mini="true" data-corners="false">Photo</label>
                     <input id="ppt" type="file" name="ppt"
                            multiple data-role="button" 
                            data-inline="true" data-mini="true" data-corners="false"

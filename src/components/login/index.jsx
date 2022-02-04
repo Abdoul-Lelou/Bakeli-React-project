@@ -1,3 +1,4 @@
+
 import React,{useState} from 'react';
 import { useHistory } from 'react-router';
 import { auth,dbFirestore} from "../../firebase";
@@ -8,9 +9,11 @@ import { toast, ToastContainer } from 'react-toastify';
 
 const Login = (props) => {
 
-    const [email, setEmail] = useState('apprenant@gmail.com');
-    const [password, setPassword] = useState('apprenant');
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
     const route = useHistory();
+
+
 
     const notify = (msg) => toast(msg);
 
@@ -21,7 +24,11 @@ const Login = (props) => {
 
     const signInWithEmailAndPassword = async (emailUser, passwordUser) => {
         let roleUser= '';
+        localStorage.removeItem('uidLogin');
+        localStorage.removeItem('userRole');
+
         try {
+
             await auth.signInWithEmailAndPassword(emailUser, passwordUser).then(res=>{
             localStorage.setItem('uidLogin', res.user.uid)  
             dbFirestore.doc(res.user.uid).get().then(result => {
@@ -29,8 +36,12 @@ const Login = (props) => {
                 if (result.data() !== undefined) {
                     roleUser= result.data().role;
                     localStorage.setItem('userRole', roleUser);
+
                     route.push('/welcome');
-                    notify('Bienvenue')  
+                    window.location.reload()
+                    // setTimeout(() => {
+                    //     notify('Bienvenue')
+                    // }, 2000);  
                     return;  
                 }
                 notify('Utilisateur supprimé') 
@@ -66,7 +77,7 @@ const Login = (props) => {
 
             <ToastContainer
             position="top-right"
-            autoClose={4000}
+            autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

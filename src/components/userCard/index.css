@@ -127,9 +127,6 @@ button :hover {
     margin: 1px 0;
 }
 
-.rightbox :hover {
-    background: #5b9372;
-}
 
 @keyframes circlespin {
   0% {

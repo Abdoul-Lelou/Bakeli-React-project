@@ -1,7 +1,7 @@
 .App {
     /* text-align: center; */
     border: 1px red solid;
-    background-color: aqua;
+    background-color: rgb(21, 49, 49);
   }
   .mainRight{
     float: right;

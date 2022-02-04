@@ -171,11 +171,11 @@ const Archives = () => {
             dependencies={archiveProfs}
           >
            <div className="row sweetRow">
-            <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
-            <ul className="list-group w-100">
+            <div className="col-sm-12  m-0 mb-md-0 infoPostion ">
+            <ul className=" w-100 bg-light ">
               <li className="list-group-item d-flex justify-content-between align-items-center">
-                <h4> {detailName}</h4>
-                <span className="badge badge-primary bg-danger badge-pill text">{detailMatiere}</span>
+                <h4> Nom et prenom:</h4>
+                <span className="badge badge-primary bg-danger badge-pill text">{detailName}</span>
               </li>
               
 
@@ -189,7 +189,10 @@ const Archives = () => {
               )
               
               }
-              
+             <li className="list-group-item d-flex justify-content-between align-items-center">
+                <h4> Rôle:</h4>
+                <span className="badge badge-primary bg-danger badge-pill text">{detailMatiere}</span>
+              </li> 
               
             </ul>
             </div>
@@ -201,7 +204,9 @@ const Archives = () => {
 
     return (
        <div className='archive '>
-           <div className='row row-cols-1 bg-light shadow pt-2 '>
+          
+           <div className='row row-cols-1shadow  '>
+           <h2>ARCHIVES</h2>
                 <ul className="nav nav-pills clearfix border mb-2 " >
                         <li className="active " id='linkActive'><a data-toggle="pill" href="#home">PROFS</a></li>
                         <li><a data-toggle="pill" href="#menu2">USERS</a></li>

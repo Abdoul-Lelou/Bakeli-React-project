@@ -66,7 +66,7 @@ const ListProf = () => {
         if (!uid) {
           path.push('')
         }
-        
+
         dbProf.get().then((snapshot) => {
           const data = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -176,9 +176,9 @@ const ListProf = () => {
           onCancel={hideAlert}
           dependencies={[nom, matieres]}
         >
-         <div className="row sweetRow">
-            <div className="col-sm-8  mb-3 mb-md-0 infoPostion ">
-            <ul className="list-group w-100">
+         <div className="row ">
+            <div className="col-sm-12 m-0 mb-md-0 infoPostion ">
+            <ul className=" w-100 bg-light shadow">
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 <h4>Nom:</h4>
                 <span className="badge badge-primary bg-primary badge-pill text">{nom}</span>
@@ -186,7 +186,7 @@ const ListProf = () => {
              
               <li className="list-group-item d-flex justify-content-between align-items-center">
               <h4>Matiere:</h4>
-                <span className="badge badge-primary bg-primary badge-pill"> {matieres} </span>
+                <span className="badge badge-primary bg-primary badge-pill text-break"> {matieres} </span>
               </li>
               
             </ul>
@@ -271,55 +271,55 @@ const ListProf = () => {
               >
                 <div className="tab-content  w-75">
                                     
-                    <div id="home" className="tab-pane fade in active"> 
-                    <h3>PROFESSEURS</h3>
+                  <div id="home" className="tab-pane fade in active"> 
+                       <h3>PROFESSEURS</h3>
 
-                    {dataProf.length >0?(
-                         dataProf.map((prof, index) => (
-                      
-                          <div  key={index} className="pb-2  pt-2">
-                            <div id='bgDiv' className="card " style={{maxWidth: '480px',backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
-                                  <div className="row no-gutters">
-                                      <div className="col ">
-                                      <div className="card-body   " id='card-body'>
-                                          <img src={prof.url} className=" " alt="..."/>
-                                          &nbsp; &nbsp;
-                                          <strong >{prof.nom}</strong> <br />
-                                          &nbsp; &nbsp;
-                                          <em className='text  text-default'>{prof.matieres}</em>
-                                          
-                                      </div>
-                                      </div>
-                                      <div className="col-6 ">
-                                      <div className="card-body">
-                                          <p className="card-text">
-                                          <small className="text-muted">
-                                              <button className='btn btn-outline-warning' title='edit' onClick={(e)=> {setEditId(prof.id);setNom(prof.nom);setMatiere(prof.matieres);setUrl(prof.url);openModal()}} ><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
-                                              <button className='btn btn-outline-warning' title='archive' onClick={()=>{setUrl(prof.url);archive(prof.id,prof.nom,prof.matieres,prof.url)}} ><i className="fa fa-archive" aria-hidden="true"></i></button> &nbsp;
-                                              <button className='btn btn-outline-success' title='detail' onClick={()=>{setMatiere(prof.matieres);setNom(prof.nom);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
-                                          </small>
-                                          </p>
-                                      </div>
-                                      </div>
-                                  </div>
-                            </div>
-      
-                        </div>
-      
+                      {dataProf.length >0?(
+                          dataProf.map((prof, index) => (
                         
-                      )
-                      )
-                    ):(
-                      <div className="card p-4 bg-danger">
-                          <div className="card-body  border border-warning w-75 bg-light shadow">
-                              <h5 className="card-title"><strong>Liste vide</strong></h5>
-                              <p className="card-text"> Aucun professeur n'est archivé</p>
-
+                            <div  key={index} className="pb-2  pt-2">
+                              <div id='bgDiv' className="card " style={{backgroundColor:"#" + ((1<<16)*Math.random() | 4).toString(16)}}>
+                                    <div className="row no-gutters">
+                                        <div className="col ">
+                                        <div className="card-body   " id='card-body'>
+                                            <img src={prof.url} className=" " alt="..."/>
+                                            &nbsp; &nbsp;
+                                            <strong >{prof.nom}</strong> <br />
+                                            &nbsp; &nbsp;
+                                            <em className='text  text-break'>{prof.matieres}</em>
+                                            
+                                        </div>
+                                        </div>
+                                        <div className="col-6 ">
+                                        <div className="card-body">
+                                            <p className="card-text">
+                                            <small className="text-muted">
+                                                <button className='btn btn-outline-warning' title='edit' onClick={(e)=> {setEditId(prof.id);setNom(prof.nom);setMatiere(prof.matieres);setUrl(prof.url);openModal()}} ><i className="fa fa-edit" aria-hidden="true"></i></button> &nbsp;
+                                                <button className='btn btn-outline-warning' title='archive' onClick={()=>{setUrl(prof.url);archive(prof.id,prof.nom,prof.matieres,prof.url)}} ><i className="fa fa-archive" aria-hidden="true"></i></button> &nbsp;
+                                                <button className='btn btn-outline-success' title='detail' onClick={()=>{setMatiere(prof.matieres);setNom(prof.nom);setshow(true)}}> <i className="fa fa-info-circle" aria-hidden="true"></i></button>
+                                            </small>
+                                            </p>
+                                        </div>
+                                        </div>
+                                    </div>
+                              </div>
+        
                           </div>
-                      </div>
-                    )
-                     
-                    }
+        
+                          
+                        )
+                        )
+                      ):(
+                        <div className="card p-4 bg-danger">
+                            <div className="card-body  border border-warning w-75 bg-light shadow">
+                                <h5 className="card-title"><strong>Liste vide</strong></h5>
+                                <p className="card-text"> Aucun professeur dans la base</p>
+
+                            </div>
+                        </div>
+                      )
+                      
+                      }
                   </div>
                   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 </div>
@@ -365,15 +365,15 @@ const ListProf = () => {
             </div>
 
             <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
             />
            
 
